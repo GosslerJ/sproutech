@@ -11,6 +11,7 @@ import com.greenfoxacademy.springwebapp.product.models.Product;
 import com.greenfoxacademy.springwebapp.product.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,5 +53,15 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public void deleteOrderById(Integer id) {
     orderRepository.deleteById(id);
+  }
+
+  @Override
+  public List<Order> filterOrdersByDeliveryDeadline(Integer days) {
+    if (days == null) {
+      return (List<Order>) orderRepository.findAll();
+    } else {
+      LocalDate date = LocalDate.now().plusDays(days);
+      return orderRepository.findAllByDeliveryDeadlineLessThanEqual(date);
+    }
   }
 }

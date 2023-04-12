@@ -3,6 +3,7 @@ package com.greenfoxacademy.springwebapp.order.controllers;
 import com.greenfoxacademy.springwebapp.common.exceptions.IdNotFoundException;
 import com.greenfoxacademy.springwebapp.common.models.StatusResponseDTO;
 import com.greenfoxacademy.springwebapp.material.models.MaterialResponseDTO;
+import com.greenfoxacademy.springwebapp.order.models.Order;
 import com.greenfoxacademy.springwebapp.order.models.OrderRequestDTO;
 import com.greenfoxacademy.springwebapp.order.models.OrderResponseDTO;
 import com.greenfoxacademy.springwebapp.order.services.OrderService;
@@ -16,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -32,7 +35,7 @@ public class OrderController {
   @ApiResponses(value = {
           @ApiResponse(responseCode = "201", description = "successful operation",
                   content = @Content(mediaType = "application/json",
-                          schema = @Schema(implementation = MaterialResponseDTO.class))),
+                          schema = @Schema(implementation = OrderResponseDTO.class))),
           //          @ApiResponse(responseCode = "409", description = "name is already taken",
           //                  content = @Content(mediaType = "application/json",
           //                          schema = @Schema(implementation = StatusResponseDTO.class))),
@@ -48,11 +51,11 @@ public class OrderController {
     //            }
   }
 
-  @Operation(summary = "Delete Order", description = "Delete and existing order")
+  @Operation(summary = "Delete Order", description = "Delete and existing order by id")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "201", description = "successful operation",
+          @ApiResponse(responseCode = "200", description = "successful operation",
                   content = @Content(mediaType = "application/json",
-                          schema = @Schema(implementation = MaterialResponseDTO.class))),
+                          schema = @Schema(implementation = OrderResponseDTO.class))),
           @ApiResponse(responseCode = "404", description = "invalid id",
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = StatusResponseDTO.class))),
@@ -62,10 +65,22 @@ public class OrderController {
   public ResponseEntity<?> deleteOrder(@Valid @PathVariable Integer id) {
     try {
       orderService.deleteOrderById(id);
-      return ResponseEntity.status(201).body(new StatusResponseDTO("ok", "Order deleted"));
+      return ResponseEntity.status(OK).body(new StatusResponseDTO("ok", "Order deleted"));
     } catch (IdNotFoundException e) {
       return ResponseEntity.status(404).body(new StatusResponseDTO("error", e.getMessage()));
     }
   }
+
+    @Operation(summary = "List close deadlines", description = "Get orders with close delivery deadlines")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = OrderResponseDTO.class))),
+    })
+    @GetMapping("/order")
+    public ResponseEntity<?> filterOrders(@Valid @RequestParam Integer days) {
+      List<Order> orders = orderService.filterOrdersByDeliveryDeadline(days);
+        return ResponseEntity.status(OK).body(orders);
+    }
 
 }

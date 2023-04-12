@@ -6,6 +6,10 @@ import com.greenfoxacademy.springwebapp.material.models.MaterialResponseDTO;
 import com.greenfoxacademy.springwebapp.material.repositories.MaterialRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class MaterialServiceImpl implements MaterialService {
 
@@ -25,7 +29,7 @@ public class MaterialServiceImpl implements MaterialService {
             .unitPrice(dto.getUnitPrice())
             .unitLength(dto.getUnitLength())
             .unitWeight(dto.getUnitWeight())
-            .warehouse(dto.getWarehouse())
+            .warehouse(dto.getWarehouse()) // TODO: set warehouse
             .build();
     material.setTotalLength(material.getUnitLength() * material.getQuantity());
     material.setTotalWeight(material.getUnitWeight() * material.getUnitLength() * material.getQuantity());
@@ -49,6 +53,18 @@ public class MaterialServiceImpl implements MaterialService {
     responseDTO.setTotalLength(material.getTotalLength());
     responseDTO.setTotalWeight(material.getTotalWeight());
     return responseDTO;
+  }
+
+  @Override
+  public List<Material> findMaterial(Optional<String> quality, Optional<Float> size) {
+    if (quality.isPresent() && size.isPresent()) {
+      return materialRepository.findAllByQualityAndSize(quality.get(), size.get());
+    } else if (quality.isPresent()) {
+      return materialRepository.findAllByQuality(quality.get());
+    } else if (size.isPresent()) {
+      return materialRepository.findAllBySize(size.get());
+    }
+    return new ArrayList<>();
   }
 
 }

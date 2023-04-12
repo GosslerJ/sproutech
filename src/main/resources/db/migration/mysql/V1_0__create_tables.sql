@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS orders (
 
 CREATE TABLE IF NOT EXISTS warehouses (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  name ENUM('external', 'internal', 'bag', 'delivered') NOT NULL,
+  name ENUM('external', 'internal', 'bag') NOT NULL,
   zip_code VARCHAR(255) NOT NULL,
   city VARCHAR(255) NOT NULL,
   address VARCHAR(255) NOT NULL
@@ -58,6 +58,8 @@ CREATE TABLE IF NOT EXISTS materials (
   warehouse_id INT,
   FOREIGN KEY (warehouse_id) REFERENCES warehouses(id)
 );
+
+UPDATE materials SET warehouse_id = 1 WHERE warehouse_id IS NULL;
 
 CREATE TABLE IF NOT EXISTS products (
   id INT PRIMARY KEY AUTO_INCREMENT,

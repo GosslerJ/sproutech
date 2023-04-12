@@ -17,7 +17,7 @@ public class Warehouse {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
-  @Column(columnDefinition = "enum('external', 'internal', 'bag', 'delivered')")
+  @Column(columnDefinition = "enum('external', 'internal', 'bag')")
   private Location name;
   private String zipCode;
   private String city;

@@ -1,5 +1,6 @@
 package com.greenfoxacademy.springwebapp.customer.services;
 
+import com.greenfoxacademy.springwebapp.common.exceptions.IdNotFoundException;
 import com.greenfoxacademy.springwebapp.customer.models.Customer;
 import com.greenfoxacademy.springwebapp.customer.models.CustomerRequestDTO;
 import com.greenfoxacademy.springwebapp.customer.models.CustomerResponseDTO;
@@ -40,6 +41,7 @@ public class CustomerServiceImpl implements CustomerService {
     return new CustomerResponseDTO(customer.getId(), customer.getName());
   }
 
+
   private void validateRegistration(CustomerRequestDTO reg) throws AlreadyTakenNameException, InvalidEmailException {
     if (customerRepository.findByName(reg.getName()).isPresent())
       throw new AlreadyTakenNameException("Customer name is already taken.");
@@ -52,6 +54,11 @@ public class CustomerServiceImpl implements CustomerService {
     return Pattern.compile(regex)
             .matcher(email)
             .matches();
+  }
+
+  @Override
+  public Customer getCustomerById(Integer id) throws IdNotFoundException {
+    return customerRepository.findById(id).orElseThrow(IdNotFoundException::new);
   }
 
 }

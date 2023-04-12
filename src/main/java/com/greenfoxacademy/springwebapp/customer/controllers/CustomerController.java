@@ -1,10 +1,12 @@
 package com.greenfoxacademy.springwebapp.customer.controllers;
 
+import com.greenfoxacademy.springwebapp.customer.models.Customer;
 import com.greenfoxacademy.springwebapp.customer.models.CustomerRequestDTO;
 import com.greenfoxacademy.springwebapp.customer.models.CustomerResponseDTO;
 import com.greenfoxacademy.springwebapp.customer.services.CustomerService;
 import com.greenfoxacademy.springwebapp.common.exceptions.AlreadyTakenNameException;
 import com.greenfoxacademy.springwebapp.common.models.StatusResponseDTO;
+import com.greenfoxacademy.springwebapp.material.models.MaterialResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,9 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -23,6 +23,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @Tag(name = "Customer Registration")
 @RestController
+@RequestMapping("/customer")
 public class CustomerController {
 
   private CustomerService customerService;
@@ -40,7 +41,7 @@ public class CustomerController {
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = StatusResponseDTO.class))),
   })
-  @PostMapping("/customer")
+  @PostMapping
   public ResponseEntity<?> register(@Valid @RequestBody CustomerRequestDTO customerRequestDTO) {
     try {
       CustomerResponseDTO createdCustomer = customerService.saveCustomer(customerRequestDTO);
@@ -49,5 +50,20 @@ public class CustomerController {
       return ResponseEntity.status(CONFLICT).body(new StatusResponseDTO("error", e.getMessage()));
     }
   }
+
+  @Operation(summary = "Delete Order", description = "Delete and existing order by id")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "201", description = "successful operation",
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = CustomerResponseDTO.class))),
+//          @ApiResponse(responseCode = "404", description = "invalid id",
+//                  content = @Content(mediaType = "application/json",
+//                          schema = @Schema(implementation = StatusResponseDTO.class))),
+          //          TODO: scenarios?
+  })
+  @GetMapping("/{id}")
+    public ResponseEntity<?> getCustomerById(@PathVariable Integer id) {
+        return ResponseEntity.ok(customerService.getCustomerById(id));
+    }
 
 }

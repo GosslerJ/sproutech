@@ -7,8 +7,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MaterialRepository extends CrudRepository<Material, Integer> {
-  Optional<Material> findByQuality(String quality);
 
   List<Material> findAll();
 
+  List<Material> findAllByQualityAndSize(String s, Float aFloat);
+
+  List<Material> findAllByQuality(String s);
+
+  List<Material> findAllBySize(Float aFloat);
 }

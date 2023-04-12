@@ -1,5 +1,6 @@
 package com.greenfoxacademy.springwebapp.material.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.greenfoxacademy.springwebapp.product.models.Product;
 import lombok.*;
 import com.greenfoxacademy.springwebapp.warehouse.models.Warehouse;
@@ -31,6 +32,7 @@ public class Material {
   private Float remainingLength;
   private Float remainingWeight;
   private LocalDate updatedAt;
+  @JsonIgnore
   @ManyToMany(mappedBy = "materialProducts")
   private List<Product> frog;
   @ManyToOne(fetch = FetchType.EAGER)
