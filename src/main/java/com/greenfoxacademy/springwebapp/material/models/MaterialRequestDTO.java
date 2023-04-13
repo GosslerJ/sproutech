@@ -14,17 +14,16 @@ import java.time.LocalDate;
 public class MaterialRequestDTO {
   @NotBlank(message = "Quality is required.")
   private String quality;
-  private Float size;
+  private Double size;
   private Long hitNumber;
-  private Integer quantity;
   private Long unitPrice;
-  private Float unitLength;
-  private Float unitWeight;
-  private Float totalLength;
-  private Float totalWeight;
-  private Float remainingLength;
-  private Float remainingWeight;
-  private LocalDate updatedAt;
+  private Double unitWeight;
+  private Double unitLength;
+  private Double totalWeight;
   private Warehouse warehouse;
+
+  public Double getTotalLength() {
+    return totalWeight * unitLength;
+  }
 
 }

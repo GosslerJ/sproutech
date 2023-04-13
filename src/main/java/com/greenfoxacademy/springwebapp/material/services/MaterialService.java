@@ -10,5 +10,7 @@ import java.util.Optional;
 public interface MaterialService {
   MaterialResponseDTO saveMaterial(MaterialRequestDTO materialRequestDTO);
 
-  List<Material> findMaterial(Optional<String> quality, Optional<Float> size);
+  List<Material> findMaterial(Optional<String> quality, Optional<Double> size);
+
+  Material transferMaterial(String quality, Double size, Integer quantity);
 }

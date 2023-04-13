@@ -21,21 +21,28 @@ public class Material {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
   private String quality;
-  private Float size;
+  private Double size; /** mm */
   private Long hitNumber;
-  private Integer quantity;
-  private Long unitPrice;
-  private Float unitLength;
-  private Float unitWeight;
-  private Float totalLength;
-  private Float totalWeight;
-  private Float remainingLength;
-  private Float remainingWeight;
+  private Long unitPrice; /** HUF/kg */
+  private Double unitWeight; /** kg/m */
+  private Double unitLength; /** m */
+  private Double totalWeight; /** kg */
+  private Double totalLength; /** m */
+  private Double remainingWeight; /** kg */
+  private Double remainingLength; /** m */
   private LocalDate updatedAt;
   @JsonIgnore
   @ManyToMany(mappedBy = "materialProducts")
   private List<Product> frog;
   @ManyToOne(fetch = FetchType.EAGER)
   private Warehouse warehouse;
+
+  public Integer getQuantity() {
+    return (int) Math.floor(totalWeight / (unitWeight * unitLength));
+  }
+
+//  public Double getTotalLength() {
+//    return totalWeight * unitLength;
+//  }
 
 }

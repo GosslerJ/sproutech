@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS orders (
 
 CREATE TABLE IF NOT EXISTS warehouses (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  name ENUM('external', 'internal', 'bag', 'delivered') NOT NULL,
+  name ENUM('external', 'internal', 'bag') NOT NULL,
   zip_code VARCHAR(255) NOT NULL,
   city VARCHAR(255) NOT NULL,
   address VARCHAR(255) NOT NULL
@@ -40,28 +40,30 @@ CREATE TABLE IF NOT EXISTS warehouses (
 CREATE TABLE IF NOT EXISTS materials (
   id INT PRIMARY KEY AUTO_INCREMENT,
   quality VARCHAR(255) NOT NULL,
-  size FLOAT NOT NULL,
+  size DOUBLE NOT NULL,
   hit_number BIGINT NOT NULL,
-  quantity INT NOT NULL,
   unit_price BIGINT,
-  unit_length FLOAT NOT NULL,
-  unit_weight FLOAT NOT NULL,
-  total_length FLOAT,
-  total_weight FLOAT,
-  remaining_length FLOAT,
-  remaining_weight FLOAT,
-  updated_at DATE,
-  warehouse_id INT,
-  FOREIGN KEY (warehouse_id) REFERENCES warehouses(id)
+  unit_weight DOUBLE NOT NULL,
+  unit_length DOUBLE NOT NULL,
+  total_weight DOUBLE,
+  remaining_weight DOUBLE,
+  total_length DOUBLE,
+  remaining_length DOUBLE,
+  updated_at DATE DEFAULT (CURRENT_DATE),
+  warehouse_id INT DEFAULT 1
 );
+
+ALTER TABLE materials ADD CONSTRAINT FK1 FOREIGN KEY (warehouse_id) REFERENCES warehouses(id);
 
 CREATE TABLE IF NOT EXISTS products (
   id INT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(255) NOT NULL,
-  size FLOAT NOT NULL,
-  length FLOAT NOT NULL,
+  size DOUBLE NOT NULL,
+  length DOUBLE NOT NULL,
   quality VARCHAR(255) NOT NULL,
-  quantity INT NOT NULL
+  quantity INT NOT NULL,
+  delivery_date DATE,
+  delivery_number BIGINT
 );
 
 CREATE TABLE IF NOT EXISTS material_product (

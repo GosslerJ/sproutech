@@ -11,12 +11,12 @@ public class MaterialResponseDTO {
 
   private Integer id;
   private String quality;
-  private Float size;
+  private Double size;
   private Long hitNumber;
   private Integer quantity;
-  private Float unitLength;
-  private Float unitWeight;
-  private Float totalLength;
-  private Float totalWeight;
+  private Double unitLength;
+  private Double unitWeight;
+  private Double totalLength;
+  private Double totalWeight;
 
 }

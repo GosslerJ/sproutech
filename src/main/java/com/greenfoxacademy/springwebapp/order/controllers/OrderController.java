@@ -2,7 +2,6 @@ package com.greenfoxacademy.springwebapp.order.controllers;
 
 import com.greenfoxacademy.springwebapp.common.exceptions.IdNotFoundException;
 import com.greenfoxacademy.springwebapp.common.models.StatusResponseDTO;
-import com.greenfoxacademy.springwebapp.material.models.MaterialResponseDTO;
 import com.greenfoxacademy.springwebapp.order.models.Order;
 import com.greenfoxacademy.springwebapp.order.models.OrderRequestDTO;
 import com.greenfoxacademy.springwebapp.order.models.OrderResponseDTO;
@@ -17,13 +16,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 
 @Tag(name = "Order", description = "Order related endpoints")
 @RestController
+@RequestMapping("/api")
 public class OrderController {
   private OrderService orderService;
 
@@ -51,7 +51,7 @@ public class OrderController {
     //            }
   }
 
-  @Operation(summary = "Delete Order", description = "Delete and existing order by id")
+  @Operation(summary = "Delete Order", description = "Delete an existing order by id")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "successful operation",
                   content = @Content(mediaType = "application/json",
@@ -71,16 +71,16 @@ public class OrderController {
     }
   }
 
-    @Operation(summary = "List close deadlines", description = "Get orders with close delivery deadlines")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = OrderResponseDTO.class))),
-    })
-    @GetMapping("/order")
-    public ResponseEntity<?> filterOrders(@Valid @RequestParam Integer days) {
-      List<Order> orders = orderService.filterOrdersByDeliveryDeadline(days);
-        return ResponseEntity.status(OK).body(orders);
-    }
+  @Operation(summary = "List close deadlines", description = "Get orders with close delivery deadlines")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "successful operation",
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = OrderResponseDTO.class))),
+  })
+  @GetMapping("/order")
+  public ResponseEntity<?> filterOrders(@Valid @RequestParam Integer days) {
+    List<Order> orders = orderService.filterOrdersByDeliveryDeadline(days);
+    return ResponseEntity.status(OK).body(orders);
+  }
 
 }

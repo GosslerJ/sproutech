@@ -10,9 +10,11 @@ public interface MaterialRepository extends CrudRepository<Material, Integer> {
 
   List<Material> findAll();
 
-  List<Material> findAllByQualityAndSize(String s, Float aFloat);
+  List<Material> findAllByQualityAndSize(String s, Double aDouble);
+
+  List<Material> findAllByQualityAndSizeAndWarehouseId(String s, Double aDouble, Integer i);
 
   List<Material> findAllByQuality(String s);
 
-  List<Material> findAllBySize(Float aFloat);
+  List<Material> findAllBySize(Double aDouble);
 }

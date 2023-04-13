@@ -1,12 +1,10 @@
 package com.greenfoxacademy.springwebapp.customer.controllers;
 
-import com.greenfoxacademy.springwebapp.customer.models.Customer;
+import com.greenfoxacademy.springwebapp.common.exceptions.AlreadyTakenNameException;
+import com.greenfoxacademy.springwebapp.common.models.StatusResponseDTO;
 import com.greenfoxacademy.springwebapp.customer.models.CustomerRequestDTO;
 import com.greenfoxacademy.springwebapp.customer.models.CustomerResponseDTO;
 import com.greenfoxacademy.springwebapp.customer.services.CustomerService;
-import com.greenfoxacademy.springwebapp.common.exceptions.AlreadyTakenNameException;
-import com.greenfoxacademy.springwebapp.common.models.StatusResponseDTO;
-import com.greenfoxacademy.springwebapp.material.models.MaterialResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,7 +21,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @Tag(name = "Customer Registration")
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("/api")
 public class CustomerController {
 
   private CustomerService customerService;
@@ -41,7 +39,7 @@ public class CustomerController {
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = StatusResponseDTO.class))),
   })
-  @PostMapping
+  @PostMapping("/customer")
   public ResponseEntity<?> register(@Valid @RequestBody CustomerRequestDTO customerRequestDTO) {
     try {
       CustomerResponseDTO createdCustomer = customerService.saveCustomer(customerRequestDTO);
@@ -61,9 +59,9 @@ public class CustomerController {
 //                          schema = @Schema(implementation = StatusResponseDTO.class))),
           //          TODO: scenarios?
   })
-  @GetMapping("/{id}")
-    public ResponseEntity<?> getCustomerById(@PathVariable Integer id) {
-        return ResponseEntity.ok(customerService.getCustomerById(id));
-    }
+  @GetMapping("/customer/{id}")
+  public ResponseEntity<?> getCustomerById(@PathVariable Integer id) {
+    return ResponseEntity.ok(customerService.getCustomerById(id));
+  }
 
 }

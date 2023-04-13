@@ -1,11 +1,11 @@
 package com.greenfoxacademy.springwebapp.admin.controllers;
 
-import com.greenfoxacademy.springwebapp.common.exceptions.AlreadyTakenNameException;
-import com.greenfoxacademy.springwebapp.common.models.StatusResponseDTO;
-import com.greenfoxacademy.springwebapp.common.exceptions.InvalidPasswordException;
 import com.greenfoxacademy.springwebapp.admin.models.AdminRequestDTO;
 import com.greenfoxacademy.springwebapp.admin.models.AdminResponseDTO;
 import com.greenfoxacademy.springwebapp.admin.services.AdminService;
+import com.greenfoxacademy.springwebapp.common.exceptions.AlreadyTakenNameException;
+import com.greenfoxacademy.springwebapp.common.exceptions.InvalidPasswordException;
+import com.greenfoxacademy.springwebapp.common.models.StatusResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

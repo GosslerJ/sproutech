@@ -9,7 +9,7 @@ apply plugin: 'jacoco'
 
 group = 'com.greenfoxacademy'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '8'
+sourceCompatibility = "1.9"
 
 configurations {
     compileOnly {
@@ -63,3 +63,4 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+targetCompatibility = JavaVersion.VERSION_1_9

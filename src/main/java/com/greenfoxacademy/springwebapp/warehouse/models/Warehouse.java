@@ -1,5 +1,6 @@
 package com.greenfoxacademy.springwebapp.warehouse.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.greenfoxacademy.springwebapp.material.models.Material;
 import lombok.*;
 
@@ -22,15 +23,8 @@ public class Warehouse {
   private String zipCode;
   private String city;
   private String address;
+  @JsonIgnore
   @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
   private List<Material> materialList;
 
-  public void setLocation(Location location) {
-    this.name = location;
-  }
 }
-
-  //@OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL)
-  //  private List<Building> buildingList;
-  //@ManyToOne(fetch = FetchType.EAGER)
-  //  private Kingdom kingdom;

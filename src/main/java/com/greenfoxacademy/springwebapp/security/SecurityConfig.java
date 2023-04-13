@@ -23,20 +23,20 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
     httpSecurity
-        .csrf().disable()
-        .httpBasic().disable()
-        .cors()
-        .and()
-        .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class)
-        .authorizeRequests()
-        .antMatchers("/**").permitAll() //TODO: update this
-        //        .antMatchers("/api", "/api/**").authenticated()
-        .and()
-        .exceptionHandling()
-        .authenticationEntryPoint(new AuthenticationExceptionHandler())
-        .and()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            .csrf().disable()
+            .httpBasic().disable()
+            .cors()
+            .and()
+            .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class)
+            .authorizeRequests()
+            .antMatchers("/admin", "/login", "/swagger-ui/**").permitAll()
+            .antMatchers("/api/**").authenticated()
+            .and()
+            .exceptionHandling()
+            .authenticationEntryPoint(new AuthenticationExceptionHandler())
+            .and()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     return httpSecurity.build();
   }
