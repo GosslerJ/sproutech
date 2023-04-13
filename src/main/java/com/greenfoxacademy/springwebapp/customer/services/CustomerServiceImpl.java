@@ -1,12 +1,12 @@
 package com.greenfoxacademy.springwebapp.customer.services;
 
+import com.greenfoxacademy.springwebapp.common.exceptions.AlreadyTakenNameException;
 import com.greenfoxacademy.springwebapp.common.exceptions.IdNotFoundException;
+import com.greenfoxacademy.springwebapp.common.exceptions.InvalidEmailException;
 import com.greenfoxacademy.springwebapp.customer.models.Customer;
 import com.greenfoxacademy.springwebapp.customer.models.CustomerRequestDTO;
 import com.greenfoxacademy.springwebapp.customer.models.CustomerResponseDTO;
 import com.greenfoxacademy.springwebapp.customer.repositories.CustomerRepository;
-import com.greenfoxacademy.springwebapp.common.exceptions.AlreadyTakenNameException;
-import com.greenfoxacademy.springwebapp.common.exceptions.InvalidEmailException;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
@@ -24,7 +24,8 @@ public class CustomerServiceImpl implements CustomerService {
   }
 
   @Override
-  public CustomerResponseDTO saveCustomer(CustomerRequestDTO reg) throws AlreadyTakenNameException, InvalidEmailException {
+  public CustomerResponseDTO saveCustomer(CustomerRequestDTO reg)
+          throws AlreadyTakenNameException, InvalidEmailException {
     validateRegistration(reg);
     Customer customer = Customer.builder()
             .name(reg.getName())

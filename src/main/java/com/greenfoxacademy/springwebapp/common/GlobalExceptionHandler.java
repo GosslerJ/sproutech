@@ -12,12 +12,12 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -69,13 +69,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   //    return ResponseEntity.status(403).body(response);
   //  }
 
-    @ApiResponse(responseCode = "404", description = "id not found",
-            content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
-    @ExceptionHandler(IdNotFoundException.class)
-    public ResponseEntity<ErrorDTO> handle(IdNotFoundException ex) {
-      ErrorDTO response = new ErrorDTO(ex.getMessage());
-      return ResponseEntity.status(404).body(response);
-    }
+  @ApiResponse(responseCode = "404", description = "id not found",
+          content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
+  @ExceptionHandler(IdNotFoundException.class)
+  public ResponseEntity<ErrorDTO> handle(IdNotFoundException ex) {
+    ErrorDTO response = new ErrorDTO(ex.getMessage());
+    return ResponseEntity.status(404).body(response);
+  }
 
   public List<String> collectErrorMessages(MethodArgumentNotValidException ex) {
     return ex.getBindingResult().getFieldErrors().stream()

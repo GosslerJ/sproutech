@@ -5,6 +5,7 @@ import com.greenfoxacademy.springwebapp.material.models.Material;
 import com.greenfoxacademy.springwebapp.material.models.MaterialRequestDTO;
 import com.greenfoxacademy.springwebapp.material.models.MaterialResponseDTO;
 import com.greenfoxacademy.springwebapp.material.repositories.MaterialRepository;
+import com.greenfoxacademy.springwebapp.product.models.Product;
 import com.greenfoxacademy.springwebapp.product.repositories.ProductRepository;
 import com.greenfoxacademy.springwebapp.warehouse.models.Warehouse;
 import com.greenfoxacademy.springwebapp.warehouse.repositories.WarehouseRepository;
@@ -19,10 +20,13 @@ import java.util.Optional;
 @Service
 public class MaterialServiceImpl implements MaterialService {
 
+  private ProductRepository productRepository;
   private MaterialRepository materialRepository;
   private WarehouseRepository warehouseRepository;
 
-  public MaterialServiceImpl(MaterialRepository materialRepository, WarehouseRepository warehouseRepository) {
+  public MaterialServiceImpl(ProductRepository productRepository,
+                             MaterialRepository materialRepository, WarehouseRepository warehouseRepository) {
+    this.productRepository = productRepository;
     this.materialRepository = materialRepository;
     this.warehouseRepository = warehouseRepository;
   }
@@ -82,33 +86,68 @@ public class MaterialServiceImpl implements MaterialService {
     if (materials.size() == 0) {
       return new Material();
     } else {
-      Material remainingMaterial = materials.get(0);
-      Double deltaLength = quantity * remainingMaterial.getUnitLength();
-      Double deltaWeight = deltaLength * remainingMaterial.getUnitWeight();
-      Double remainingLength = remainingMaterial.getRemainingLength() - deltaLength;
-      Double remainingWeight = remainingMaterial.getRemainingWeight() - deltaWeight;
-      remainingMaterial.setRemainingLength(remainingLength);
-      remainingMaterial.setRemainingWeight(remainingWeight);
-      remainingMaterial.setUpdatedAt(LocalDate.now());
-      materialRepository.save(remainingMaterial);
-      Warehouse internal = warehouseRepository.findById(2).orElseThrow(IdNotFoundException::new);
-      Material transferredMaterial = Material.builder()
-              .quality(remainingMaterial.getQuality())
-              .size(remainingMaterial.getSize())
-              .hitNumber(remainingMaterial.getHitNumber())
-              .unitPrice(remainingMaterial.getUnitPrice())
-              .unitWeight(remainingMaterial.getUnitWeight())
-              .unitLength(remainingMaterial.getUnitLength())
-              .totalWeight(deltaWeight)
-              .totalLength(deltaLength)
-              .remainingWeight(deltaWeight)
-              .remainingLength(deltaLength)
-              .updatedAt(LocalDate.now())
-              .warehouse(internal)
-              .build();
+      Material material = materials.get(0);
+      Double deltaLength = quantity * material.getUnitLength();
+      Double deltaWeight = deltaLength * material.getUnitWeight();
+      Double remainingLength = material.getRemainingLength() - deltaLength;
+      Double remainingWeight = material.getRemainingWeight() - deltaWeight;
+      updateMaterial(material, quantity, remainingLength, remainingWeight);
+      Material transferredMaterial = buildMaterial(material, deltaLength, deltaWeight);
       materialRepository.save(transferredMaterial);
       return transferredMaterial;
     }
-
   }
+
+  private void updateMaterial(Material remainingMaterial,
+                              Integer quantity, Double remainingLength, Double remainingWeight) {
+    remainingMaterial.setRemainingLength(remainingLength);
+    remainingMaterial.setRemainingWeight(remainingWeight);
+    remainingMaterial.setUpdatedAt(LocalDate.now());
+    materialRepository.save(remainingMaterial);
+  }
+
+  @Override
+  public Material assignMaterialToProduct(Integer productId, Integer materialId) {
+    Product product = productRepository.findById(productId).orElseThrow(IdNotFoundException::new);
+    Material material = materialRepository.findById(materialId).orElseThrow(IdNotFoundException::new);
+    Double assignedLength = product.getQuantity() * (product.getLength() / 1000 + 0.001);
+    Double assignedWeight = assignedLength * material.getUnitWeight();
+    material.setRemainingLength(assignedLength);
+    material.setRemainingWeight(assignedWeight);
+    material.setUpdatedAt(LocalDate.now());
+    List<Material> materials = new ArrayList<>();
+    materials.add(material);
+    product.setMaterialProducts(materials);
+    for (Material m : materials) {
+      materialRepository.save(m);
+    }
+    productRepository.save(product);
+    return addRemainingMaterial(material, assignedLength, assignedWeight);
+  }
+
+  private Material addRemainingMaterial(Material material, Double assignedLength, Double assignedWeight) {
+    Double newLength = material.getRemainingLength() - assignedLength;
+    Double newWeight = material.getRemainingWeight() - assignedWeight;
+    Material newMaterial = buildMaterial(material, newLength, newWeight);
+    return materialRepository.save(newMaterial);
+  }
+
+  private Material buildMaterial(Material material, Double deltaLength, Double deltaWeight) {
+    Warehouse internal = warehouseRepository.findById(2).orElseThrow(IdNotFoundException::new);
+    return Material.builder()
+            .quality(material.getQuality())
+            .size(material.getSize())
+            .hitNumber(material.getHitNumber())
+            .unitPrice(material.getUnitPrice())
+            .unitWeight(material.getUnitWeight())
+            .unitLength(material.getUnitLength())
+            .totalWeight(deltaWeight)
+            .totalLength(deltaLength)
+            .remainingWeight(deltaWeight)
+            .remainingLength(deltaLength)
+            .updatedAt(LocalDate.now())
+            .warehouse(internal)
+            .build();
+  }
+
 }

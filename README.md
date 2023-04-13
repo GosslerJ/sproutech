@@ -2,7 +2,7 @@
 
 ## Leírás
 
-### A Spring Boot projekt REST API-t biztosít egy csavarokat és anyákat gyártó vállalkozás működését segítve.
+### A Spring Boot projekt REST API-t biztosít egy csavarokat és anyákat gyártó vállalkozás adminisztrációjához.
 
 * A privát végpontokat regisztrációt és belépést követően érik el a felhasználók (admin), akik a következőket tudják elérni:
 * Új megrendelő (customer) felvétele, meglévő megrendelő megrendeléseinek lekérdezése.

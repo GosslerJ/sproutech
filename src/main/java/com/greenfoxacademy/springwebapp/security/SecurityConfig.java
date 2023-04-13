@@ -29,7 +29,7 @@ public class SecurityConfig {
             .and()
             .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class)
             .authorizeRequests()
-            .antMatchers("/admin", "/login", "/swagger-ui/**").permitAll()
+            .antMatchers("/**").permitAll()
             .antMatchers("/api/**").authenticated()
             .and()
             .exceptionHandling()

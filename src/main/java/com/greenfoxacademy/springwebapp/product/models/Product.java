@@ -3,7 +3,6 @@ package com.greenfoxacademy.springwebapp.product.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.greenfoxacademy.springwebapp.material.models.Material;
 import com.greenfoxacademy.springwebapp.order.models.Order;
-import com.greenfoxacademy.springwebapp.order.models.OrderStatus;
 import lombok.*;
 
 import javax.persistence.*;

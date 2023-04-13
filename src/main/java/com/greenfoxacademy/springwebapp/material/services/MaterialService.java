@@ -13,4 +13,6 @@ public interface MaterialService {
   List<Material> findMaterial(Optional<String> quality, Optional<Double> size);
 
   Material transferMaterial(String quality, Double size, Integer quantity);
+
+  Material assignMaterialToProduct(Integer productId, Integer materialId);
 }

@@ -21,15 +21,15 @@ public class Material {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
   private String quality;
-  private Double size; /** mm */
+  private Double size; // mm
   private Long hitNumber;
-  private Long unitPrice; /** HUF/kg */
-  private Double unitWeight; /** kg/m */
-  private Double unitLength; /** m */
-  private Double totalWeight; /** kg */
-  private Double totalLength; /** m */
-  private Double remainingWeight; /** kg */
-  private Double remainingLength; /** m */
+  private Long unitPrice; // HUF/kg
+  private Double unitWeight; // kg/m
+  private Double unitLength; // m
+  private Double totalWeight; // kg
+  private Double totalLength; // m
+  private Double remainingWeight; // kg
+  private Double remainingLength; // m
   private LocalDate updatedAt;
   @JsonIgnore
   @ManyToMany(mappedBy = "materialProducts")
@@ -40,9 +40,5 @@ public class Material {
   public Integer getQuantity() {
     return (int) Math.floor(totalWeight / (unitWeight * unitLength));
   }
-
-//  public Double getTotalLength() {
-//    return totalWeight * unitLength;
-//  }
 
 }

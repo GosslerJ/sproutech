@@ -36,19 +36,11 @@ public class OrderController {
           @ApiResponse(responseCode = "201", description = "successful operation",
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = OrderResponseDTO.class))),
-          //          @ApiResponse(responseCode = "409", description = "name is already taken",
-          //                  content = @Content(mediaType = "application/json",
-          //                          schema = @Schema(implementation = StatusResponseDTO.class))),
-          //          TODO: scenarios?
   })
   @PostMapping("/order")
   public ResponseEntity<?> order(@Valid @RequestBody OrderRequestDTO orderRequestDTO) {
-    //            try {
     OrderResponseDTO createdOrder = orderService.saveOrder(orderRequestDTO);
     return ResponseEntity.status(CREATED).body(createdOrder);
-    //                } catch (Exception e) {
-    //                return ResponseEntity.status(CONFLICT).body(new StatusResponseDTO("error", e.getMessage()));
-    //            }
   }
 
   @Operation(summary = "Delete Order", description = "Delete an existing order by id")
@@ -59,7 +51,6 @@ public class OrderController {
           @ApiResponse(responseCode = "404", description = "invalid id",
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = StatusResponseDTO.class))),
-          //          TODO: scenarios?
   })
   @DeleteMapping("/order/{id}")
   public ResponseEntity<?> deleteOrder(@Valid @PathVariable Integer id) {

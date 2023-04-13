@@ -4,17 +4,16 @@ import com.greenfoxacademy.springwebapp.material.models.Material;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface MaterialRepository extends CrudRepository<Material, Integer> {
 
   List<Material> findAll();
 
-  List<Material> findAllByQualityAndSize(String s, Double aDouble);
+  List<Material> findAllByQualityAndSize(String quality, Double size);
 
-  List<Material> findAllByQualityAndSizeAndWarehouseId(String s, Double aDouble, Integer i);
+  List<Material> findAllByQualityAndSizeAndWarehouseId(String quality, Double size, Integer id);
 
-  List<Material> findAllByQuality(String s);
+  List<Material> findAllByQuality(String quality);
 
-  List<Material> findAllBySize(Double aDouble);
+  List<Material> findAllBySize(Double size);
 }

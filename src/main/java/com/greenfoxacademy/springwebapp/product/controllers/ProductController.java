@@ -1,8 +1,8 @@
 package com.greenfoxacademy.springwebapp.product.controllers;
 
 import com.greenfoxacademy.springwebapp.material.models.Material;
+import com.greenfoxacademy.springwebapp.material.services.MaterialService;
 import com.greenfoxacademy.springwebapp.product.models.Product;
-import com.greenfoxacademy.springwebapp.product.services.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,11 +22,12 @@ import static org.springframework.http.HttpStatus.OK;
 @RequestMapping("/api")
 public class ProductController {
 
-  private ProductService productService;
+  private MaterialService materialService;
 
-  public ProductController(ProductService productService) {
-    this.productService = productService;
+  public ProductController(MaterialService materialService) {
+    this.materialService = materialService;
   }
+
 
   @Operation(summary = "Organize production", description = "Put material into production")
   @ApiResponses(value = {
@@ -36,7 +37,7 @@ public class ProductController {
   })
   @PutMapping("/production")
   public ResponseEntity<?> production(@RequestParam Integer productId, @RequestParam Integer materialId) {
-    Material material = productService.assignMaterialToProduct(productId, materialId);
+    Material material = materialService.assignMaterialToProduct(productId, materialId);
     return ResponseEntity.status(OK).body(material);
   }
 

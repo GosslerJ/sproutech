@@ -12,6 +12,7 @@ public class ProductListDTO {
   public ProductListDTO() {
     products = new ArrayList<>();
   }
+
   public ProductListDTO(List<ProductRequestDTO> products) {
     this.products = products;
   }

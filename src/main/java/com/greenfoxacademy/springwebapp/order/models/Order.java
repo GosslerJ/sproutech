@@ -1,7 +1,6 @@
 package com.greenfoxacademy.springwebapp.order.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.greenfoxacademy.springwebapp.customer.models.Customer;
 import com.greenfoxacademy.springwebapp.product.models.Product;
 import lombok.*;

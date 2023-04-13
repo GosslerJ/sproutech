@@ -6,7 +6,6 @@ import com.greenfoxacademy.springwebapp.customer.repositories.CustomerRepository
 import com.greenfoxacademy.springwebapp.order.models.Order;
 import com.greenfoxacademy.springwebapp.order.models.OrderRequestDTO;
 import com.greenfoxacademy.springwebapp.order.models.OrderResponseDTO;
-import com.greenfoxacademy.springwebapp.order.models.OrderStatus;
 import com.greenfoxacademy.springwebapp.order.repositories.OrderRepository;
 import com.greenfoxacademy.springwebapp.product.models.Product;
 import com.greenfoxacademy.springwebapp.product.repositories.ProductRepository;

@@ -1,14 +1,15 @@
 package com.greenfoxacademy.springwebapp.login.service;
 
+import com.greenfoxacademy.springwebapp.admin.models.Admin;
+import com.greenfoxacademy.springwebapp.admin.services.AdminService;
 import com.greenfoxacademy.springwebapp.common.exceptions.LoginFailureException;
 import com.greenfoxacademy.springwebapp.login.models.LoginDTO;
 import com.greenfoxacademy.springwebapp.login.models.TokenResponseDTO;
-import com.greenfoxacademy.springwebapp.admin.models.Admin;
-import com.greenfoxacademy.springwebapp.admin.services.AdminService;
 import com.greenfoxacademy.springwebapp.security.JwtSystemKeys;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+
 import java.util.Date;
 import java.util.Optional;
 
@@ -35,10 +36,10 @@ public class LoginServiceImpl implements LoginService {
   @Override
   public String createToken(Admin admin) {
     String jws = Jwts.builder()
-          .claim("username", admin.getUsername())
-          .claim("userId", admin.getId())
-          .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 1))
-          .signWith(jwtSystemKeys.getKey()).compact();
+            .claim("username", admin.getUsername())
+            .claim("userId", admin.getId())
+            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 1))
+            .signWith(jwtSystemKeys.getKey()).compact();
     return jws;
   }
 

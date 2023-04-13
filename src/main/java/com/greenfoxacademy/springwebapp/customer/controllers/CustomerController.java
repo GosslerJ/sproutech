@@ -54,10 +54,6 @@ public class CustomerController {
           @ApiResponse(responseCode = "201", description = "successful operation",
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = CustomerResponseDTO.class))),
-//          @ApiResponse(responseCode = "404", description = "invalid id",
-//                  content = @Content(mediaType = "application/json",
-//                          schema = @Schema(implementation = StatusResponseDTO.class))),
-          //          TODO: scenarios?
   })
   @GetMapping("/customer/{id}")
   public ResponseEntity<?> getCustomerById(@PathVariable Integer id) {
