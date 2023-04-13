@@ -1,5 +1,17 @@
 # Csavarokat és anyákat gyártó vállalkozás
 
+## Leírás
+
+### A Spring Boot projekt REST API-t biztosít egy csavarokat és anyákat gyártó vállalkozás működését segítve.
+
+* A privát végpontokat regisztrációt és belépést követően érik el a felhasználók (admin), akik a következőket tudják elérni:
+* Új megrendelő (customer) felvétele, meglévő megrendelő megrendeléseinek lekérdezése.
+* Új megrendelés (order) felvétele, meglévő megrendelés törlése.
+* Közeli szállítási határidejű megrendelések lekérdezése.
+* Új alapanyag (material) felvétele, meglévő alapanyagok lekérdezése anyagminőség és méret (átmérő) szerint.
+* Alapanyagok átkönyvelése külső raktárból (warehouse) belső raktárba.
+* Alapanyag megrendelt termékhez (product) való hozzárendelése, maradék alapanyag készletbe vétele.
+
 ## Entitás-kapcsolati diagram
 
 ![uml_digram_white](src/main/resources/static/ERDiagram.png)
@@ -10,31 +22,22 @@
 * Spring Boot
 * Spring Data JPA
 * Spring Security
+* JUnit
 * H2
 * Flyway
 * MySQL
 * Docker
 * Swagger
 
-|        |Building time   ||Building cost       ||HP     |Effect                                                         |
-|--------|-------|---------|--------|------------|-------|---------------------------------------------------------------|
-|        |Level 1|Level n  |Level 1 |Level n     |Level n|Level n                                                        |
-|Townhall|2:00   |n * 1:00 |200 gold|n * 200 gold|n * 200|can build level n buildings                                    |
-|Farm    |1:00   |n * 1:00 |100 gold|n * 100 gold|n * 100|+(n * 5) + 5 food / minute                                     |
-|Mine    |1:00   |n * 1:00 |100 gold|n * 100 gold|n * 100|+(n * 5) + 5 gold / minute                                     |
-|Academy |1:30   |n * 1:00 |150 gold|n * 100 gold|n * 150|can build level n troops                                       |
-|Troop   |0:30   |n * 0:30 |25 gold |n * 25 gold |n * 20 |-(n * 5) food / minute<br>+(n * 10) attack<br>+(n * 5) defense |
-
-
 ## Szükséges technológiák
 * Docker
 * MySQL
 
 ## Futtatás
-* .env és .env.docker fájlok beállítása a gyökérkönyvtárban
+* .env és .env.docker fájlok beállítása a példafájloknak megfelelően a project főkönyvtárában
 * Adatbázis létrehozása a MySQL-ben
-* A `docker compose up` parancsot futtatása a terminálban.
-* Kéréseket küldése az API specifikációnak megfelelően
+* A `docker compose up` parancs futtatása a terminálban
+* Lekérdezések küldése az API specifikációnak megfelelően
 
 ## Link
 * [API Spec](http://localhost:8080/swagger-ui/index.html)
