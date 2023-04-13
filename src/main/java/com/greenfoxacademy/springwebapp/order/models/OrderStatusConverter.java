@@ -16,4 +16,5 @@ public class OrderStatusConverter implements AttributeConverter<OrderStatus, Str
   public OrderStatus convertToEntityAttribute(String dbValue) {
     return OrderStatus.fromDbValue(dbValue);
   }
+
 }

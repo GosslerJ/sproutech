@@ -7,21 +7,19 @@ import com.greenfoxacademy.springwebapp.customer.models.Customer;
 import com.greenfoxacademy.springwebapp.customer.models.CustomerRequestDTO;
 import com.greenfoxacademy.springwebapp.customer.models.CustomerResponseDTO;
 import com.greenfoxacademy.springwebapp.customer.repositories.CustomerRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
 
+@AllArgsConstructor
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
   public static final String REGEX =
           "^[\\\\w!#$%&'*+/=?`{|}~^-]+(?:\\\\.[\\\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,6}$\n";
 
-  private CustomerRepository customerRepository; // TODO: final?
-
-  public CustomerServiceImpl(CustomerRepository customerRepository) {
-    this.customerRepository = customerRepository;
-  }
+  private CustomerRepository customerRepository;
 
   @Override
   public CustomerResponseDTO saveCustomer(CustomerRequestDTO reg)
@@ -42,12 +40,11 @@ public class CustomerServiceImpl implements CustomerService {
     return new CustomerResponseDTO(customer.getId(), customer.getName());
   }
 
-
-  private void validateRegistration(CustomerRequestDTO reg) throws AlreadyTakenNameException, InvalidEmailException {
+  @Override
+  public void validateRegistration(CustomerRequestDTO reg) throws AlreadyTakenNameException, InvalidEmailException {
     if (customerRepository.findByName(reg.getName()).isPresent())
       throw new AlreadyTakenNameException("Customer name is already taken.");
     if (reg.getEmail() == null || reg.getEmail().trim().length() < 3 || validateEmail(reg.getEmail(), REGEX))
-      // TODO: email regex
       throw new InvalidEmailException("Email format is not valid.");
   }
 

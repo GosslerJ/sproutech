@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class CustomerRequestDTO {
 
-  @NotBlank(message = "Name is required.") // TODO: add validation
+  @NotBlank(message = "Name is required.")
   private String name;
   @NotBlank(message = "Contact is required.")
   private String contactPerson;

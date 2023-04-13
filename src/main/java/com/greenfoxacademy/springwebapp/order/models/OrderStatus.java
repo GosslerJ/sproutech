@@ -14,4 +14,5 @@ public enum OrderStatus {
   public static OrderStatus fromDbValue(String dbValue) {
     return OrderStatus.valueOf(dbValue.toUpperCase());
   }
+
 }

@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Builder // TODO: tests can be different see: https://www.baeldung.com/lombok-builder-default-value
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor

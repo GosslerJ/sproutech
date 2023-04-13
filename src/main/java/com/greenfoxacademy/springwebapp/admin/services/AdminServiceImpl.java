@@ -1,24 +1,22 @@
 package com.greenfoxacademy.springwebapp.admin.services;
 
 import com.greenfoxacademy.springwebapp.admin.models.Admin;
-import com.greenfoxacademy.springwebapp.common.exceptions.AlreadyTakenNameException;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import com.greenfoxacademy.springwebapp.admin.repositories.AdminRepository;
-import com.greenfoxacademy.springwebapp.common.exceptions.InvalidPasswordException;
 import com.greenfoxacademy.springwebapp.admin.models.AdminRequestDTO;
 import com.greenfoxacademy.springwebapp.admin.models.AdminResponseDTO;
+import com.greenfoxacademy.springwebapp.admin.repositories.AdminRepository;
+import com.greenfoxacademy.springwebapp.common.exceptions.AlreadyTakenNameException;
+import com.greenfoxacademy.springwebapp.common.exceptions.InvalidPasswordException;
+import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
   private final AdminRepository adminRepository;
-
-  public AdminServiceImpl(AdminRepository adminRepository) {
-    this.adminRepository = adminRepository;
-  }
 
   @Override
   public AdminResponseDTO saveAdmin(AdminRequestDTO reg)
@@ -43,6 +41,7 @@ public class AdminServiceImpl implements AdminService {
     return BCrypt.hashpw(password, BCrypt.gensalt());
   }
 
+  @Override
   public AdminResponseDTO convert(Admin admin) {
     if (admin == null) return null;
     AdminResponseDTO responseDTO = new AdminResponseDTO();

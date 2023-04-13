@@ -15,4 +15,5 @@ public class LocationConverter implements AttributeConverter<Location, String> {
   public Location convertToEntityAttribute(String dbValue) {
     return Location.fromDbValue(dbValue);
   }
+
 }

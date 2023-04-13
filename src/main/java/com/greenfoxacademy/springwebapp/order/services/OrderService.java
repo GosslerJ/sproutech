@@ -12,4 +12,5 @@ public interface OrderService {
   void deleteOrderById(Integer id);
 
   List<Order> filterOrdersByDeliveryDeadline(Integer days);
+
 }

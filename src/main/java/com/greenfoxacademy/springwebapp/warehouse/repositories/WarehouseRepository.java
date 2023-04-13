@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface WarehouseRepository extends CrudRepository<Warehouse, Integer> {
   @Override
   Optional<Warehouse> findById(Integer integer);
+
 }

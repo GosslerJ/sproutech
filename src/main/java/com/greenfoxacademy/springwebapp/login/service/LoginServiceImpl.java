@@ -7,22 +7,19 @@ import com.greenfoxacademy.springwebapp.login.models.LoginDTO;
 import com.greenfoxacademy.springwebapp.login.models.TokenResponseDTO;
 import com.greenfoxacademy.springwebapp.security.JwtSystemKeys;
 import io.jsonwebtoken.Jwts;
+import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Optional;
 
+@AllArgsConstructor
 @Service
 public class LoginServiceImpl implements LoginService {
 
   private AdminService adminService;
   private JwtSystemKeys jwtSystemKeys;
-
-  public LoginServiceImpl(AdminService adminService, JwtSystemKeys jwtSystemKeys) {
-    this.adminService = adminService;
-    this.jwtSystemKeys = jwtSystemKeys;
-  }
 
   @Override
   public TokenResponseDTO login(LoginDTO loginDTO) throws LoginFailureException {

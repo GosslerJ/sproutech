@@ -13,4 +13,5 @@ public enum Location {
   public static Location fromDbValue(String dbValue) {
     return Location.valueOf(dbValue.toUpperCase());
   }
+
 }

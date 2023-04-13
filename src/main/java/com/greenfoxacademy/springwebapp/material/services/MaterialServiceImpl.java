@@ -9,6 +9,7 @@ import com.greenfoxacademy.springwebapp.product.models.Product;
 import com.greenfoxacademy.springwebapp.product.repositories.ProductRepository;
 import com.greenfoxacademy.springwebapp.warehouse.models.Warehouse;
 import com.greenfoxacademy.springwebapp.warehouse.repositories.WarehouseRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,19 +18,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 @Service
 public class MaterialServiceImpl implements MaterialService {
 
   private ProductRepository productRepository;
   private MaterialRepository materialRepository;
   private WarehouseRepository warehouseRepository;
-
-  public MaterialServiceImpl(ProductRepository productRepository,
-                             MaterialRepository materialRepository, WarehouseRepository warehouseRepository) {
-    this.productRepository = productRepository;
-    this.materialRepository = materialRepository;
-    this.warehouseRepository = warehouseRepository;
-  }
 
   @Override
   public MaterialResponseDTO saveMaterial(MaterialRequestDTO dto) {
@@ -52,6 +47,7 @@ public class MaterialServiceImpl implements MaterialService {
     return convert(material);
   }
 
+  @Override
   public MaterialResponseDTO convert(Material material) {
     if (material == null) return null;
     MaterialResponseDTO responseDTO = new MaterialResponseDTO();
@@ -98,7 +94,8 @@ public class MaterialServiceImpl implements MaterialService {
     }
   }
 
-  private void updateMaterial(Material remainingMaterial,
+  @Override
+  public void updateMaterial(Material remainingMaterial,
                               Integer quantity, Double remainingLength, Double remainingWeight) {
     remainingMaterial.setRemainingLength(remainingLength);
     remainingMaterial.setRemainingWeight(remainingWeight);
@@ -125,14 +122,16 @@ public class MaterialServiceImpl implements MaterialService {
     return addRemainingMaterial(material, assignedLength, assignedWeight);
   }
 
-  private Material addRemainingMaterial(Material material, Double assignedLength, Double assignedWeight) {
+  @Override
+  public Material addRemainingMaterial(Material material, Double assignedLength, Double assignedWeight) {
     Double newLength = material.getRemainingLength() - assignedLength;
     Double newWeight = material.getRemainingWeight() - assignedWeight;
     Material newMaterial = buildMaterial(material, newLength, newWeight);
     return materialRepository.save(newMaterial);
   }
 
-  private Material buildMaterial(Material material, Double deltaLength, Double deltaWeight) {
+  @Override
+  public Material buildMaterial(Material material, Double deltaLength, Double deltaWeight) {
     Warehouse internal = warehouseRepository.findById(2).orElseThrow(IdNotFoundException::new);
     return Material.builder()
             .quality(material.getQuality())

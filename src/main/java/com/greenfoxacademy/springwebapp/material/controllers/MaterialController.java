@@ -11,10 +11,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,14 +22,11 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 @Tag(name = "Raw material Registration")
-@RestController
+@AllArgsConstructor
 @RequestMapping("/api")
+@RestController
 public class MaterialController {
   private MaterialService materialService;
-
-  public MaterialController(MaterialService materialService) {
-    this.materialService = materialService;
-  }
 
   @Operation(summary = "Raw material Registration", description = "Add a new raw material")
   @ApiResponses(value = {
@@ -38,14 +35,14 @@ public class MaterialController {
                           schema = @Schema(implementation = MaterialResponseDTO.class))),
   })
   @PostMapping("/material")
-  public ResponseEntity<?> register(@Valid @RequestBody MaterialRequestDTO materialRequestDTO) {
+  public ResponseEntity<?> register(@RequestBody MaterialRequestDTO materialRequestDTO) {
     MaterialResponseDTO createdMaterial = materialService.saveMaterial(materialRequestDTO);
     return ResponseEntity.status(CREATED).body(createdMaterial);
   }
 
   @Operation(summary = "Raw material stock", description = "Get raw material by quality and size")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "201", description = "successful operation",
+          @ApiResponse(responseCode = "200", description = "successful operation",
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = MaterialResponseDTO.class))),
   })

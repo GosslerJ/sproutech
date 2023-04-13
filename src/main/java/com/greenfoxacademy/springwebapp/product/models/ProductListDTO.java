@@ -16,4 +16,5 @@ public class ProductListDTO {
   public ProductListDTO(List<ProductRequestDTO> products) {
     this.products = products;
   }
+
 }

@@ -41,4 +41,5 @@ public class Product {
           inverseJoinColumns = @JoinColumn(name = "material_id")
   )
   private List<Material> materialProducts;
+
 }

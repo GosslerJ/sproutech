@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,14 +23,11 @@ import javax.validation.Valid;
 import static org.springframework.http.HttpStatus.*;
 
 @Tag(name = "Admin Registration")
+@AllArgsConstructor
 @RestController
 public class AdminController {
 
   private AdminService adminService;
-
-  public AdminController(AdminService adminService) {
-    this.adminService = adminService;
-  }
 
   @Operation(summary = "Admin Registration", description = "Register a new admin")
   @ApiResponses(value = {

@@ -11,24 +11,20 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @Tag(name = "Customer Registration")
-@RestController
 @RequestMapping("/api")
+@AllArgsConstructor
+@RestController
 public class CustomerController {
 
   private CustomerService customerService;
-
-  public CustomerController(CustomerService customerService) {
-    this.customerService = customerService;
-  }
 
   @Operation(summary = "Customer Registration", description = "Register a new customer")
   @ApiResponses(value = {
@@ -40,7 +36,7 @@ public class CustomerController {
                           schema = @Schema(implementation = StatusResponseDTO.class))),
   })
   @PostMapping("/customer")
-  public ResponseEntity<?> register(@Valid @RequestBody CustomerRequestDTO customerRequestDTO) {
+  public ResponseEntity<?> register(@RequestBody CustomerRequestDTO customerRequestDTO) {
     try {
       CustomerResponseDTO createdCustomer = customerService.saveCustomer(customerRequestDTO);
       return ResponseEntity.status(CREATED).body(createdCustomer);
@@ -51,7 +47,7 @@ public class CustomerController {
 
   @Operation(summary = "Delete Order", description = "Delete and existing order by id")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "201", description = "successful operation",
+          @ApiResponse(responseCode = "200", description = "successful operation",
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = CustomerResponseDTO.class))),
   })

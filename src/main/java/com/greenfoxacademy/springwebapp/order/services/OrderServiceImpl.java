@@ -9,28 +9,24 @@ import com.greenfoxacademy.springwebapp.order.models.OrderResponseDTO;
 import com.greenfoxacademy.springwebapp.order.repositories.OrderRepository;
 import com.greenfoxacademy.springwebapp.product.models.Product;
 import com.greenfoxacademy.springwebapp.product.repositories.ProductRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.greenfoxacademy.springwebapp.order.models.OrderStatus.*;
 import static com.greenfoxacademy.springwebapp.order.models.OrderStatus.NEW;
 
+@AllArgsConstructor
 @Service
 public class OrderServiceImpl implements OrderService {
 
   private CustomerRepository customerRepository;
   private OrderRepository orderRepository;
   private ProductRepository productRepository;
-
-  public OrderServiceImpl(CustomerRepository customerRepository,
-                          OrderRepository orderRepository, ProductRepository productRepository) {
-    this.customerRepository = customerRepository;
-    this.orderRepository = orderRepository;
-    this.productRepository = productRepository;
-  }
 
   @Override
   public OrderResponseDTO saveOrder(OrderRequestDTO dto) {
@@ -62,7 +58,8 @@ public class OrderServiceImpl implements OrderService {
       return (List<Order>) orderRepository.findAll();
     } else {
       LocalDate date = LocalDate.now().plusDays(days);
-      return orderRepository.findAllByDeliveryDeadlineLessThanEqualAndStatusIn(date, List.of(NEW, IN_PROGRESS));
+      return orderRepository.findAllByDeliveryDeadlineLessThanEqualAndStatusIn(date, Arrays.asList(NEW, IN_PROGRESS));
     }
   }
+
 }
