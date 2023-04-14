@@ -30,6 +30,26 @@ public class CustomerServiceImplTest {
     customerService = new CustomerServiceImpl(customerRepository);
   }
 
+  //  @Test
+  //  public void saveCustomer_ValidInput_CustomerSaved() throws AlreadyTakenNameException, InvalidEmailException {
+  //    // arrange
+  //    CustomerRequestDTO requestDTO = new CustomerRequestDTO();
+  //    requestDTO.setName("John Doe");
+  //    requestDTO.setEmail("johndoe@example.com");
+  //    requestDTO.setPhoneNumber("+1 555-1234");
+  //    requestDTO.setAddress("123 Main St");
+  //    requestDTO.setCity("Anytown");
+  //    requestDTO.setZipCode("12345");
+  //    requestDTO.setCountry("US");
+  //
+  //    // act
+  //    CustomerResponseDTO responseDTO = customerService.saveCustomer(requestDTO);
+  //
+  //    // assert
+  //    verify(customerRepository, times(1)).save(any(Customer.class));
+  //    Assertions.assertEquals(requestDTO.getName(), responseDTO.getName());
+  //  }
+
   @Test
   public void saveCustomer_DuplicateName_ThrowsAlreadyTakenNameException() {
     CustomerRequestDTO requestDTO1 = new CustomerRequestDTO();
@@ -47,6 +67,35 @@ public class CustomerServiceImplTest {
       customerService.saveCustomer(requestDTO2);
     });
   }
+
+  //  @Test
+  //  public void saveCustomer_InvalidEmail_ThrowsInvalidEmailException() {
+  //    // arrange
+  //    CustomerRequestDTO requestDTO = new CustomerRequestDTO();
+  //    requestDTO.setName("John Doe");
+  //    requestDTO.setEmail("johndoe@.com"); // invalid email address
+  //    requestDTO.setPhoneNumber("+1 555-1234");
+  //    requestDTO.setAddress("123 Main St");
+  //    requestDTO.setCity("Anytown");
+  //    requestDTO.setZipCode("12345");
+  //    requestDTO.setCountry("US");
+  //
+  //    // act/assert
+  //    Assertions.assertThrows(InvalidEmailException.class, () -> {
+  //      customerService.saveCustomer(requestDTO);
+  //    });
+  //  }
+
+  //  @Test
+  //  public void saveCustomer_ValidInput_ReturnsCorrectResponseDTO()
+  //          throws AlreadyTakenNameException, InvalidEmailException {
+  //    // arrange
+  //    CustomerRequestDTO requestDTO = new CustomerRequestDTO();
+  //    requestDTO.setName("John Doe");
+  //    requestDTO.setEmail("johndoe@example.com");
+  //    requestDTO.setPhoneNumber("+1 555-1234");
+  //    requestDTO.setAddress("123 Main St");
+  //  }
 
   @Test
   void validateRegistration_ValidRequest_DoesNotThrowException() {
@@ -96,6 +145,39 @@ public class CustomerServiceImplTest {
       customerService.validateRegistration(requestDTO);
     });
   }
+
+  @Test
+  void validateRegistration_InvalidEmail_ThrowsInvalidEmailException() {
+    // arrange
+    CustomerRequestDTO requestDTO = new CustomerRequestDTO();
+    requestDTO.setName("John Doe");
+    requestDTO.setEmail("invalid_email");
+
+    // mock repository to return empty Optional to simulate no existing customer with same name
+    doReturn(Optional.empty()).when(customerRepository).findByName(requestDTO.getName());
+
+    // act/assert
+    assertThrows(InvalidEmailException.class, () -> {
+      customerService.validateRegistration(requestDTO);
+    });
+  }
+
+  @Test
+  void validateRegistration_ShortEmail_ThrowsInvalidEmailException() {
+    // arrange
+    CustomerRequestDTO requestDTO = new CustomerRequestDTO();
+    requestDTO.setName("John Doe");
+    requestDTO.setEmail("a@b.c");
+
+    // mock repository to return empty Optional to simulate no existing customer with same name
+    doReturn(Optional.empty()).when(customerRepository).findByName(requestDTO.getName());
+
+    // act/assert
+    assertThrows(InvalidEmailException.class, () -> {
+      customerService.validateRegistration(requestDTO);
+    });
+  }
+
 
   @Test
   public void validateEmail_ValidEmail_ReturnsTrue() {
