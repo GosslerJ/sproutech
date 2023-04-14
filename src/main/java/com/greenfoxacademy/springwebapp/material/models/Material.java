@@ -26,9 +26,9 @@ public class Material {
   private Long unitPrice; // HUF/kg
   private Double unitWeight; // kg/m
   private Double unitLength; // m
-  private Double totalWeight; // kg
-  private Double totalLength; // m
+  private Double originalWeight; // kg
   private Double remainingWeight; // kg
+  private Double originalLength; // m
   private Double remainingLength; // m
   private LocalDate updatedAt;
   @JsonIgnore
@@ -38,7 +38,7 @@ public class Material {
   private Warehouse warehouse;
 
   public Integer getQuantity() {
-    return (int) Math.floor(totalWeight / (unitWeight * unitLength));
+    return (int) Math.floor(originalWeight / (unitWeight * unitLength));
   }
 
 }

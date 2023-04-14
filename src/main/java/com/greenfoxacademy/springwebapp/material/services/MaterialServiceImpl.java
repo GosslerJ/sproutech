@@ -1,6 +1,9 @@
 package com.greenfoxacademy.springwebapp.material.services;
 
+import com.greenfoxacademy.springwebapp.common.exceptions.AlreadyProducedException;
 import com.greenfoxacademy.springwebapp.common.exceptions.IdNotFoundException;
+import com.greenfoxacademy.springwebapp.common.exceptions.NotEnoughMaterialException;
+import com.greenfoxacademy.springwebapp.common.exceptions.QualityDifferenceException;
 import com.greenfoxacademy.springwebapp.material.models.Material;
 import com.greenfoxacademy.springwebapp.material.models.MaterialRequestDTO;
 import com.greenfoxacademy.springwebapp.material.models.MaterialResponseDTO;
@@ -17,6 +20,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+
+import static com.greenfoxacademy.springwebapp.product.models.ProductStatus.DELIVERED;
+import static com.greenfoxacademy.springwebapp.product.models.ProductStatus.READY;
 
 @AllArgsConstructor
 @Service
@@ -36,10 +42,10 @@ public class MaterialServiceImpl implements MaterialService {
             .unitPrice(dto.getUnitPrice())
             .unitWeight(dto.getUnitWeight())
             .unitLength(dto.getUnitLength())
-            .totalWeight(dto.getTotalWeight())
-            .totalLength(dto.getTotalLength())
-            .remainingWeight(dto.getTotalWeight())
-            .remainingLength(dto.getTotalLength())
+            .originalWeight(dto.getOriginalWeight())
+            .originalLength(dto.getOriginalLength())
+            .remainingWeight(dto.getOriginalWeight())
+            .remainingLength(dto.getOriginalLength())
             .updatedAt(LocalDate.now())
             .warehouse(external)
             .build();
@@ -58,8 +64,8 @@ public class MaterialServiceImpl implements MaterialService {
     responseDTO.setQuantity(material.getQuantity());
     responseDTO.setUnitLength(material.getUnitLength());
     responseDTO.setUnitWeight(material.getUnitWeight());
-    responseDTO.setTotalLength(material.getTotalLength());
-    responseDTO.setTotalWeight(material.getTotalWeight());
+    responseDTO.setOriginalLength(material.getOriginalLength());
+    responseDTO.setOriginalWeight(material.getOriginalWeight());
     return responseDTO;
   }
 
@@ -78,12 +84,11 @@ public class MaterialServiceImpl implements MaterialService {
   @Override
   public Material transferMaterial(String quality, Double size, Integer quantity) {
     List<Material> materials = materialRepository.findAllByQualityAndSizeAndWarehouseId(quality, size, 1);
-    materials.sort(Comparator.comparing(Material::getTotalLength));
-    if (materials.size() == 0) {
-      return new Material();
-    } else {
-      Material material = materials.get(0);
-      Double deltaLength = quantity * material.getUnitLength();
+    materials.sort(Comparator.comparing(Material::getOriginalLength));
+    if (materials.size() == 0) return new Material();
+    Material material = materials.get(0);
+    Double deltaLength = quantity * material.getUnitLength();
+    if (deltaLength <= material.getOriginalLength()) {
       Double deltaWeight = deltaLength * material.getUnitWeight();
       Double remainingLength = material.getRemainingLength() - deltaLength;
       Double remainingWeight = material.getRemainingWeight() - deltaWeight;
@@ -91,12 +96,14 @@ public class MaterialServiceImpl implements MaterialService {
       Material transferredMaterial = buildMaterial(material, deltaLength, deltaWeight);
       materialRepository.save(transferredMaterial);
       return transferredMaterial;
+    } else {
+      throw new NotEnoughMaterialException();
     }
   }
 
   @Override
   public void updateMaterial(Material remainingMaterial,
-                              Integer quantity, Double remainingLength, Double remainingWeight) {
+                             Integer quantity, Double remainingLength, Double remainingWeight) {
     remainingMaterial.setRemainingLength(remainingLength);
     remainingMaterial.setRemainingWeight(remainingWeight);
     remainingMaterial.setUpdatedAt(LocalDate.now());
@@ -107,7 +114,7 @@ public class MaterialServiceImpl implements MaterialService {
   public Material assignMaterialToProduct(Integer productId, Integer materialId) {
     Product product = productRepository.findById(productId).orElseThrow(IdNotFoundException::new);
     Material material = materialRepository.findById(materialId).orElseThrow(IdNotFoundException::new);
-    Double assignedLength = product.getQuantity() * (product.getLength() / 1000 + 0.001);
+    Double assignedLength = requestValidation(product, material);
     Double assignedWeight = assignedLength * material.getUnitWeight();
     material.setRemainingLength(assignedLength);
     material.setRemainingWeight(assignedWeight);
@@ -115,6 +122,7 @@ public class MaterialServiceImpl implements MaterialService {
     List<Material> materials = new ArrayList<>();
     materials.add(material);
     product.setMaterialProducts(materials);
+    product.setStatus(READY);
     for (Material m : materials) {
       materialRepository.save(m);
     }
@@ -122,10 +130,24 @@ public class MaterialServiceImpl implements MaterialService {
     return addRemainingMaterial(material, assignedLength, assignedWeight);
   }
 
+  public Double requestValidation(Product product, Material material) {
+    if (product.getStatus() == READY || product.getStatus() == DELIVERED) {
+      throw new AlreadyProducedException();
+    }
+    if (product.getQuality() != material.getQuality()) {
+      throw new QualityDifferenceException();
+    }
+    Double assignedLength = product.getQuantity() * (product.getLength() / 1000 + 0.001);
+    if (assignedLength > material.getRemainingLength()) {
+      throw new NotEnoughMaterialException();
+    }
+    return assignedLength;
+  }
+
   @Override
   public Material addRemainingMaterial(Material material, Double assignedLength, Double assignedWeight) {
-    Double newLength = material.getRemainingLength() - assignedLength;
-    Double newWeight = material.getRemainingWeight() - assignedWeight;
+    Double newLength = material.getOriginalLength() - assignedLength;
+    Double newWeight = material.getOriginalWeight() - assignedWeight;
     Material newMaterial = buildMaterial(material, newLength, newWeight);
     return materialRepository.save(newMaterial);
   }
@@ -140,8 +162,8 @@ public class MaterialServiceImpl implements MaterialService {
             .unitPrice(material.getUnitPrice())
             .unitWeight(material.getUnitWeight())
             .unitLength(material.getUnitLength())
-            .totalWeight(deltaWeight)
-            .totalLength(deltaLength)
+            .originalWeight(deltaWeight)
+            .originalLength(deltaLength)
             .remainingWeight(deltaWeight)
             .remainingLength(deltaLength)
             .updatedAt(LocalDate.now())

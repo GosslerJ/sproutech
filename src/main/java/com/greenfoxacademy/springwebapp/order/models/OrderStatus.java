@@ -3,8 +3,7 @@ package com.greenfoxacademy.springwebapp.order.models;
 public enum OrderStatus {
   NEW,
   IN_PROGRESS,
-  DONE,
-  DELIVERED,
+  READY,
   CANCELLED;
 
   public String toDbValue() {

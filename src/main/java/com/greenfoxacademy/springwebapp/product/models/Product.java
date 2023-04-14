@@ -21,6 +21,8 @@ public class Product {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
+  @Column(columnDefinition = "enum('new', 'in_progress', 'ready', 'delivered')")
+  private ProductStatus status;
   private String name;
   private String quality;
   private Double size;

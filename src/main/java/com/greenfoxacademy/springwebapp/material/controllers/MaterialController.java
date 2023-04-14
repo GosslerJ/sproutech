@@ -28,7 +28,7 @@ import static org.springframework.http.HttpStatus.OK;
 public class MaterialController {
   private MaterialService materialService;
 
-  @Operation(summary = "Raw material Registration", description = "Add a new raw material")
+  @Operation(summary = "Raw material registration", description = "Add a new raw material")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "201", description = "successful operation",
                   content = @Content(mediaType = "application/json",
@@ -44,7 +44,7 @@ public class MaterialController {
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "successful operation",
                   content = @Content(mediaType = "application/json",
-                          schema = @Schema(implementation = MaterialResponseDTO.class))),
+                          schema = @Schema(implementation = Material.class))),
   })
   @GetMapping("/material")
   public ResponseEntity<?> filterMaterials(@RequestParam Optional<String> quality,
@@ -53,7 +53,7 @@ public class MaterialController {
     return ResponseEntity.status(OK).body(materials);
   }
 
-  @Operation(summary = "Transfer materials", description = "Transfer materials to internal warehouse")
+  @Operation(summary = "Transfer materials", description = "Transfer materials to the internal warehouse")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "successful operation",
                   content = @Content(mediaType = "application/json",

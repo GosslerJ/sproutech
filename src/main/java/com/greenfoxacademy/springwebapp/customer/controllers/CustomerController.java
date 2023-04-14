@@ -45,7 +45,7 @@ public class CustomerController {
     }
   }
 
-  @Operation(summary = "Delete Order", description = "Delete and existing order by id")
+  @Operation(summary = "Get Customer", description = "List customer by id")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "successful operation",
                   content = @Content(mediaType = "application/json",

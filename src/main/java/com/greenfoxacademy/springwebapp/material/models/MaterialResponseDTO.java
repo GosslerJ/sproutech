@@ -15,8 +15,8 @@ public class MaterialResponseDTO {
   private Long hitNumber;
   private Integer quantity;
   private Double unitLength;
+  private Double originalLength;
   private Double unitWeight;
-  private Double totalLength;
-  private Double totalWeight;
+  private Double originalWeight;
 
 }

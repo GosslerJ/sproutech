@@ -1,8 +1,6 @@
 package com.greenfoxacademy.springwebapp.common;
 
-import com.greenfoxacademy.springwebapp.common.exceptions.IdNotFoundException;
-import com.greenfoxacademy.springwebapp.common.exceptions.InvalidPasswordException;
-import com.greenfoxacademy.springwebapp.common.exceptions.LoginFailureException;
+import com.greenfoxacademy.springwebapp.common.exceptions.*;
 import com.greenfoxacademy.springwebapp.common.models.ErrorDTO;
 import com.greenfoxacademy.springwebapp.common.models.StatusResponseDTO;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -45,14 +43,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
   }
 
-  @ExceptionHandler(LoginFailureException.class)
-  public ResponseEntity<StatusResponseDTO> handle(LoginFailureException ex) {
-    StatusResponseDTO statusResponseDTO = new StatusResponseDTO();
-    statusResponseDTO.setStatusError();
-    statusResponseDTO.setMessage(ex.getMessage());
-    return ResponseEntity.status(401).body(statusResponseDTO);
-  }
-
   @ApiResponse(responseCode = "400", description = "invalid email",
           content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
   @ExceptionHandler(InvalidPasswordException.class)
@@ -61,13 +51,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return ResponseEntity.status(400).body(response);
   }
 
-  //  @ApiResponse(responseCode = "403", description = "id doesn't belong to logged in player",
-  //          content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
-  //  @ExceptionHandler(ForbiddenActionException.class)
-  //  public ResponseEntity<ErrorDTO> handle(ForbiddenActionException ex) {
-  //    ErrorDTO response = new ErrorDTO(ex.getMessage());
-  //    return ResponseEntity.status(403).body(response);
-  //  }
+  @ApiResponse(responseCode = "401", description = "login failure",
+          content = @Content(schema = @Schema(implementation = StatusResponseDTO.class)))
+  @ExceptionHandler(LoginFailureException.class)
+  public ResponseEntity<StatusResponseDTO> handle(LoginFailureException ex) {
+    StatusResponseDTO statusResponseDTO = new StatusResponseDTO();
+    statusResponseDTO.setStatusError();
+    statusResponseDTO.setMessage(ex.getMessage());
+    return ResponseEntity.status(401).body(statusResponseDTO);
+  }
 
   @ApiResponse(responseCode = "404", description = "id not found",
           content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
@@ -75,6 +67,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<ErrorDTO> handle(IdNotFoundException ex) {
     ErrorDTO response = new ErrorDTO(ex.getMessage());
     return ResponseEntity.status(404).body(response);
+  }
+
+  @ApiResponse(responseCode = "406", description = "invalid query parameter",
+          content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
+  @ExceptionHandler({NotEnoughMaterialException.class, AlreadyProducedException.class,
+          QualityDifferenceException.class})
+  public ResponseEntity<ErrorDTO> handle(RuntimeException ex) {
+    ErrorDTO response = new ErrorDTO(ex.getMessage());
+    return ResponseEntity.status(406).body(response);
   }
 
   public List<String> collectErrorMessages(MethodArgumentNotValidException ex) {

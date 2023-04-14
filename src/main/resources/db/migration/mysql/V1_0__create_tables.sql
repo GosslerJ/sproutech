@@ -42,7 +42,7 @@ ALTER TABLE customers ADD CONSTRAINT id UNIQUE (id);
 
 CREATE TABLE IF NOT EXISTS orders (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    status ENUM('new', 'in_progress', 'done', 'delivered', 'cancelled') NOT NULL,
+    status ENUM('new', 'in_progress', 'ready', 'cancelled') NOT NULL,
     order_date DATE,
     delivery_deadline DATE,
     delivery_date DATE,
@@ -54,10 +54,11 @@ CREATE TABLE IF NOT EXISTS orders (
 INSERT INTO orders (status, order_date, delivery_deadline, customer_id) VALUES
     ('NEW', '2023-04-01', '2023-05-02', 1),
     ('IN_PROGRESS', '2023-04-10', '2023-05-01', 2),
-    ('DONE', '2023-04-02', '2023-04-20', 3),
-    ('DELIVERED', '2023-04-03', '2023-04-18', 4),
+    ('READY', '2023-04-02', '2023-04-20', 3),
+    ('CANCELLED', '2023-04-03', '2023-04-18', 4),
+    ('NEW', '2023-04-03', '2023-04-18', 4),
     ('IN_PROGRESS', '2023-04-05', '2023-04-15', 5),
-    ('DONE', '2023-04-01', '2023-04-17', 6);
+    ('READY', '2023-04-01', '2023-04-17', 6);
 
 
 CREATE TABLE IF NOT EXISTS warehouses (
@@ -81,27 +82,28 @@ CREATE TABLE IF NOT EXISTS materials (
   unit_price BIGINT,
   unit_weight DOUBLE NOT NULL,
   unit_length DOUBLE NOT NULL,
-  total_weight DOUBLE,
+  original_weight DOUBLE,
   remaining_weight DOUBLE,
-  total_length DOUBLE,
+  original_length DOUBLE,
   remaining_length DOUBLE,
   updated_at DATE DEFAULT (CURRENT_DATE),
   warehouse_id INT DEFAULT 1
 );
 
-INSERT INTO materials (quality, size, hit_number,unit_price, unit_length, unit_weight, total_weight, total_length, remaining_weight, remaining_length) VALUES
+INSERT INTO materials (quality, size, hit_number,unit_price, unit_length, unit_weight, original_weight, original_length, remaining_weight, remaining_length) VALUES
     ('25CrMo4', 10.68, 204073, 938, 3.08, 0.703, 5000, 6000, 5000, 6000),
     ('21CrMoV57', 14.6, 6465130005, 1462, 4.08, 1.3135, 8000, 1200, 8000, 1200),
-    ('42CrMo4', 21.85, 578000, 952, 3.07, 1.314, 1300, 1000, 1300, 1000),
-    ('C45', 22, 46433, 490, 3.06, 1.988, 4800, 2400, 4800, 2400),
-    ('1.7711', 35, 267237, 1525, 6.084, 9.860, 11000, 1100, 11000, 1100),
-    ('1.4923', 18.18, 402141, 4995, 3.928, 2.037, 1600, 800, 1600, 800);
+    ('42CrMo4', 18.18, 578000, 952, 3.07, 1.314, 1300, 1000, 1300, 1000),
+    ('25CrMo4', 18.3, 46433, 490, 3.06, 1.988, 4800, 2400, 4800, 2400),
+    ('21CrMoV57', 21.84, 267237, 1525, 6.084, 9.860, 11000, 1100, 11000, 1100),
+    ('42CrMo4', 21.96, 402141, 4995, 3.928, 2.037, 1600, 800, 1600, 800);
 
 
 ALTER TABLE materials ADD CONSTRAINT FK1 FOREIGN KEY (warehouse_id) REFERENCES warehouses(id);
 
 CREATE TABLE IF NOT EXISTS products (
   id INT PRIMARY KEY AUTO_INCREMENT,
+  status ENUM('new', 'in_progress', 'ready', 'delivered') NOT NULL,
   name VARCHAR(255) NOT NULL,
   size DOUBLE NOT NULL,
   length DOUBLE NOT NULL,
@@ -111,13 +113,13 @@ CREATE TABLE IF NOT EXISTS products (
   delivery_number BIGINT
 );
 
-INSERT INTO products (name, quality, size, length, quantity) VALUES
-    ('szegcsavar1', '25 CrMo 4', 10.68, 20, 23),
-    ('szegcsavar2', '21 CrMoV 57', 14.6, 33, 1),
-    ('szegcsavar anya3', '42 CrMo 4', 21.85, 12, 12),
-    ('szegcsavar anya4', 'C 45', 22, 27, 2),
-    ('menetes rúd5', '1.7711', 35, 20, 6),
-    ('menetes rúd6', '1.4923', 18.18, 24, 3);
+INSERT INTO products (status, name, quality, size, length, quantity) VALUES
+    ('NEW', 'szegcsavar1', '25CrMo4', 12, 80, 23),
+    ('NEW', 'szegcsavar2', '21CrMoV57', 16, 60, 10),
+    ('NEW', 'szegcsavar anya3', '42CrMo4', 20, 75, 12),
+    ('NEW', 'szegcsavar anya4', '25CrMo4', 20, 120, 20),
+    ('NEW', 'menetes rúd5', '1.21CrMoV57', 24, 150, 60),
+    ('NEW', 'menetes rúd6', '42CrMo4', 24, 110, 35);
 
 
 CREATE TABLE IF NOT EXISTS material_product (
@@ -130,41 +132,8 @@ CREATE TABLE IF NOT EXISTS material_product (
 
 INSERT INTO material_product (material_id, product_id) VALUES
     (1, 1),
-    (2, 1),
-    (3, 1),
-    (4, 1),
-    (5, 1),
-    (6, 1),
     (1, 2),
-    (2, 2),
-    (3, 2),
-    (4, 2),
-    (5, 2),
-    (6, 2),
-    (1, 3),
-    (2, 3),
-    (3, 3),
-    (4, 3),
-    (5, 3),
-    (6, 3),
-    (1, 4),
-    (2, 4),
-    (3, 4),
-    (4, 4),
-    (5, 4),
-    (6, 4),
-    (1, 5),
-    (2, 5),
-    (3, 5),
-    (4, 5),
-    (5, 5),
-    (6, 5),
-    (1, 6),
-    (2, 6),
-    (3, 6),
-    (4, 6),
-    (5, 6),
-    (6, 6);
+    (1, 3);
 
 
 CREATE TABLE IF NOT EXISTS order_product (
@@ -178,19 +147,4 @@ CREATE TABLE IF NOT EXISTS order_product (
 INSERT INTO order_product (order_id, product_id) VALUES
     (1, 1),
     (1, 2),
-    (1, 3),
-    (2, 4),
-    (2, 5),
-    (2, 6),
-    (3, 1),
-    (3, 2),
-    (3, 3),
-    (4, 4),
-    (4, 5),
-    (4, 6),
-    (5, 1),
-    (5, 2),
-    (5, 3),
-    (6, 4),
-    (6, 5),
-    (6, 6);
+    (1, 3);

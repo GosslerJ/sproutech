@@ -1,6 +1,5 @@
 package com.greenfoxacademy.springwebapp.order.controllers;
 
-import com.greenfoxacademy.springwebapp.common.exceptions.IdNotFoundException;
 import com.greenfoxacademy.springwebapp.common.models.StatusResponseDTO;
 import com.greenfoxacademy.springwebapp.order.models.Order;
 import com.greenfoxacademy.springwebapp.order.models.OrderRequestDTO;
@@ -45,18 +44,11 @@ public class OrderController {
           @ApiResponse(responseCode = "200", description = "successful operation",
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = OrderResponseDTO.class))),
-          @ApiResponse(responseCode = "404", description = "invalid id",
-                  content = @Content(mediaType = "application/json",
-                          schema = @Schema(implementation = StatusResponseDTO.class))),
   })
   @DeleteMapping("/order/{id}")
   public ResponseEntity<?> deleteOrder(@PathVariable Integer id) {
-    try {
-      orderService.deleteOrderById(id);
-      return ResponseEntity.status(OK).body(new StatusResponseDTO("ok", "Order deleted"));
-    } catch (IdNotFoundException e) {
-      return ResponseEntity.status(404).body(new StatusResponseDTO("error", e.getMessage()));
-    }
+    orderService.deleteOrderById(id);
+    return ResponseEntity.status(OK).body(new StatusResponseDTO("ok", "Order deleted"));
   }
 
   @Operation(summary = "List close deadlines", description = "Get orders with close delivery deadlines")

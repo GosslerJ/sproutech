@@ -8,6 +8,7 @@ import com.greenfoxacademy.springwebapp.order.models.OrderRequestDTO;
 import com.greenfoxacademy.springwebapp.order.models.OrderResponseDTO;
 import com.greenfoxacademy.springwebapp.order.repositories.OrderRepository;
 import com.greenfoxacademy.springwebapp.product.models.Product;
+import com.greenfoxacademy.springwebapp.product.models.ProductStatus;
 import com.greenfoxacademy.springwebapp.product.repositories.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
-import static com.greenfoxacademy.springwebapp.order.models.OrderStatus.*;
+import static com.greenfoxacademy.springwebapp.order.models.OrderStatus.IN_PROGRESS;
 import static com.greenfoxacademy.springwebapp.order.models.OrderStatus.NEW;
 
 @AllArgsConstructor
@@ -41,6 +43,7 @@ public class OrderServiceImpl implements OrderService {
     products.addAll(dto.getOrderedProducts());
     order.setOrderedProducts(products);
     for (Product product : products) {
+      product.setStatus(ProductStatus.NEW);
       productRepository.save(product);
     }
     orderRepository.save(order);
@@ -49,7 +52,13 @@ public class OrderServiceImpl implements OrderService {
 
   @Override
   public void deleteOrderById(Integer id) {
-    orderRepository.deleteById(id);
+    Optional<Order> optionalOrder = orderRepository.findById(id);
+    if (optionalOrder.isPresent()) {
+      Order order = optionalOrder.get();
+      orderRepository.delete(order);
+    } else {
+      throw new IdNotFoundException();
+    }
   }
 
   @Override

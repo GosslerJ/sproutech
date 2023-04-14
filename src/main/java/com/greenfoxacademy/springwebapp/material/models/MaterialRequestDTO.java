@@ -18,11 +18,11 @@ public class MaterialRequestDTO {
   private Long unitPrice;
   private Double unitWeight;
   private Double unitLength;
-  private Double totalWeight;
+  private Double originalWeight;
   private Warehouse warehouse;
 
-  public Double getTotalLength() {
-    return totalWeight * unitLength;
+  public Double getOriginalLength() {
+    return originalWeight * unitLength;
   }
 
 }

@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS customers (
 
 CREATE TABLE IF NOT EXISTS orders (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    status ENUM('new', 'in_progress', 'done', 'delivered', 'cancelled') NOT NULL,
+    status ENUM('new', 'in_progress', 'ready', 'cancelled') NOT NULL,
     order_date DATE,
     delivery_deadline DATE,
     delivery_date DATE,
@@ -45,18 +45,17 @@ CREATE TABLE IF NOT EXISTS materials (
   unit_price BIGINT,
   unit_weight DOUBLE NOT NULL,
   unit_length DOUBLE NOT NULL,
-  total_weight DOUBLE,
+  original_weight DOUBLE,
   remaining_weight DOUBLE,
-  total_length DOUBLE,
+  original_length DOUBLE,
   remaining_length DOUBLE,
   updated_at DATE DEFAULT (CURRENT_DATE),
   warehouse_id INT DEFAULT 1
 );
 
-ALTER TABLE materials ADD CONSTRAINT FK1 FOREIGN KEY (warehouse_id) REFERENCES warehouses(id);
-
 CREATE TABLE IF NOT EXISTS products (
   id INT PRIMARY KEY AUTO_INCREMENT,
+  status ENUM('new', 'in_progress', 'ready', 'delivered') NOT NULL,
   name VARCHAR(255) NOT NULL,
   size DOUBLE NOT NULL,
   length DOUBLE NOT NULL,
