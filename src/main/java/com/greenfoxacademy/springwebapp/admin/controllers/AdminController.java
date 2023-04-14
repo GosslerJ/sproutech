@@ -22,7 +22,7 @@ import javax.validation.Valid;
 
 import static org.springframework.http.HttpStatus.*;
 
-@Tag(name = "Admin Registration")
+@Tag(name = "Admin Registration", description = "Admin related endpoints")
 @AllArgsConstructor
 @RestController
 public class AdminController {
@@ -34,10 +34,10 @@ public class AdminController {
           @ApiResponse(responseCode = "201", description = "successful registration",
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = AdminResponseDTO.class))),
-          @ApiResponse(responseCode = "409", description = "username is already taken",
+          @ApiResponse(responseCode = "406", description = "invalid password",
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = StatusResponseDTO.class))),
-          @ApiResponse(responseCode = "406", description = "invalid password",
+          @ApiResponse(responseCode = "409", description = "username is already taken",
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = StatusResponseDTO.class))),
   })

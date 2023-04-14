@@ -3,6 +3,7 @@ package com.greenfoxacademy.springwebapp.material.services;
 import com.greenfoxacademy.springwebapp.material.models.Material;
 import com.greenfoxacademy.springwebapp.material.models.MaterialRequestDTO;
 import com.greenfoxacademy.springwebapp.material.models.MaterialResponseDTO;
+import com.greenfoxacademy.springwebapp.product.models.Product;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,8 @@ public interface MaterialService {
   void updateMaterial(Material remainingMaterial, Integer quantity, Double remainingLength, Double remainingWeight);
 
   Material assignMaterialToProduct(Integer productId, Integer materialId);
+
+  Double requestValidation(Product product, Material material);
 
   Material addRemainingMaterial(Material material, Double assignedLength, Double assignedWeight);
 

@@ -1,30 +1,47 @@
-  //package com.greenfoxacademy.springwebapp;
-  //
-  //import com.greenfoxacademy.springwebapp.building.models.Building;
-  //import com.greenfoxacademy.springwebapp.kingdom.models.Kingdom;
-  //import com.greenfoxacademy.springwebapp.admin.models.Admin;
-  //import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-  //
-  //import java.util.ArrayList;
-  //import java.util.Arrays;
-  //
-  //import static com.greenfoxacademy.springwebapp.building.models.BuildingType.*;
-  //
-  //public class TestFactory {
-  //
-  //  public static final UsernamePasswordAuthenticationToken playerWith0Resources() {
-  //    Kingdom kingdom = Kingdom.builder()
-  //            .id(1201)
-  //            .buildingList(new ArrayList<>(Arrays.asList(
-  //                    new Building(1205, TOWNHALL, 4, 100, 123456, 1234567),
-  //                    new Building(1206, ACADEMY, 1, 100, 123456, 1234567)
-  //            )))
-  //            .build();
-  //    Admin admin = Admin.builder()
-  //            .id(1201)
-  //            .kingdom(kingdom)
-  //            .build();
-  //    return new UsernamePasswordAuthenticationToken(admin, null, null);
-  //  }
-  //
-  //}
+package com.greenfoxacademy.springwebapp;
+
+import com.greenfoxacademy.springwebapp.material.models.Material;
+import com.greenfoxacademy.springwebapp.material.models.MaterialRequestDTO;
+import com.greenfoxacademy.springwebapp.warehouse.models.Warehouse;
+
+import static com.greenfoxacademy.springwebapp.warehouse.models.Location.EXTERNAL;
+
+public class TestFactory {
+
+  public static final Material materialBuilder() {
+    return Material.builder()
+            .id(1)
+            .quality("quality")
+            .size(20.0)
+            .hitNumber(5L)
+            .unitLength(10.0)
+            .unitWeight(5.0)
+            .originalLength(500.0)
+            .originalWeight(250.0)
+            .build();
+  }
+
+  public static final MaterialRequestDTO materialRequestDtoBuilder() {
+    return MaterialRequestDTO.builder()
+            .quality("quality")
+            .size(20.0)
+            .hitNumber(10L)
+            .unitLength(10.0)
+            .unitPrice(20L)
+            .unitWeight(2.5)
+            .unitLength(3.0)
+            .originalWeight(25.0)
+            .build();
+  }
+
+  public static final Warehouse warehouseBuilder() {
+    return Warehouse.builder()
+            .id(1)
+            .name(EXTERNAL)
+            .address("123 Main St")
+            .city("Anytown")
+            .zipCode("12345")
+            .build();
+  }
+
+}

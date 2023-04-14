@@ -31,7 +31,7 @@ public class OrderServiceImpl implements OrderService {
   private ProductRepository productRepository;
 
   @Override
-  public OrderResponseDTO saveOrder(OrderRequestDTO dto) {
+  public OrderResponseDTO saveOrder(OrderRequestDTO dto) throws IdNotFoundException {
     Customer customer = customerRepository.findById(dto.getCustomerId()).orElseThrow(IdNotFoundException::new);
     Order order = Order.builder()
             .customer(customer)
@@ -51,14 +51,11 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
-  public void deleteOrderById(Integer id) {
-    Optional<Order> optionalOrder = orderRepository.findById(id);
-    if (optionalOrder.isPresent()) {
-      Order order = optionalOrder.get();
-      orderRepository.delete(order);
-    } else {
-      throw new IdNotFoundException();
-    }
+  public void deleteOrderById(Integer id) throws IdNotFoundException {
+    Optional<Order> optionalOrder = Optional
+            .ofNullable(orderRepository.findById(id).orElseThrow(IdNotFoundException::new));
+    Order order = optionalOrder.get();
+    orderRepository.delete(order);
   }
 
   @Override

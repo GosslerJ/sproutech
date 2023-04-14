@@ -130,12 +130,6 @@ CREATE TABLE IF NOT EXISTS material_product (
   FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
-INSERT INTO material_product (material_id, product_id) VALUES
-    (1, 1),
-    (1, 2),
-    (1, 3);
-
-
 CREATE TABLE IF NOT EXISTS order_product (
     order_id INT NOT NULL,
     product_id INT NOT NULL,
@@ -143,8 +137,3 @@ CREATE TABLE IF NOT EXISTS order_product (
     FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
-
-INSERT INTO order_product (order_id, product_id) VALUES
-    (1, 1),
-    (1, 2),
-    (1, 3);

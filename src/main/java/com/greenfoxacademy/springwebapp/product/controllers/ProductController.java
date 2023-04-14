@@ -1,8 +1,8 @@
 package com.greenfoxacademy.springwebapp.product.controllers;
 
+import com.greenfoxacademy.springwebapp.common.models.ErrorDTO;
 import com.greenfoxacademy.springwebapp.material.models.Material;
 import com.greenfoxacademy.springwebapp.material.services.MaterialService;
-import com.greenfoxacademy.springwebapp.product.models.Product;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,7 +30,13 @@ public class ProductController {
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "successful operation",
                   content = @Content(mediaType = "application/json",
-                          schema = @Schema(implementation = Product.class))),
+                          schema = @Schema(implementation = Material.class))),
+          @ApiResponse(responseCode = "404", description = "id not found",
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = ErrorDTO.class))),
+          @ApiResponse(responseCode = "406", description = "invalid query parameter",
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = ErrorDTO.class))),
   })
   @PutMapping("/production")
   public ResponseEntity<?> production(@RequestParam Integer productId, @RequestParam Integer materialId) {

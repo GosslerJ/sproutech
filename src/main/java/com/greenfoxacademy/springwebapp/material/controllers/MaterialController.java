@@ -1,10 +1,10 @@
 package com.greenfoxacademy.springwebapp.material.controllers;
 
+import com.greenfoxacademy.springwebapp.common.models.ErrorDTO;
 import com.greenfoxacademy.springwebapp.material.models.Material;
 import com.greenfoxacademy.springwebapp.material.models.MaterialRequestDTO;
 import com.greenfoxacademy.springwebapp.material.models.MaterialResponseDTO;
 import com.greenfoxacademy.springwebapp.material.services.MaterialService;
-import com.greenfoxacademy.springwebapp.product.models.Product;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,7 +21,7 @@ import java.util.Optional;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
-@Tag(name = "Raw material Registration")
+@Tag(name = "Raw material Registration", description = "Raw material related endpoints")
 @AllArgsConstructor
 @RequestMapping("/api")
 @RestController
@@ -35,7 +35,7 @@ public class MaterialController {
                           schema = @Schema(implementation = MaterialResponseDTO.class))),
   })
   @PostMapping("/material")
-  public ResponseEntity<?> register(@RequestBody MaterialRequestDTO materialRequestDTO) {
+  public ResponseEntity<MaterialResponseDTO> register(@RequestBody MaterialRequestDTO materialRequestDTO) {
     MaterialResponseDTO createdMaterial = materialService.saveMaterial(materialRequestDTO);
     return ResponseEntity.status(CREATED).body(createdMaterial);
   }
@@ -57,7 +57,10 @@ public class MaterialController {
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "successful operation",
                   content = @Content(mediaType = "application/json",
-                          schema = @Schema(implementation = Product.class))),
+                          schema = @Schema(implementation = Material.class))),
+          @ApiResponse(responseCode = "406", description = "not enough material",
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = ErrorDTO.class))),
   })
   @PutMapping("/material")
   public ResponseEntity<?> transferMaterial(@RequestParam String quality, @RequestParam Double size,

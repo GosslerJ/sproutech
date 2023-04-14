@@ -16,14 +16,12 @@ import java.util.regex.Pattern;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-  public static final String REGEX =
-          "^[\\\\w!#$%&'*+/=?`{|}~^-]+(?:\\\\.[\\\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,6}$\n";
+  public static final String REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+[a-zA-Z]{2,}$";
 
   private CustomerRepository customerRepository;
 
   @Override
-  public CustomerResponseDTO saveCustomer(CustomerRequestDTO reg)
-          throws AlreadyTakenNameException, InvalidEmailException {
+  public CustomerResponseDTO saveCustomer(CustomerRequestDTO reg) {
     validateRegistration(reg);
     Customer customer = Customer.builder()
             .name(reg.getName())
@@ -44,12 +42,12 @@ public class CustomerServiceImpl implements CustomerService {
   public void validateRegistration(CustomerRequestDTO reg) throws AlreadyTakenNameException, InvalidEmailException {
     if (customerRepository.findByName(reg.getName()).isPresent())
       throw new AlreadyTakenNameException("Customer name is already taken.");
-    if (reg.getEmail() == null || reg.getEmail().trim().length() < 3 || validateEmail(reg.getEmail(), REGEX))
-      throw new InvalidEmailException("Email format is not valid.");
+    if (reg.getEmail() == null || reg.getEmail().trim().length() < 3 || !validateEmail(reg.getEmail()))
+      throw new InvalidEmailException("Email format is invalid.");
   }
 
-  public static boolean validateEmail(String email, String regex) {
-    return Pattern.compile(regex)
+  public static boolean validateEmail(String email) {
+    return Pattern.compile(REGEX)
             .matcher(email)
             .matches();
   }

@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+@Tag(name = "Login Controller", description = "Login related endpoints")
 @AllArgsConstructor
 @RestController
 public class LoginController {
@@ -28,7 +30,7 @@ public class LoginController {
           @ApiResponse(responseCode = "200", description = "successful registration",
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = TokenResponseDTO.class))),
-          @ApiResponse(responseCode = "401", description = "username is already taken",
+          @ApiResponse(responseCode = "401", description = "username or password is incorrect",
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = StatusResponseDTO.class))),
   })

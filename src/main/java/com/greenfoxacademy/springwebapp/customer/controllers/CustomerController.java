@@ -1,7 +1,9 @@
 package com.greenfoxacademy.springwebapp.customer.controllers;
 
 import com.greenfoxacademy.springwebapp.common.exceptions.AlreadyTakenNameException;
+import com.greenfoxacademy.springwebapp.common.models.ErrorDTO;
 import com.greenfoxacademy.springwebapp.common.models.StatusResponseDTO;
+import com.greenfoxacademy.springwebapp.customer.models.Customer;
 import com.greenfoxacademy.springwebapp.customer.models.CustomerRequestDTO;
 import com.greenfoxacademy.springwebapp.customer.models.CustomerResponseDTO;
 import com.greenfoxacademy.springwebapp.customer.services.CustomerService;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.CREATED;
 
-@Tag(name = "Customer Registration")
+@Tag(name = "Customer Registration", description = "Customer related endpoints")
 @RequestMapping("/api")
 @AllArgsConstructor
 @RestController
@@ -31,6 +33,9 @@ public class CustomerController {
           @ApiResponse(responseCode = "201", description = "successful registration",
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = CustomerResponseDTO.class))),
+          @ApiResponse(responseCode = "400", description = "invalid email format",
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = StatusResponseDTO.class))),
           @ApiResponse(responseCode = "409", description = "name is already taken",
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = StatusResponseDTO.class))),
@@ -49,7 +54,10 @@ public class CustomerController {
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "successful operation",
                   content = @Content(mediaType = "application/json",
-                          schema = @Schema(implementation = CustomerResponseDTO.class))),
+                          schema = @Schema(implementation = Customer.class))),
+          @ApiResponse(responseCode = "404", description = "id not found",
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = ErrorDTO.class))),
   })
   @GetMapping("/customer/{id}")
   public ResponseEntity<?> getCustomerById(@PathVariable Integer id) {

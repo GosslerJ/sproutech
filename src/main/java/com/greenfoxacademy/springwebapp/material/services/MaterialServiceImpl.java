@@ -33,7 +33,8 @@ public class MaterialServiceImpl implements MaterialService {
   private WarehouseRepository warehouseRepository;
 
   @Override
-  public MaterialResponseDTO saveMaterial(MaterialRequestDTO dto) {
+  public MaterialResponseDTO saveMaterial(MaterialRequestDTO dto)
+          throws IdNotFoundException, QualityDifferenceException, NotEnoughMaterialException, AlreadyProducedException {
     Warehouse external = warehouseRepository.findById(1).orElseThrow(IdNotFoundException::new);
     Material material = Material.builder()
             .quality(dto.getQuality())
@@ -82,7 +83,7 @@ public class MaterialServiceImpl implements MaterialService {
   }
 
   @Override
-  public Material transferMaterial(String quality, Double size, Integer quantity) {
+  public Material transferMaterial(String quality, Double size, Integer quantity) throws NotEnoughMaterialException {
     List<Material> materials = materialRepository.findAllByQualityAndSizeAndWarehouseId(quality, size, 1);
     materials.sort(Comparator.comparing(Material::getOriginalLength));
     if (materials.size() == 0) return new Material();
@@ -111,7 +112,8 @@ public class MaterialServiceImpl implements MaterialService {
   }
 
   @Override
-  public Material assignMaterialToProduct(Integer productId, Integer materialId) {
+  public Material assignMaterialToProduct(Integer productId, Integer materialId)
+          throws IdNotFoundException, QualityDifferenceException, NotEnoughMaterialException, AlreadyProducedException {
     Product product = productRepository.findById(productId).orElseThrow(IdNotFoundException::new);
     Material material = materialRepository.findById(materialId).orElseThrow(IdNotFoundException::new);
     Double assignedLength = requestValidation(product, material);
@@ -130,11 +132,12 @@ public class MaterialServiceImpl implements MaterialService {
     return addRemainingMaterial(material, assignedLength, assignedWeight);
   }
 
+  @Override
   public Double requestValidation(Product product, Material material) {
     if (product.getStatus() == READY || product.getStatus() == DELIVERED) {
       throw new AlreadyProducedException();
     }
-    if (product.getQuality() != material.getQuality()) {
+    if (!product.getQuality().equals(material.getQuality())) {
       throw new QualityDifferenceException();
     }
     Double assignedLength = product.getQuantity() * (product.getLength() / 1000 + 0.001);
@@ -153,7 +156,7 @@ public class MaterialServiceImpl implements MaterialService {
   }
 
   @Override
-  public Material buildMaterial(Material material, Double deltaLength, Double deltaWeight) {
+  public Material buildMaterial(Material material, Double deltaLength, Double deltaWeight) throws IdNotFoundException {
     Warehouse internal = warehouseRepository.findById(2).orElseThrow(IdNotFoundException::new);
     return Material.builder()
             .quality(material.getQuality())

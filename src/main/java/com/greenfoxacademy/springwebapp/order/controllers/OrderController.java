@@ -1,5 +1,7 @@
 package com.greenfoxacademy.springwebapp.order.controllers;
 
+import com.greenfoxacademy.springwebapp.common.exceptions.IdNotFoundException;
+import com.greenfoxacademy.springwebapp.common.models.ErrorDTO;
 import com.greenfoxacademy.springwebapp.common.models.StatusResponseDTO;
 import com.greenfoxacademy.springwebapp.order.models.Order;
 import com.greenfoxacademy.springwebapp.order.models.OrderRequestDTO;
@@ -32,6 +34,9 @@ public class OrderController {
           @ApiResponse(responseCode = "201", description = "successful operation",
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = OrderResponseDTO.class))),
+          @ApiResponse(responseCode = "404", description = "id not found",
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = ErrorDTO.class))),
   })
   @PostMapping("/order")
   public ResponseEntity<?> order(@RequestBody OrderRequestDTO orderRequestDTO) {
@@ -43,10 +48,13 @@ public class OrderController {
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "successful operation",
                   content = @Content(mediaType = "application/json",
-                          schema = @Schema(implementation = OrderResponseDTO.class))),
+                          schema = @Schema(implementation = StatusResponseDTO.class))),
+          @ApiResponse(responseCode = "404", description = "id not found",
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = ErrorDTO.class))),
   })
   @DeleteMapping("/order/{id}")
-  public ResponseEntity<?> deleteOrder(@PathVariable Integer id) {
+  public ResponseEntity<?> deleteOrder(@PathVariable Integer id) throws IdNotFoundException {
     orderService.deleteOrderById(id);
     return ResponseEntity.status(OK).body(new StatusResponseDTO("ok", "Order deleted"));
   }
@@ -55,7 +63,7 @@ public class OrderController {
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "successful operation",
                   content = @Content(mediaType = "application/json",
-                          schema = @Schema(implementation = OrderResponseDTO.class))),
+                          schema = @Schema(implementation = Order.class))),
   })
   @GetMapping("/order")
   public ResponseEntity<?> filterOrders(@RequestParam Integer days) {

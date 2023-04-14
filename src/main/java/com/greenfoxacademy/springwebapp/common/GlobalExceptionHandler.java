@@ -3,9 +3,6 @@ package com.greenfoxacademy.springwebapp.common;
 import com.greenfoxacademy.springwebapp.common.exceptions.*;
 import com.greenfoxacademy.springwebapp.common.models.ErrorDTO;
 import com.greenfoxacademy.springwebapp.common.models.StatusResponseDTO;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -43,16 +40,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
   }
 
-  @ApiResponse(responseCode = "400", description = "invalid email",
-          content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
   @ExceptionHandler(InvalidPasswordException.class)
   public ResponseEntity<ErrorDTO> handle(InvalidPasswordException ex) {
     ErrorDTO response = new ErrorDTO(ex.getMessage());
     return ResponseEntity.status(400).body(response);
   }
 
-  @ApiResponse(responseCode = "401", description = "login failure",
-          content = @Content(schema = @Schema(implementation = StatusResponseDTO.class)))
+  @ExceptionHandler(InvalidEmailException.class)
+  public ResponseEntity<ErrorDTO> handle(InvalidEmailException ex) {
+    ErrorDTO response = new ErrorDTO(ex.getMessage());
+    return ResponseEntity.status(400).body(response);
+  }
+
   @ExceptionHandler(LoginFailureException.class)
   public ResponseEntity<StatusResponseDTO> handle(LoginFailureException ex) {
     StatusResponseDTO statusResponseDTO = new StatusResponseDTO();
@@ -61,16 +60,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return ResponseEntity.status(401).body(statusResponseDTO);
   }
 
-  @ApiResponse(responseCode = "404", description = "id not found",
-          content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
   @ExceptionHandler(IdNotFoundException.class)
   public ResponseEntity<ErrorDTO> handle(IdNotFoundException ex) {
     ErrorDTO response = new ErrorDTO(ex.getMessage());
     return ResponseEntity.status(404).body(response);
   }
 
-  @ApiResponse(responseCode = "406", description = "invalid query parameter",
-          content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
   @ExceptionHandler({NotEnoughMaterialException.class, AlreadyProducedException.class,
           QualityDifferenceException.class})
   public ResponseEntity<ErrorDTO> handle(RuntimeException ex) {
