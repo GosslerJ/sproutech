@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS customers (
 
 CREATE TABLE IF NOT EXISTS orders (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    status ENUM('new', 'in_progress', 'ready', 'cancelled') NOT NULL,
+    status ENUM('new', 'in_progress', 'ready') NOT NULL,
     order_date DATE,
     delivery_deadline DATE,
     delivery_date DATE,

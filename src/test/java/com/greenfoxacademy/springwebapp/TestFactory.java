@@ -1,5 +1,6 @@
 package com.greenfoxacademy.springwebapp;
 
+import com.greenfoxacademy.springwebapp.customer.models.CustomerRequestDTO;
 import com.greenfoxacademy.springwebapp.material.models.Material;
 import com.greenfoxacademy.springwebapp.material.models.MaterialRequestDTO;
 import com.greenfoxacademy.springwebapp.product.models.Product;
@@ -26,6 +27,33 @@ public class TestFactory {
             .unitWeight(5.0)
             .originalLength(500.0)
             .originalWeight(250.0)
+            .build();
+  }
+
+  public static final CustomerRequestDTO customerRequestDtoBuilder() {
+    return CustomerRequestDTO.builder()
+            .name("Company")
+            .email("johndoe@com")
+            .contactPerson("John Doe")
+            .email("johndoe@email.com")
+            .phoneNumber("+1 555-1234")
+            .taxNumber("123456")
+            .zipCode("12345")
+            .city("Anytown")
+            .address("123 Main St")
+            .country("US")
+            .build();
+  }
+
+  public static final CustomerRequestDTO customerWithInvalidEmail() {
+    return CustomerRequestDTO.builder()
+            .name("John Doe")
+            .email("johndoe@.com")
+            .phoneNumber("+1 555-1234")
+            .address("123 Main St")
+            .city("Anytown")
+            .zipCode("12345")
+            .country("US")
             .build();
   }
 

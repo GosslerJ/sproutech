@@ -3,8 +3,7 @@ package com.greenfoxacademy.springwebapp.warehouse.models;
 public enum Location {
   EXTERNAL,
   INTERNAL,
-  BAG,
-  DELIVERED;
+  BAG;
 
   public String toDbValue() {
     return this.name().toLowerCase();

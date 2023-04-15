@@ -41,7 +41,6 @@ public class OrderServiceImplTest {
     orderService = new OrderServiceImpl(customerRepository, orderRepository, productRepository);
     Customer customer = new Customer();
     customer.setId(1);
-
     order = new Order();
     order.setId(1);
     order.setCustomer(customer);
@@ -90,7 +89,7 @@ public class OrderServiceImplTest {
   @Test
   public void saveOrder_WithInvalidCustomerId() {
     OrderRequestDTO dto = new OrderRequestDTO();
-    dto.setCustomerId(999); // non-existent customer ID
+    dto.setCustomerId(999);
 
     Exception exception = assertThrows(IdNotFoundException.class, () -> {
       orderService.saveOrder(dto);
@@ -103,32 +102,26 @@ public class OrderServiceImplTest {
 
   @Test
   public void testDeleteOrderById() throws IdNotFoundException {
-    // Arrange
     Integer orderId = 1;
     Optional<Order> optionalOrder = Optional.of(order);
     doReturn(optionalOrder).when(orderRepository).findById(orderId);
 
-    // Act
     orderService.deleteOrderById(orderId);
 
-    // Assert
     verify(orderRepository).delete(order);
   }
 
   @Test
   public void testDeleteOrderByIdThrowsException() {
-    // Arrange
     Integer orderId = 1;
     doThrow(IdNotFoundException.class).when(orderRepository).findById(orderId);
 
-    // Act + Assert
     assertThrows(IdNotFoundException.class, () -> orderService.deleteOrderById(orderId));
     verify(orderRepository, never()).delete(any(Order.class));
   }
 
   @Test
   public void testFilterOrdersByDeliveryDeadline_withNullDays_shouldReturnAllOrders() {
-    // Arrange
     List<Order> orders = Arrays.asList(
             order.builder().id(1001).status(NEW).orderDate(LocalDate.now()).deliveryDeadline(LocalDate.now()
                     .plusDays(100)).build(),
@@ -139,10 +132,8 @@ public class OrderServiceImplTest {
     );
     when(orderRepository.findAll()).thenReturn(orders);
 
-    // Act
     List<Order> result = orderService.filterOrdersByDeliveryDeadline(null);
 
-    // Assert
     assertEquals(3, result.size());
     assertTrue(result.containsAll(orders));
   }
@@ -173,16 +164,12 @@ public class OrderServiceImplTest {
 
   @Test
   public void testFilterOrdersByDeliveryDeadline_withValidDays_shouldReturnEmptyList() {
-    // Arrange
     when(orderRepository
             .findAllByDeliveryDeadlineLessThanEqualAndStatusIn(LocalDate.now()
-                    .plusDays(1), Arrays.asList(NEW, IN_PROGRESS)))
-            .thenReturn(Collections.emptyList());
+                    .plusDays(1), Arrays.asList(NEW, IN_PROGRESS))).thenReturn(Collections.emptyList());
 
-    // Act
     List<Order> result = orderService.filterOrdersByDeliveryDeadline(1);
 
-    // Assert
     assertTrue(result.isEmpty());
   }
 

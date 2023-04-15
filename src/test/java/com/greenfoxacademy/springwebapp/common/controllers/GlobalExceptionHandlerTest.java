@@ -13,19 +13,6 @@ class GlobalExceptionHandlerTest {
   GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
 
   @Test
-  void handleMethodArgumentNotValid() {
-  }
-
-  @Test
-  void collectErrorMessages() {
-
-  }
-
-  @Test
-  void handle() {
-  }
-
-  @Test
   void concatErrorMessages() {
     List<String> errorMessages1 = new ArrayList<>(Arrays.asList("Username is required."));
     List<String> errorMessages2 = new ArrayList<>(Arrays.asList("Username is required.", "Password is required."));

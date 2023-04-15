@@ -42,7 +42,7 @@ ALTER TABLE customers ADD CONSTRAINT id UNIQUE (id);
 
 CREATE TABLE IF NOT EXISTS orders (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    status ENUM('new', 'in_progress', 'ready', 'cancelled') NOT NULL,
+    status ENUM('new', 'in_progress', 'ready') NOT NULL,
     order_date DATE,
     delivery_deadline DATE,
     delivery_date DATE,
@@ -55,7 +55,6 @@ INSERT INTO orders (status, order_date, delivery_deadline, customer_id) VALUES
     ('NEW', '2023-04-01', '2023-05-02', 1),
     ('IN_PROGRESS', '2023-04-10', '2023-05-01', 2),
     ('READY', '2023-04-02', '2023-04-20', 3),
-    ('CANCELLED', '2023-04-03', '2023-04-18', 4),
     ('NEW', '2023-04-03', '2023-04-18', 4),
     ('IN_PROGRESS', '2023-04-05', '2023-04-15', 5),
     ('READY', '2023-04-01', '2023-04-17', 6);

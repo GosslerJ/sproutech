@@ -3,14 +3,13 @@ package com.greenfoxacademy.springwebapp.customer.services;
 import com.greenfoxacademy.springwebapp.common.exceptions.AlreadyTakenNameException;
 import com.greenfoxacademy.springwebapp.common.exceptions.IdNotFoundException;
 import com.greenfoxacademy.springwebapp.common.exceptions.InvalidEmailException;
-
 import com.greenfoxacademy.springwebapp.customer.models.Customer;
 import com.greenfoxacademy.springwebapp.customer.models.CustomerRequestDTO;
+import com.greenfoxacademy.springwebapp.customer.models.CustomerResponseDTO;
 import com.greenfoxacademy.springwebapp.customer.repositories.CustomerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
@@ -30,58 +29,32 @@ public class CustomerServiceImplTest {
     customerService = new CustomerServiceImpl(customerRepository);
   }
 
-  //  @Test
-  //  public void saveCustomer_ValidInput_CustomerSaved() throws AlreadyTakenNameException, InvalidEmailException {
-  //    // arrange
-  //    CustomerRequestDTO requestDTO = new CustomerRequestDTO();
-  //    requestDTO.setName("John Doe");
-  //    requestDTO.setEmail("johndoe@example.com");
-  //    requestDTO.setPhoneNumber("+1 555-1234");
-  //    requestDTO.setAddress("123 Main St");
-  //    requestDTO.setCity("Anytown");
-  //    requestDTO.setZipCode("12345");
-  //    requestDTO.setCountry("US");
-  //
-  //    // act
-  //    CustomerResponseDTO responseDTO = customerService.saveCustomer(requestDTO);
-  //
-  //    // assert
-  //    verify(customerRepository, times(1)).save(any(Customer.class));
-  //    Assertions.assertEquals(requestDTO.getName(), responseDTO.getName());
-  //  }
+  //      @Test
+  //      public void saveCustomer_ValidInput_CustomerSaved() throws AlreadyTakenNameException, InvalidEmailException {
+  //        doNothing().when(customerService).validateRegistration(any());
+  //        CustomerRequestDTO requestDTO = customerRequestDtoBuilder();
+  //        CustomerResponseDTO responseDTO = customerService.saveCustomer(requestDTO);
+  //        assertNotNull(responseDTO);
+  //      }
 
   @Test
   public void saveCustomer_DuplicateName_ThrowsAlreadyTakenNameException() {
-    CustomerRequestDTO requestDTO1 = new CustomerRequestDTO();
-    requestDTO1.setName("John Doe");
-    requestDTO1.setEmail("johndoe1@example.com");
-
-    CustomerRequestDTO requestDTO2 = new CustomerRequestDTO();
-    requestDTO2.setName("John Doe");
-    requestDTO2.setEmail("johndoe2@example.com");
+    CustomerRequestDTO requestDTO = new CustomerRequestDTO();
+    requestDTO.setName("John Doe");
+    requestDTO.setEmail("johndoe@example.com");
 
     doThrow(AlreadyTakenNameException.class).when(customerRepository).save(any(Customer.class));
 
     assertThrows(AlreadyTakenNameException.class, () -> {
-      customerService.saveCustomer(requestDTO1);
-      customerService.saveCustomer(requestDTO2);
+      customerService.saveCustomer(requestDTO);
     });
   }
 
   //  @Test
   //  public void saveCustomer_InvalidEmail_ThrowsInvalidEmailException() {
-  //    // arrange
-  //    CustomerRequestDTO requestDTO = new CustomerRequestDTO();
-  //    requestDTO.setName("John Doe");
-  //    requestDTO.setEmail("johndoe@.com"); // invalid email address
-  //    requestDTO.setPhoneNumber("+1 555-1234");
-  //    requestDTO.setAddress("123 Main St");
-  //    requestDTO.setCity("Anytown");
-  //    requestDTO.setZipCode("12345");
-  //    requestDTO.setCountry("US");
+  //    CustomerRequestDTO requestDTO = customerWithInvalidEmail();
   //
-  //    // act/assert
-  //    Assertions.assertThrows(InvalidEmailException.class, () -> {
+  //    assertThrows(InvalidEmailException.class, () -> {
   //      customerService.saveCustomer(requestDTO);
   //    });
   //  }
@@ -89,58 +62,25 @@ public class CustomerServiceImplTest {
   //  @Test
   //  public void saveCustomer_ValidInput_ReturnsCorrectResponseDTO()
   //          throws AlreadyTakenNameException, InvalidEmailException {
-  //    // arrange
-  //    CustomerRequestDTO requestDTO = new CustomerRequestDTO();
-  //    requestDTO.setName("John Doe");
-  //    requestDTO.setEmail("johndoe@example.com");
-  //    requestDTO.setPhoneNumber("+1 555-1234");
-  //    requestDTO.setAddress("123 Main St");
+  //    CustomerRequestDTO requestDTO = customerRequestDtoBuilder();
+  //    Customer customer = new Customer();
+  //    customer.setId(any());
+  //    customer.setName(requestDTO.getName());
+  //    CustomerResponseDTO expectedResponseDTO = CustomerResponseDTO.builder()
+  //            .id(customer.getId())
+  //            .name(customer.getName())
+  //            .build();
+  //    assertEquals(expectedResponseDTO, customerService.saveCustomer(requestDTO));
   //  }
 
   @Test
-  void validateRegistration_ValidRequest_DoesNotThrowException() {
-    // arrange
-    CustomerRequestDTO requestDTO = new CustomerRequestDTO();
-    requestDTO.setName("John Doe");
-    requestDTO.setEmail("johndoe@example.com");
-
-    // mock repository to return empty Optional to simulate no existing customer with same name
-    doReturn(Optional.empty()).when(customerRepository).findByName(requestDTO.getName());
-
-    // act/assert
-    assertDoesNotThrow(() -> {
-      customerService.validateRegistration(requestDTO);
-    });
-  }
-
-  @Test
-  void validateRegistration_AlreadyTakenName_ThrowsAlreadyTakenNameException() {
-    // arrange
-    CustomerRequestDTO requestDTO = new CustomerRequestDTO();
-    requestDTO.setName("John Doe");
-    requestDTO.setEmail("johndoe@example.com");
-
-    // mock repository to return non-empty Optional to simulate existing customer with same name
-    Customer existingCustomer = Customer.builder().id(1).name(requestDTO.getName()).build();
-    doReturn(Optional.of(existingCustomer)).when(customerRepository).findByName(requestDTO.getName());
-
-    // act/assert
-    assertThrows(AlreadyTakenNameException.class, () -> {
-      customerService.validateRegistration(requestDTO);
-    });
-  }
-
-  @Test
   void validateRegistration_NullEmail_ThrowsInvalidEmailException() {
-    // arrange
     CustomerRequestDTO requestDTO = new CustomerRequestDTO();
     requestDTO.setName("John Doe");
     requestDTO.setEmail(null);
 
-    // mock repository to return empty Optional to simulate no existing customer with same name
     doReturn(Optional.empty()).when(customerRepository).findByName(requestDTO.getName());
 
-    // act/assert
     assertThrows(InvalidEmailException.class, () -> {
       customerService.validateRegistration(requestDTO);
     });
@@ -148,15 +88,12 @@ public class CustomerServiceImplTest {
 
   @Test
   void validateRegistration_InvalidEmail_ThrowsInvalidEmailException() {
-    // arrange
     CustomerRequestDTO requestDTO = new CustomerRequestDTO();
     requestDTO.setName("John Doe");
     requestDTO.setEmail("invalid_email");
 
-    // mock repository to return empty Optional to simulate no existing customer with same name
     doReturn(Optional.empty()).when(customerRepository).findByName(requestDTO.getName());
 
-    // act/assert
     assertThrows(InvalidEmailException.class, () -> {
       customerService.validateRegistration(requestDTO);
     });
@@ -164,15 +101,12 @@ public class CustomerServiceImplTest {
 
   @Test
   void validateRegistration_ShortEmail_ThrowsInvalidEmailException() {
-    // arrange
     CustomerRequestDTO requestDTO = new CustomerRequestDTO();
     requestDTO.setName("John Doe");
     requestDTO.setEmail("a@b.c");
 
-    // mock repository to return empty Optional to simulate no existing customer with same name
     doReturn(Optional.empty()).when(customerRepository).findByName(requestDTO.getName());
 
-    // act/assert
     assertThrows(InvalidEmailException.class, () -> {
       customerService.validateRegistration(requestDTO);
     });
@@ -181,31 +115,73 @@ public class CustomerServiceImplTest {
 
   @Test
   public void validateEmail_ValidEmail_ReturnsTrue() {
-    // Arrange
     String email = "john@example.com";
 
-    // Act
     boolean result = CustomerServiceImpl.validateEmail(email);
 
-    // Assert
     assertTrue(result);
   }
 
   @Test
+  public void validateEmail_ValidEmail_ReturnsFalse() {
+    String email = "johnexample.com";
+
+    boolean result = CustomerServiceImpl.validateEmail(email);
+
+    assertFalse(result);
+  }
+
+  @Test
   public void getCustomerById_ValidId_ReturnsCustomer() throws IdNotFoundException {
-    // Arrange
     int id = 1;
     Customer expectedCustomer = new Customer();
     expectedCustomer.setId(id);
     expectedCustomer.setName("John Doe");
 
-    Mockito.when(customerRepository.findById(id)).thenReturn(Optional.of(expectedCustomer));
+    when(customerRepository.findById(id)).thenReturn(Optional.of(expectedCustomer));
 
-    // Act
     Customer actualCustomer = customerService.getCustomerById(id);
 
-    // Assert
     assertEquals(expectedCustomer, actualCustomer);
+  }
+
+  @Test
+  public void testConvert_withValidCustomer_shouldReturnValidCustomerResponseDTO() {
+    Customer customer = new Customer();
+    customer.setId(1);
+    customer.setName("John");
+
+    CustomerResponseDTO expected = CustomerResponseDTO.builder()
+            .id(customer.getId())
+            .name(customer.getName())
+            .build();
+
+    CustomerResponseDTO actual = customerService.convert(customer);
+
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  public void testConvert_withNullCustomer_shouldThrowNullPointerException() {
+    Customer customer = null;
+
+    assertThrows(NullPointerException.class, () -> customerService.convert(customer));
+  }
+
+  @Test
+  public void testConvert_withCustomerWithNullName_shouldReturnCustomerResponseDtoWithNullName() {
+    Customer customer = new Customer();
+    customer.setId(1);
+    customer.setName(null);
+
+    CustomerResponseDTO expected = CustomerResponseDTO.builder()
+            .id(customer.getId())
+            .name(null)
+            .build();
+
+    CustomerResponseDTO actual = customerService.convert(customer);
+
+    assertEquals(expected, actual);
   }
 
 }

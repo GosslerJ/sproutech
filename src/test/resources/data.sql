@@ -1,12 +1,12 @@
 DELETE FROM admins;
 
-INSERT INTO admins (id, username, password, email) VALUES
-    (1001, 'defaultUser1', '$2a$12$tEjxtMugROz2HudoFd0/v.D55KeANXifp25p3nL5uVDTZcstJu.l2', 'defaultUser1@email.com'),
-    (1002, 'defaultUser2', '$2a$12$tEjxtMugROz2HudoFd0/v.D55KeANXifp25p3nL5uVDTZcstJu.l2', 'defaultUser2@email.com'),
-    (1003, 'defaultUser3', '$2a$12$tEjxtMugROz2HudoFd0/v.D55KeANXifp25p3nL5uVDTZcstJu.l2', 'defaultUser3@email.com'),
-    (1004, 'defaultUser4', '$2a$12$tEjxtMugROz2HudoFd0/v.D55KeANXifp25p3nL5uVDTZcstJu.l2', 'defaultUser4@email.com'),
-    (1005, 'defaultUser5', '$2a$12$tEjxtMugROz2HudoFd0/v.D55KeANXifp25p3nL5uVDTZcstJu.l2', 'defaultUser5@email.com'),
-    (1006, 'defaultUser6', '$2a$12$tEjxtMugROz2HudoFd0/v.D55KeANXifp25p3nL5uVDTZcstJu.l2', 'defaultUser6@email.com');
+INSERT INTO admins (username, password, email) VALUES
+    ('defaultUser1', '$2a$12$tEjxtMugROz2HudoFd0/v.D55KeANXifp25p3nL5uVDTZcstJu.l2', 'defaultUser1@email.com'),
+    ('defaultUser2', '$2a$12$tEjxtMugROz2HudoFd0/v.D55KeANXifp25p3nL5uVDTZcstJu.l2', 'defaultUser2@email.com'),
+    ('defaultUser3', '$2a$12$tEjxtMugROz2HudoFd0/v.D55KeANXifp25p3nL5uVDTZcstJu.l2', 'defaultUser3@email.com'),
+    ('defaultUser4', '$2a$12$tEjxtMugROz2HudoFd0/v.D55KeANXifp25p3nL5uVDTZcstJu.l2', 'defaultUser4@email.com'),
+    ('defaultUser5', '$2a$12$tEjxtMugROz2HudoFd0/v.D55KeANXifp25p3nL5uVDTZcstJu.l2', 'defaultUser5@email.com'),
+    ('defaultUser6', '$2a$12$tEjxtMugROz2HudoFd0/v.D55KeANXifp25p3nL5uVDTZcstJu.l2', 'defaultUser6@email.com');
 
 INSERT INTO customers (name, contact_person, email, phone_number, zip_code, city, address) VALUES
     ('defaultCompany1', 'John Doe', 'defaultCompany1@email.com', '123456789', '1234', 'Budapest', 'Kossuth Lajos utca 1.'),
@@ -20,7 +20,6 @@ INSERT INTO orders (status, order_date, delivery_deadline, customer_id) VALUES
     ('NEW', '2023-04-01', '2023-05-02', 1),
     ('IN_PROGRESS', '2023-04-10', '2023-05-01', 2),
     ('READY', '2023-04-02', '2023-04-20', 3),
-    ('CANCELLED', '2023-04-03', '2023-04-18', 4),
     ('NEW', '2023-04-03', '2023-04-18', 4),
     ('IN_PROGRESS', '2023-04-05', '2023-04-15', 5),
     ('READY', '2023-04-01', '2023-04-17', 6);

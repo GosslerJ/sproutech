@@ -35,7 +35,14 @@ public class CustomerServiceImpl implements CustomerService {
             .country(reg.getCountry())
             .build();
     customerRepository.save(customer);
-    return new CustomerResponseDTO(customer.getId(), customer.getName());
+    return convert(customer); //new CustomerResponseDTO(customer.getId(), customer.getName());
+  }
+
+  public CustomerResponseDTO convert(Customer customer) {
+    return CustomerResponseDTO.builder()
+            .id(customer.getId())
+            .name(customer.getName())
+            .build();
   }
 
   @Override

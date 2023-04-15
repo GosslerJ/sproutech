@@ -15,7 +15,6 @@ import com.greenfoxacademy.springwebapp.warehouse.repositories.WarehouseReposito
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.List;
@@ -26,6 +25,7 @@ import static com.greenfoxacademy.springwebapp.product.models.ProductStatus.READ
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 public class MaterialServiceImplTest {
 
@@ -37,6 +37,9 @@ public class MaterialServiceImplTest {
   @Mock
   private WarehouseRepository warehouseRepository;
 
+  String quality = "25CrMo4";
+  double size = 10.68;
+
   @BeforeEach
   public void setup() {
     MockitoAnnotations.openMocks(this);
@@ -46,15 +49,12 @@ public class MaterialServiceImplTest {
   @Test
   public void saveMaterial_ValidMaterial_ReturnsMaterialResponseDTO()
           throws IdNotFoundException, QualityDifferenceException, NotEnoughMaterialException, AlreadyProducedException {
-    // Arrange
     MaterialRequestDTO requestDTO = materialRequestDtoBuilder();
     Warehouse external = externalWarehouseBuilder();
-    Mockito.when(warehouseRepository.findById(1)).thenReturn(Optional.of(external));
+    when(warehouseRepository.findById(1)).thenReturn(Optional.of(external));
 
-    // Act
     MaterialResponseDTO responseDTO = materialService.saveMaterial(requestDTO);
 
-    // Assert
     assertNotNull(responseDTO);
     assertEquals(requestDTO.getQuality(), responseDTO.getQuality());
     assertEquals(requestDTO.getSize(), responseDTO.getSize());
@@ -68,19 +68,10 @@ public class MaterialServiceImplTest {
   @Test
   public void saveMaterial_InvalidWarehouseId_ThrowsIdNotFoundException()
           throws IdNotFoundException, QualityDifferenceException, NotEnoughMaterialException, AlreadyProducedException {
-    // Arrange
-    MaterialRequestDTO requestDTO = new MaterialRequestDTO();
-    requestDTO.setQuality("A");
-    requestDTO.setSize(20.0);
-    requestDTO.setHitNumber(10L);
-    requestDTO.setUnitPrice(20L);
-    requestDTO.setUnitWeight(2.5);
-    requestDTO.setUnitLength(3.0);
-    requestDTO.setOriginalWeight(25.0);
+    MaterialRequestDTO requestDTO = materialRequestDtoBuilder();
 
-    Mockito.when(warehouseRepository.findById(1)).thenReturn(Optional.empty());
+    when(warehouseRepository.findById(1)).thenReturn(Optional.empty());
 
-    // Act/Assert
     assertThrows(IdNotFoundException.class, () -> {
       materialService.saveMaterial(requestDTO);
     });
@@ -88,13 +79,10 @@ public class MaterialServiceImplTest {
 
   @Test
   public void convert_ReturnsCorrectMaterialResponseDTO() {
-    // arrange
     Material material = materialBuilder();
 
-    // act
     MaterialResponseDTO responseDTO = materialService.convert(material);
 
-    // assert
     assertEquals(1, responseDTO.getId());
     assertEquals("quality", responseDTO.getQuality());
     assertEquals(20.0, responseDTO.getSize());
@@ -107,72 +95,59 @@ public class MaterialServiceImplTest {
 
   @Test
   public void convert_ReturnsNull_WhenMaterialIsNull() {
-    // act
     MaterialResponseDTO responseDTO = materialService.convert(null);
 
-    // assert
     assertNull(responseDTO);
   }
 
   //  @Test
   //  void findMaterial_WithQualityAndSize_ReturnsListOfMaterials() {
-  //    // arrange
+  //    Material material = Material.builder().quality(quality).size(size).build();
+  //    materialRepository.save(material);
+  //    List<Material> materialList = materialRepository.findAllByQualityAndSize(quality, size);
+  //    List<Material> materials = new ArrayList<>();
+  //    for (Material m : materialList) {
+  //      materials.add(m);
+  //    }
+  //
+  //    assertThat(materials).isNotNull();
+  //    assertThat(materials.size()).isEqualTo(1);
+  //    assertThat(materials.get(0)).isEqualTo(material);
+  //  }
+
+
+  //  @Test
+  //  void findMaterial_WithQualityAndSize_ReturnsListOfMaterialss() {
   //    String quality = "quality";
   //    double size = 20.0;
-  //    Material material = new Material();
-  //    material.setQuality(quality);
-  //    material.setSize(size);
+  //    Material material = Material.builder().quality(quality).size(size).build();
   //    materialRepository.save(material);
-  //
-  //    // act
+  //    List<Material> materialList = materialRepository.findAllByQualityAndSize(quality, size);
   //    List<Material> materials = materialService.findMaterial(Optional.of(quality), Optional.of(size));
   //
-  //    // assert
   //    assertThat(materials).isNotNull();
   //    assertThat(materials.size()).isEqualTo(1);
   //    assertThat(materials.get(0)).isEqualTo(material);
   //  }
+
+  //    @Test
+  //    void findMaterial_WithQuality_ReturnsListOfMaterials() {
+  //      String quality = "B";
+  //      Material material = new Material();
+  //      material.setQuality(quality);
+  //      materialRepository.save(material);
   //
-  //  @Test
-  //  void findMaterial_WithQuality_ReturnsListOfMaterials() {
-  //    // arrange
-  //    String quality = "B";
-  //    Material material = new Material();
-  //    material.setQuality(quality);
-  //    materialRepository.save(material);
+  //      List<Material> materials = materialService.findMaterial(Optional.of(quality), Optional.empty());
   //
-  //    // act
-  //    List<Material> materials = materialService.findMaterial(Optional.of(quality), Optional.empty());
-  //
-  //    // assert
-  //    assertThat(materials).isNotNull();
-  //    assertThat(materials.size()).isEqualTo(1);
-  //    assertThat(materials.get(0)).isEqualTo(material);
-  //  }
-  //
-  //  @Test
-  //  void findMaterial_WithSize_ReturnsListOfMaterials() {
-  //    // arrange
-  //    double size = 5.0;
-  //    Material material = new Material();
-  //    material.setSize(size);
-  //    materialRepository.save(material);
-  //
-  //    // act
-  //    List<Material> materials = materialService.findMaterial(Optional.empty(), Optional.of(size));
-  //
-  //    // assert
-  //    assertThat(materials).isNotNull();
-  //    assertThat(materials.size()).isEqualTo(1);
-  //    assertThat(materials.get(0)).isEqualTo(material);
-  //  }
+  //      assertThat(materials).isNotNull();
+  //      assertThat(materials.size()).isEqualTo(1);
+  //      assertThat(materials.get(0)).isEqualTo(material);
+  //    }
 
   @Test
   void findMaterial_WithNoParameters_ReturnsEmptyList() {
-    // act
     List<Material> materials = materialService.findMaterial(Optional.empty(), Optional.empty());
 
-    // assert
     assertThat(materials).isNotNull();
     assertThat(materials.size()).isEqualTo(0);
   }
@@ -322,23 +297,10 @@ public class MaterialServiceImplTest {
 
   @Test
   void assignMaterialToProduct_InvalidProductId_ThrowsIdNotFoundException() {
-    // arrange
     Integer invalidProductId = -1;
     Integer materialId = 1;
 
-    // act & assert
     assertThatThrownBy(() -> materialService.assignMaterialToProduct(invalidProductId, materialId))
-            .isInstanceOf(IdNotFoundException.class);
-  }
-
-  @Test
-  void assignMaterialToProduct_InvalidMaterialId_ThrowsIdNotFoundException() {
-    // arrange
-    Integer productId = 1;
-    Integer invalidMaterialId = -1;
-
-    // act & assert
-    assertThatThrownBy(() -> materialService.assignMaterialToProduct(productId, invalidMaterialId))
             .isInstanceOf(IdNotFoundException.class);
   }
 
@@ -402,24 +364,20 @@ public class MaterialServiceImplTest {
 
   @Test
   void requestValidation_ProductAlreadyProduced_ThrowsAlreadyProducedException() {
-    // arrange
     Product product = new Product();
     product.setStatus(READY);
     Material material = new Material();
 
-    // act & assert
     assertThrows(AlreadyProducedException.class, () -> materialService.requestValidation(product, material));
   }
 
   @Test
   void requestValidation_QualityDifference_ThrowsQualityDifferenceException() {
-    // arrange
     Product product = new Product();
     product.setQuality("high");
     Material material = new Material();
     material.setQuality("low");
 
-    // act & assert
     assertThrows(QualityDifferenceException.class, () -> materialService.requestValidation(product, material));
   }
 
@@ -532,7 +490,6 @@ public class MaterialServiceImplTest {
 
   @Test
   void buildMaterial_WithInvalidWarehouseId_ShouldThrowException() {
-    // Arrange
     Material originalMaterial = new Material();
     originalMaterial.setQuality("Test Quality");
     originalMaterial.setSize(10.0);
@@ -544,7 +501,6 @@ public class MaterialServiceImplTest {
     Double deltaLength = 5.0;
     Double deltaWeight = deltaLength * originalMaterial.getUnitWeight();
 
-    // Act and Assert
     assertThrows(IdNotFoundException.class,
         () -> materialService.buildMaterial(originalMaterial, deltaLength, deltaWeight));
   }

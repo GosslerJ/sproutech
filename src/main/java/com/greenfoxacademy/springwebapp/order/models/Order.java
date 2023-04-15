@@ -20,7 +20,7 @@ public class Order {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
-  @Column(columnDefinition = "enum('new', 'in_progress', 'ready', 'cancelled')")
+  @Column(columnDefinition = "enum('new', 'in_progress', 'ready')")
   private OrderStatus status;
   private LocalDate orderDate;
   private LocalDate deliveryDeadline;
