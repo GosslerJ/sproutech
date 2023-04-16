@@ -50,7 +50,7 @@ public class CustomerController {
     }
   }
 
-  @Operation(summary = "Get Customer", description = "List customer by id")
+  @Operation(summary = "Get Customer", description = "List orders by customer by id")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "successful operation",
                   content = @Content(mediaType = "application/json",

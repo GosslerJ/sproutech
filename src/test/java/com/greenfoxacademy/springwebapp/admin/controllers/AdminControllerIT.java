@@ -1,4 +1,4 @@
-package com.greenfoxacademy.springwebapp.registration.controllers;
+package com.greenfoxacademy.springwebapp.admin.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greenfoxacademy.springwebapp.admin.repositories.AdminRepository;
@@ -36,7 +36,7 @@ class AdminControllerIT {
 
   @Test
   public void register_should_returnHttp201_when_registrationIsSuccessful() throws Exception {
-    String username = "newUser1";
+    String username = "defaultUser1001";
     AdminRequestDTO reg = new AdminRequestDTO(username, "password");
 
     mockMvc.perform(post("/admin")
@@ -47,35 +47,6 @@ class AdminControllerIT {
             .andExpect(jsonPath("$.id").isNumber())
             .andExpect(jsonPath("$.username", is(username)))
             .andExpect(jsonPath("$.password").doesNotExist());
-  }
-
-  @Test
-  public void register_should_returnHttp409_when_usernameIsAlreadyTaken() throws Exception {
-    AdminRequestDTO reg = new AdminRequestDTO("defaultUser1", "password");
-
-    mockMvc.perform(post("/admin")
-                    .contentType(APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(reg)))
-            .andExpect(status().is(409))
-            .andExpect(content().contentType(APPLICATION_JSON))
-            .andExpect(jsonPath("$.status", is("error")))
-            .andExpect(jsonPath("$.message", is("Username is already taken.")));
-  }
-
-  @Test
-  public void register_should_returnHttp406_when_passwordIsLess_than8Character() throws Exception {
-    String username = "newUser2";
-    String password = "pass";
-
-    AdminRequestDTO reg = new AdminRequestDTO(username, password);
-
-    mockMvc.perform(post("/admin")
-                    .contentType(APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(reg)))
-            .andExpect(status().is(406))
-            .andExpect(content().contentType(APPLICATION_JSON))
-            .andExpect(jsonPath("$.status", is("error")))
-            .andExpect(jsonPath("$.message", is("Password must be at least 8 characters.")));
   }
 
   @Test
@@ -93,7 +64,7 @@ class AdminControllerIT {
 
   @Test
   public void register_should_returnHttp400_when_passwordIsMissing() throws Exception {
-    String username = "newUser3";
+    String username = "defaultUser1003";
 
     AdminRequestDTO reg = new AdminRequestDTO(username, null);
 
@@ -131,6 +102,35 @@ class AdminControllerIT {
             .andExpect(content().contentType(APPLICATION_JSON))
             .andExpect(jsonPath("$.status", is("error")))
             .andExpect(jsonPath("$.message", is("Username and password are required.")));
+  }
+
+  @Test
+  public void register_should_returnHttp406_when_passwordIsLess_than8Character() throws Exception {
+    String username = "defaultUser1002";
+    String password = "pass";
+
+    AdminRequestDTO reg = new AdminRequestDTO(username, password);
+
+    mockMvc.perform(post("/admin")
+                    .contentType(APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(reg)))
+            .andExpect(status().is(406))
+            .andExpect(content().contentType(APPLICATION_JSON))
+            .andExpect(jsonPath("$.status", is("error")))
+            .andExpect(jsonPath("$.message", is("Password must be at least 8 characters.")));
+  }
+
+  @Test
+  public void register_should_returnHttp409_when_usernameIsAlreadyTaken() throws Exception {
+    AdminRequestDTO reg = new AdminRequestDTO("defaultUser1", "password");
+
+    mockMvc.perform(post("/admin")
+                    .contentType(APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(reg)))
+            .andExpect(status().is(409))
+            .andExpect(content().contentType(APPLICATION_JSON))
+            .andExpect(jsonPath("$.status", is("error")))
+            .andExpect(jsonPath("$.message", is("Username is already taken.")));
   }
 
 }

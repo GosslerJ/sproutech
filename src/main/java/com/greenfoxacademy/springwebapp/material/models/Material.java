@@ -1,9 +1,10 @@
 package com.greenfoxacademy.springwebapp.material.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.greenfoxacademy.springwebapp.product.models.Product;
-import lombok.*;
 import com.greenfoxacademy.springwebapp.warehouse.models.Warehouse;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -16,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "materials")
+@JsonIgnoreProperties(value = {"quantity"})
 public class Material {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +40,12 @@ public class Material {
   private Warehouse warehouse;
 
   public Integer getQuantity() {
-    return (int) Math.floor(originalWeight / (unitWeight * unitLength));
+    if (originalWeight != null && unitWeight != null && unitLength != null) {
+      return (int) Math.floor(originalWeight / (unitWeight * unitLength));
+    } else {
+      return null;
+    }
   }
+
 
 }

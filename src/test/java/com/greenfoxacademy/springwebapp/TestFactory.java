@@ -6,34 +6,23 @@ import com.greenfoxacademy.springwebapp.material.models.MaterialRequestDTO;
 import com.greenfoxacademy.springwebapp.product.models.Product;
 import com.greenfoxacademy.springwebapp.warehouse.models.Warehouse;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static com.greenfoxacademy.springwebapp.warehouse.models.Location.EXTERNAL;
 import static com.greenfoxacademy.springwebapp.warehouse.models.Location.INTERNAL;
 
 public class TestFactory {
   public static String QUALITY = "quality";
   public static double SIZE = 20.0;
-  public static int QUANTITY = 3;
-  public static double UNIT_LENGTH = 2.0;
+  public static int QUANTITY = 10;
+  public static double UNIT_LENGTH = 6.0;
   public static double UNIT_WEIGHT = 1.0;
-  public static double ORIGINAL_LENGTH = 6.0;
-
-  public static final Material materialBuilder() {
-    return Material.builder()
-            .id(1)
-            .quality("quality")
-            .size(20.0)
-            .hitNumber(5L)
-            .unitLength(10.0)
-            .unitWeight(5.0)
-            .originalLength(500.0)
-            .originalWeight(250.0)
-            .build();
-  }
+  public static double ORIGINAL_LENGTH = 60.0;
 
   public static final CustomerRequestDTO customerRequestDtoBuilder() {
     return CustomerRequestDTO.builder()
             .name("Company")
-            .email("johndoe@com")
             .contactPerson("John Doe")
             .email("johndoe@email.com")
             .phoneNumber("+1 555-1234")
@@ -57,17 +46,51 @@ public class TestFactory {
             .build();
   }
 
+  public static final Material materialBuilder() {
+    return Material.builder()
+            .id(1)
+            .quality("quality")
+            .size(20.0)
+            .hitNumber(5L)
+            .unitLength(10.0)
+            .unitWeight(5.0)
+            .originalLength(500.0)
+            .originalWeight(250.0)
+            .build();
+  }
+
   public static final MaterialRequestDTO materialRequestDtoBuilder() {
     return MaterialRequestDTO.builder()
             .quality("quality")
             .size(20.0)
             .hitNumber(10L)
-            .unitLength(10.0)
             .unitPrice(20L)
+            .unitLength(10.0)
             .unitWeight(2.5)
             .unitLength(3.0)
             .originalWeight(25.0)
             .build();
+  }
+
+  public static List<Material> materialListBuilder() {
+    return Arrays.asList(
+            Material.builder()
+                    .quality("25CrMo4")
+                    .size(10.68)
+                    .hitNumber(1L)
+                    .originalWeight(1.0)
+                    .unitWeight(1.0)
+                    .unitLength(1.0)
+                    .build(),
+            Material.builder()
+                    .quality("25CrMo4")
+                    .size(10.68)
+                    .hitNumber(1L)
+                    .originalWeight(1.0)
+                    .unitWeight(1.0)
+                    .unitLength(1.0)
+                    .build()
+    );
   }
 
   public static final Material transferMaterialBuilder() {

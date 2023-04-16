@@ -1,4 +1,4 @@
-package com.greenfoxacademy.springwebapp.registration.controllers;
+package com.greenfoxacademy.springwebapp.admin.controllers;
 
 import com.greenfoxacademy.springwebapp.admin.controllers.AdminController;
 import com.greenfoxacademy.springwebapp.common.exceptions.AlreadyTakenNameException;
