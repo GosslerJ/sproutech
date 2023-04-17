@@ -1,14 +1,17 @@
 package com.greenfoxacademy.springwebapp;
 
-import com.greenfoxacademy.springwebapp.customer.models.CustomerRequestDTO;
+import com.greenfoxacademy.springwebapp.customer.models.Customer;
 import com.greenfoxacademy.springwebapp.material.models.Material;
 import com.greenfoxacademy.springwebapp.material.models.MaterialRequestDTO;
+import com.greenfoxacademy.springwebapp.order.models.OrderRequestDTO;
 import com.greenfoxacademy.springwebapp.product.models.Product;
 import com.greenfoxacademy.springwebapp.warehouse.models.Warehouse;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.greenfoxacademy.springwebapp.product.models.ProductStatus.NEW;
 import static com.greenfoxacademy.springwebapp.warehouse.models.Location.EXTERNAL;
 import static com.greenfoxacademy.springwebapp.warehouse.models.Location.INTERNAL;
 
@@ -20,9 +23,25 @@ public class TestFactory {
   public static double UNIT_WEIGHT = 1.0;
   public static double ORIGINAL_LENGTH = 60.0;
 
-  public static final CustomerRequestDTO customerRequestDtoBuilder() {
-    return CustomerRequestDTO.builder()
-            .name("Company")
+  public static final OrderRequestDTO quickOrderRequestDTO() {
+    return OrderRequestDTO.builder()
+            .customerId(1001)
+            .orderDate(LocalDate.now())
+            .deliveryDeadline(LocalDate.now().plusDays(3))
+            .build();
+  }
+
+  public static final OrderRequestDTO quickOrderFalseRequestDTO() {
+    return OrderRequestDTO.builder()
+            .customerId(0)
+            .orderDate(LocalDate.now())
+            .deliveryDeadline(LocalDate.now().plusDays(3))
+            .build();
+  }
+
+  public static final Customer orderCustomerBuilder() {
+    return Customer.builder()
+            .name("OrderCustomer")
             .contactPerson("John Doe")
             .email("johndoe@email.com")
             .phoneNumber("+1 555-1234")
@@ -30,18 +49,6 @@ public class TestFactory {
             .zipCode("12345")
             .city("Anytown")
             .address("123 Main St")
-            .country("US")
-            .build();
-  }
-
-  public static final CustomerRequestDTO customerWithInvalidEmail() {
-    return CustomerRequestDTO.builder()
-            .name("John Doe")
-            .email("johndoe@.com")
-            .phoneNumber("+1 555-1234")
-            .address("123 Main St")
-            .city("Anytown")
-            .zipCode("12345")
             .country("US")
             .build();
   }
@@ -118,6 +125,18 @@ public class TestFactory {
             .quantity(1)
             .length(10.0)
             .quality("quality")
+            .status(NEW)
+            .build();
+  }
+
+  public static final Product orderProductBuilder() {
+    return Product.builder()
+            .id(2)
+            .name("Product 1")
+            .size(10.0)
+            .quality("quality")
+            .quantity(1)
+            .length(10.0)
             .build();
   }
 

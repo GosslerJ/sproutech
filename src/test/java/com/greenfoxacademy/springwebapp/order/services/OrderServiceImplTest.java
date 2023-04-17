@@ -138,29 +138,26 @@ public class OrderServiceImplTest {
     assertTrue(result.containsAll(orders));
   }
 
-  //  @Test
-  //  public void testFilterOrdersByDeliveryDeadline_withValidDays_shouldReturnFilteredOrders() {
-  //    // Arrange
-  //    List<Order> orders = Arrays.asList(
-  //            order.builder().id(1001).status(NEW).orderDate(LocalDate.now()).deliveryDeadline(LocalDate.now()
-  //            .plusDays(100)).build(),
-  //            order.builder().id(1002).status(READY).orderDate(LocalDate.now()).deliveryDeadline(LocalDate.now()
-  //            .plusDays(3)).build(),
-  //            order.builder().id(1003).status(IN_PROGRESS).orderDate(LocalDate.now()).deliveryDeadline(LocalDate.now()
-  //            .plusDays(3)).build()
-  //    );
-  //    when(orderRepository
-  //            .findAllByDeliveryDeadlineLessThanEqualAndStatusIn(LocalDate.now().plusDays(5),
-  //            Arrays.asList(NEW, IN_PROGRESS)))
-  //            .thenReturn(orders.subList(0, 2));
+  //    @Test
+  //    public void testFilterOrdersByDeliveryDeadline_withValidDays_shouldReturnFilteredOrders() {
+  //      List<Order> orders = Arrays.asList(
+  //              order.builder().id(1001).status(NEW).orderDate(LocalDate.now()).deliveryDeadline(LocalDate.now()
+  //              .plusDays(100)).build(),
+  //              order.builder().id(1002).status(READY).orderDate(LocalDate.now()).deliveryDeadline(LocalDate.now()
+  //              .plusDays(3)).build(),
+  //              order.builder().id(1003).status(IN_PROGRESS).orderDate(LocalDate.now())
+  //              .deliveryDeadline(LocalDate.now().plusDays(3)).build()
+  //      );
+  //      when(orderRepository
+  //              .findAllByDeliveryDeadlineLessThanEqualAndStatusIn(LocalDate.now().plusDays(5),
+  //              Arrays.asList(NEW, IN_PROGRESS)))
+  //              .thenReturn(orders.subList(0, 2));
   //
-  //    // Act
-  //    List<Order> result = orderService.filterOrdersByDeliveryDeadline(100);
+  //      List<Order> result = orderService.filterOrdersByDeliveryDeadline(100);
   //
-  //    // Assert
-  //    assertEquals(1, result.size());
-  //    assertTrue(result.containsAll(orders.subList(0, 2)));
-  //  }
+  //      assertEquals(1, result.size());
+  //      assertTrue(result.containsAll(orders.subList(0, 2)));
+  //    }
 
   @Test
   public void testFilterOrdersByDeliveryDeadline_withValidDays_shouldReturnEmptyList() {

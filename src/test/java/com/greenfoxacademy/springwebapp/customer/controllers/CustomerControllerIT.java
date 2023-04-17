@@ -47,7 +47,7 @@ public class CustomerControllerIT {
   public void register_shouldReturn201() throws Exception {
     CustomerRequestDTO expectedRequestDTO = new CustomerRequestDTO();
     expectedRequestDTO.setName("defaultCompany1001");
-    expectedRequestDTO.setEmail("johndoe@example.com"); // Add a valid email address
+    expectedRequestDTO.setEmail("johndoe@example.com");
 
     MvcResult mvcResult = mockMvc.perform(post("/api/customer")
                     .contentType(MediaType.APPLICATION_JSON)
