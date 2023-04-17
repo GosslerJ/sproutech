@@ -29,14 +29,6 @@ public class CustomerServiceImplTest {
     customerService = new CustomerServiceImpl(customerRepository);
   }
 
-  //      @Test
-  //      public void saveCustomer_ValidInput_CustomerSaved() throws AlreadyTakenNameException, InvalidEmailException {
-  //        doNothing().when(customerService).validateRegistration(any());
-  //        CustomerRequestDTO requestDTO = customerRequestDtoBuilder();
-  //        CustomerResponseDTO responseDTO = customerService.saveCustomer(requestDTO);
-  //        assertNotNull(responseDTO);
-  //      }
-
   @Test
   public void saveCustomer_DuplicateName_ThrowsAlreadyTakenNameException() {
     CustomerRequestDTO requestDTO = new CustomerRequestDTO();
@@ -49,29 +41,6 @@ public class CustomerServiceImplTest {
       customerService.saveCustomer(requestDTO);
     });
   }
-
-  //  @Test
-  //  public void saveCustomer_InvalidEmail_ThrowsInvalidEmailException() {
-  //    CustomerRequestDTO requestDTO = customerWithInvalidEmail();
-  //
-  //    assertThrows(InvalidEmailException.class, () -> {
-  //      customerService.saveCustomer(requestDTO);
-  //    });
-  //  }
-
-  //  @Test
-  //  public void saveCustomer_ValidInput_ReturnsCorrectResponseDTO()
-  //          throws AlreadyTakenNameException, InvalidEmailException {
-  //    CustomerRequestDTO requestDTO = customerRequestDtoBuilder();
-  //    Customer customer = new Customer();
-  //    customer.setId(any());
-  //    customer.setName(requestDTO.getName());
-  //    CustomerResponseDTO expectedResponseDTO = CustomerResponseDTO.builder()
-  //            .id(customer.getId())
-  //            .name(customer.getName())
-  //            .build();
-  //    assertEquals(expectedResponseDTO, customerService.saveCustomer(requestDTO));
-  //  }
 
   @Test
   void validateRegistration_NullEmail_ThrowsInvalidEmailException() {

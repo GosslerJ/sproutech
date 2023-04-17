@@ -1,6 +1,5 @@
 package com.greenfoxacademy.springwebapp;
 
-import com.greenfoxacademy.springwebapp.customer.models.Customer;
 import com.greenfoxacademy.springwebapp.material.models.Material;
 import com.greenfoxacademy.springwebapp.material.models.MaterialRequestDTO;
 import com.greenfoxacademy.springwebapp.order.models.OrderRequestDTO;
@@ -13,7 +12,6 @@ import java.util.List;
 
 import static com.greenfoxacademy.springwebapp.product.models.ProductStatus.NEW;
 import static com.greenfoxacademy.springwebapp.warehouse.models.Location.EXTERNAL;
-import static com.greenfoxacademy.springwebapp.warehouse.models.Location.INTERNAL;
 
 public class TestFactory {
   public static String QUALITY = "quality";
@@ -36,20 +34,6 @@ public class TestFactory {
             .customerId(0)
             .orderDate(LocalDate.now())
             .deliveryDeadline(LocalDate.now().plusDays(3))
-            .build();
-  }
-
-  public static final Customer orderCustomerBuilder() {
-    return Customer.builder()
-            .name("OrderCustomer")
-            .contactPerson("John Doe")
-            .email("johndoe@email.com")
-            .phoneNumber("+1 555-1234")
-            .taxNumber("123456")
-            .zipCode("12345")
-            .city("Anytown")
-            .address("123 Main St")
-            .country("US")
             .build();
   }
 
@@ -144,16 +128,6 @@ public class TestFactory {
     return Warehouse.builder()
             .id(1)
             .name(EXTERNAL)
-            .address("123 Main St")
-            .city("Anytown")
-            .zipCode("12345")
-            .build();
-  }
-
-  public static final Warehouse internalWarehouseBuilder() {
-    return Warehouse.builder()
-            .id(1)
-            .name(INTERNAL)
             .address("123 Main St")
             .city("Anytown")
             .zipCode("12345")

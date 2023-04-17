@@ -63,4 +63,5 @@ public class LoginServiceImplTest {
 
     assertThrows(LoginFailureException.class, () -> loginService.login(loginDTO));
   }
+
 }
