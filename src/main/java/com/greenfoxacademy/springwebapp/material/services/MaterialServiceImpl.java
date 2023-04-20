@@ -137,6 +137,9 @@ public class MaterialServiceImpl implements MaterialService {
     if (product.getStatus() == READY || product.getStatus() == DELIVERED) {
       throw new AlreadyProducedException();
     }
+    if (material.getFrog() != null && !material.getFrog().isEmpty()) {
+      throw new AlreadyProducedException();
+    }
     if (!product.getQuality().equals(material.getQuality())) {
       throw new QualityDifferenceException();
     }

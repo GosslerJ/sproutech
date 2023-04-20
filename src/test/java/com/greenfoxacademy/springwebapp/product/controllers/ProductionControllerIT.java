@@ -88,7 +88,7 @@ public class ProductionControllerIT {
   public void testProductionWithQualityDifferenceShouldReturn406() throws Exception {
     MvcResult mvcResult = mockMvc.perform(put("/api/production")
                     .param("productId", "1003")
-                    .param("materialId", "1001"))
+                    .param("materialId", "1004"))
             .andExpect(status().isNotAcceptable())
             .andReturn();
 

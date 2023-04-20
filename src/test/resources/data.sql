@@ -35,7 +35,7 @@ INSERT INTO warehouses (id, name, address, zip_code, city) VALUES
     (2, 'internal', 'defaultAddress2', '4321', 'Szeged');
 
 INSERT INTO materials (id, quality, size, hit_number,unit_price, unit_weight, unit_length, original_weight, original_length, remaining_weight, remaining_length, warehouse_id) VALUES
-    (1001, '25CrMo4', 10.68, 204073, 938, 0.703, 3.08, 5000, 6000, 5000, 6000, 1),
+    (1001, '25CrMo4', 10.68, 204073, 938, 0.703, 3.08, 5000, 6000, 5000, 6000, 2),
     (1002, '21CrMoV57', 14.6, 6465130005, 1462, 1.3135, 4.08, 8000, 1200, 8000, 1200, 1),
     (1003, '42CrMo4', 18.18, 578000, 952, 1.314, 3.07, 1300, 1000, 1300, 1000, 1),
     (1004, '25CrMo4', 10.68, 46433, 490, 1.988, 3.06, 4800, 2400, 4800, 2400, 1),
