@@ -1,4 +1,4 @@
-# A company that produces screws and nuts
+# A company producing screws and nuts
 
 ## Description
 
@@ -42,7 +42,7 @@
 ## Link
 * [API Spec](http://localhost:8080/swagger-ui/index.html)
 
-
+##
 
 # Csavarokat és anyákat gyártó vállalkozás
 
