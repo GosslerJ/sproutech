@@ -27,7 +27,7 @@ public class Product {
   @Column(name = "product_version_to")
   private Integer productVersionTo;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.EAGER, orphanRemoval = true)
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", orphanRemoval = true)
   private Set<Package> packages;
 
 }

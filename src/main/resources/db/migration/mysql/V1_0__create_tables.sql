@@ -19,7 +19,8 @@ CREATE TABLE packages (
   uuid VARCHAR(255),
   package_code VARCHAR(255),
   package_type VARCHAR(255),
-  product_id INTEGER REFERENCES products(id)
+  product_id INTEGER NOT NULL,
+  FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
 CREATE TABLE levels (
