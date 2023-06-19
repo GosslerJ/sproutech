@@ -3,6 +3,7 @@ package com.greenfoxacademy.springwebapp.config.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -28,6 +29,6 @@ public class Product {
   private Integer productVersionTo;
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", orphanRemoval = true)
-  private Set<Package> packages;
+  private List<Package> packages;
 
 }

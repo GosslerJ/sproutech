@@ -8,11 +8,11 @@ import java.util.NoSuchElementException;
 public interface ProductService {
   ProductsDTO findAll();
 
-  ProductDTO findById(Long id);
+  ProductDTO findById(Integer id);
 
   ProductDTO save(ProductDTO productDTO);
 
-  ProductDTO updateProduct(Long id, ProductDTO productDTO) throws NoSuchElementException;
+  ProductDTO updateProduct(Integer id, ProductDTO productDTO) throws NoSuchElementException;
 
-  void deleteProduct(Long id) throws NoSuchElementException;
+  void deleteProduct(Integer id) throws NoSuchElementException;
 }

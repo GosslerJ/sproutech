@@ -1,5 +1,6 @@
 package com.greenfoxacademy.springwebapp.config.services;
 
+import com.greenfoxacademy.springwebapp.config.models.Package;
 import com.greenfoxacademy.springwebapp.config.models.Product;
 import com.greenfoxacademy.springwebapp.config.models.ProductDTO;
 import com.greenfoxacademy.springwebapp.config.models.ProductsDTO;
@@ -25,11 +26,11 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public ProductDTO findById(Long id) throws NoSuchElementException {
+  public ProductDTO findById(Integer id) throws NoSuchElementException {
     return convert(findProductById(id));
   }
 
-  private Product findProductById(Long id) throws NoSuchElementException {
+  private Product findProductById(Integer id) throws NoSuchElementException {
     return productRepository.findById(id).orElseThrow(NoSuchElementException::new);
   }
 
@@ -40,25 +41,23 @@ public class ProductServiceImpl implements ProductService {
             .productVersionFrom(productDTO.getProductVersionFrom())
             .productVersionTo(productDTO.getProductVersionTo())
             .build();
-    productRepository.save(product); // TODO: add other fields
+    productRepository.save(product);
     return convert(product);
   }
 
   @Override
-  public ProductDTO updateProduct(Long id, ProductDTO productDTO) throws NoSuchElementException {
+  public ProductDTO updateProduct(Integer id, ProductDTO productDTO) throws NoSuchElementException {
     Product product = findProductById(id);
-    Product updatedProduct = Product.builder()
-            .id(product.getId())
-            .code(productDTO.getCode())
-            .productVersionFrom(productDTO.getProductVersionFrom())
-            .productVersionTo(productDTO.getProductVersionTo())
-            .build();
-    productRepository.save(updatedProduct);
-    return convert(updatedProduct);
+    product.setId(id);
+    product.setCode(productDTO.getCode());
+    product.setProductVersionFrom(productDTO.getProductVersionFrom());
+    product.setProductVersionTo(productDTO.getProductVersionTo());
+    productRepository.save(product);
+    return convert(product);
   }
 
   @Override
-  public void deleteProduct(Long id) throws NoSuchElementException {
+  public void deleteProduct(Integer id) throws NoSuchElementException {
     try {
       productRepository.deleteById(id);
     } catch (EmptyResultDataAccessException e) {
@@ -66,12 +65,31 @@ public class ProductServiceImpl implements ProductService {
     }
   }
 
+//  private ProductDTO convert(Product product) {
+//    ProductDTO productDTO = ProductDTO.builder()
+//            .id(product.getId())
+//            .code(product.getCode())
+//            .productVersionFrom(product.getProductVersionFrom())
+//            .productVersionTo(product.getProductVersionTo())
+//            .packageCf(product.)
+//            .build();
+//    productDTO.setPackageCf(product.getId().);
+//    return productDTO;
+//  }
+
   private ProductDTO convert(Product product) {
     ProductDTO productDTO = ProductDTO.builder()
+            .id(product.getId())
             .code(product.getCode())
             .productVersionFrom(product.getProductVersionFrom())
             .productVersionTo(product.getProductVersionTo())
             .build();
+
+    if (product.getPackages() != null && !product.getPackages().isEmpty()) {
+      Package packageCf = product.getPackages().get(0); // Csak az első csomagot másoljuk át (az igényeid szerint módosítható)
+      productDTO.setPackageCf(packageCf.getPackageCode());
+    }
+
     return productDTO;
   }
 
