@@ -46,11 +46,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return ResponseEntity.status(400).body(response);
   }
 
-  @ExceptionHandler(InvalidEmailException.class)
-  public ResponseEntity<ErrorDTO> handle(InvalidEmailException ex) {
-    ErrorDTO response = new ErrorDTO(ex.getMessage());
-    return ResponseEntity.status(400).body(response);
-  }
+//  @ExceptionHandler(InvalidEmailException.class)
+//  public ResponseEntity<ErrorDTO> handle(InvalidEmailException ex) {
+//    ErrorDTO response = new ErrorDTO(ex.getMessage());
+//    return ResponseEntity.status(400).body(response);
+//  }
 
   @ExceptionHandler(LoginFailureException.class)
   public ResponseEntity<StatusResponseDTO> handle(LoginFailureException ex) {
@@ -60,18 +60,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return ResponseEntity.status(401).body(statusResponseDTO);
   }
 
-  @ExceptionHandler(IdNotFoundException.class)
-  public ResponseEntity<ErrorDTO> handle(IdNotFoundException ex) {
-    ErrorDTO response = new ErrorDTO(ex.getMessage());
-    return ResponseEntity.status(404).body(response);
-  }
+//  @ExceptionHandler(IdNotFoundException.class)
+//  public ResponseEntity<ErrorDTO> handle(IdNotFoundException ex) {
+//    ErrorDTO response = new ErrorDTO(ex.getMessage());
+//    return ResponseEntity.status(404).body(response);
+//  }
 
-  @ExceptionHandler({NotEnoughMaterialException.class, AlreadyProducedException.class,
-          QualityDifferenceException.class})
-  public ResponseEntity<ErrorDTO> handle(RuntimeException ex) {
-    ErrorDTO response = new ErrorDTO(ex.getMessage());
-    return ResponseEntity.status(406).body(response);
-  }
+//  @ExceptionHandler({NotEnoughMaterialException.class, AlreadyProducedException.class,
+//          QualityDifferenceException.class})
+//  public ResponseEntity<ErrorDTO> handle(RuntimeException ex) {
+//    ErrorDTO response = new ErrorDTO(ex.getMessage());
+//    return ResponseEntity.status(406).body(response);
+//  }
 
   public List<String> collectErrorMessages(MethodArgumentNotValidException ex) {
     return ex.getBindingResult().getFieldErrors().stream()

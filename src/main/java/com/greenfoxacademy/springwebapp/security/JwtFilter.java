@@ -41,7 +41,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-      throws ServletException, IOException, ResponseStatusException {
+          throws ServletException, IOException, ResponseStatusException {
     if (shouldNotFilter(request)) {
       filterChain.doFilter(request, response);
       return;
@@ -63,7 +63,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
   private void setAuthToSecurityContext(String jwt) {
     Authentication authentication =
-        new UsernamePasswordAuthenticationToken(getAdminFromToken(jwt, jwtSystemKeys.getKey()), null, null);
+            new UsernamePasswordAuthenticationToken(getAdminFromToken(jwt, jwtSystemKeys.getKey()), null, null);
     SecurityContextHolder.getContext().setAuthentication(authentication);
   }
 
@@ -72,7 +72,7 @@ public class JwtFilter extends OncePerRequestFilter {
       response.setStatus(401);
       response.setContentType("application/json");
       response.getOutputStream()
-          .println(objectMapper.writeValueAsString(new ErrorDTO("Authentication token is invalid!")));
+              .println(objectMapper.writeValueAsString(new ErrorDTO("Authentication token is invalid!")));
     } catch (Exception e) {
       System.err.println("Unable to send `Authentication token is invalid!` error");
     }
@@ -83,7 +83,7 @@ public class JwtFilter extends OncePerRequestFilter {
       response.setStatus(401);
       response.setContentType("application/json");
       response.getOutputStream()
-          .println(objectMapper.writeValueAsString(new ErrorDTO("No authentication token is provided!")));
+              .println(objectMapper.writeValueAsString(new ErrorDTO("No authentication token is provided!")));
     } catch (Exception e) {
       System.err.println("Unable to send `No authentication token is provided!` error");
     }
@@ -91,11 +91,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
   private Admin getAdminFromToken(String jwt, SecretKey secretKey) throws JwtException, NoSuchElementException {
     Claims claims = Jwts
-        .parserBuilder()
-        .setSigningKey(secretKey)
-        .build()
-        .parseClaimsJws(jwt)
-        .getBody();
+            .parserBuilder()
+            .setSigningKey(secretKey)
+            .build()
+            .parseClaimsJws(jwt)
+            .getBody();
     if (claims.getExpiration().before(new Date())) throw new RuntimeException("Token is expired.");
     String username = String.valueOf(claims.get("username"));
     Optional<Admin> admin = adminService.findByUsername(username);

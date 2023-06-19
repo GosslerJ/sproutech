@@ -1,86 +1,84 @@
-CREATE TABLE IF NOT EXISTS admins (
-    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(100) UNIQUE NOT NULL,
-    password VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL
+-- Create products table
+CREATE TABLE products (
+id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  product_code VARCHAR(255),
+  product_version_from INTEGER,
+  product_version_to INTEGER
 );
 
-ALTER TABLE admins ADD CONSTRAINT id UNIQUE (id);
-
-CREATE TABLE IF NOT EXISTS customers (
-  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  name VARCHAR(255) NOT NULL,
-  contact_person VARCHAR(255),
-  email VARCHAR(255),
-  phone_number VARCHAR(20),
-  tax_number VARCHAR(20),
-  zip_code VARCHAR(10),
-  city VARCHAR(255),
-  address VARCHAR(255),
-  country VARCHAR(255)
+-- Create packages table
+CREATE TABLE packages (
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  uuid VARCHAR(255),
+  package_code VARCHAR(255),
+  package_name VARCHAR(255),
+  package_type VARCHAR(255),
+  product_id INTEGER REFERENCES products (id)
 );
 
-CREATE TABLE IF NOT EXISTS orders (
-    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    status ENUM('new', 'in_progress', 'ready') NOT NULL,
-    order_date DATE,
-    delivery_deadline DATE,
-    delivery_date DATE,
-    delivery_number BIGINT,
-    customer_id INT NOT NULL,
-    FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE
+-- Create levels table
+CREATE TABLE levels (
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  level_code VARCHAR(255)
 );
 
-CREATE TABLE IF NOT EXISTS warehouses (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  name ENUM('external', 'internal', 'bag') NOT NULL,
-  zip_code VARCHAR(255) NOT NULL,
-  city VARCHAR(255) NOT NULL,
-  address VARCHAR(255) NOT NULL
+-- Create covers table
+CREATE TABLE covers (
+  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  cover_code VARCHAR(255),
+  is_mandatory BOOLEAN,
+  is_premium_free BOOLEAN
 );
 
-CREATE TABLE IF NOT EXISTS materials (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  quality VARCHAR(255) NOT NULL,
-  size DOUBLE NOT NULL,
-  hit_number BIGINT NOT NULL,
-  unit_price BIGINT,
-  unit_weight DOUBLE NOT NULL,
-  unit_length DOUBLE NOT NULL,
-  original_weight DOUBLE,
-  remaining_weight DOUBLE,
-  original_length DOUBLE,
-  remaining_length DOUBLE,
-  updated_at DATE DEFAULT (CURRENT_DATE),
-  warehouse_id INT DEFAULT 1
+-- Create perils table
+CREATE TABLE perils (
+  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  peril_code VARCHAR(255),
+  uuid VARCHAR(255),
+  cover_id INTEGER REFERENCES covers (id)
 );
 
-ALTER TABLE materials ADD CONSTRAINT FK1 FOREIGN KEY (warehouse_id) REFERENCES warehouses(id);
-
-CREATE TABLE IF NOT EXISTS products (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  status ENUM('new', 'in_progress', 'ready', 'delivered') NOT NULL,
-  name VARCHAR(255) NOT NULL,
-  size DOUBLE NOT NULL,
-  length DOUBLE NOT NULL,
-  quality VARCHAR(255) NOT NULL,
-  quantity INT NOT NULL,
-  delivery_date DATE,
-  delivery_number BIGINT
+-- Create limits table
+CREATE TABLE limits (
+  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  uuid VARCHAR(255),
+  limit_min INTEGER,
+  limit_max INTEGER,
+  limit_range INTEGER,
+  limit_amount DECIMAL,
+  limit_days BIGINT,
+  limit_text VARCHAR(255),
+  cover_id INTEGER REFERENCES covers (id),
+  peril_id INTEGER REFERENCES perils (id)
 );
 
-CREATE TABLE IF NOT EXISTS material_product (
-  material_id INT NOT NULL,
-  product_id INT NOT NULL,
-  PRIMARY KEY (material_id, product_id),
-  FOREIGN KEY (material_id) REFERENCES materials(id),
-  FOREIGN KEY (product_id) REFERENCES products(id)
+-- Create ibjects table
+CREATE TABLE ibjects (
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  ibject_code VARCHAR(255),
+  ibject_kind VARCHAR(255),
+  max_number_of_ibjects INTEGER,
+  is_mandatory BOOLEAN,
+  level_id INTEGER REFERENCES levels (id)
 );
 
-CREATE TABLE IF NOT EXISTS order_product (
-    order_id INT NOT NULL,
-    product_id INT NOT NULL,
-    PRIMARY KEY (order_id, product_id),
-    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+-- Create package_level table
+CREATE TABLE package_level (
+  package_id INTEGER REFERENCES packages (id),
+  level_id INTEGER REFERENCES levels (id),
+  PRIMARY KEY (package_id, level_id)
 );
+
+-- Create cover_level table
+CREATE TABLE cover_level (
+  cover_id INTEGER REFERENCES covers (id),
+  level_id INTEGER REFERENCES levels (id),
+  PRIMARY KEY (cover_id, level_id)
+);
+
+---- Create indexes
+--CREATE INDEX idx_package_product_id ON packages (product_id);
+--CREATE INDEX idx_peril_cover_id ON perils (cover_id);
+--CREATE INDEX idx_limit_cover_id ON limits (cover_id);
+--CREATE INDEX idx_limit_peril_id ON limits (peril_id);
+--CREATE INDEX idx_ibject_level_id ON ibjects (level_id);
