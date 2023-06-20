@@ -60,11 +60,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return ResponseEntity.status(401).body(statusResponseDTO);
   }
 
-//  @ExceptionHandler(IdNotFoundException.class)
-//  public ResponseEntity<ErrorDTO> handle(IdNotFoundException ex) {
-//    ErrorDTO response = new ErrorDTO(ex.getMessage());
-//    return ResponseEntity.status(404).body(response);
-//  }
+  @ExceptionHandler(IdNotFoundException.class)
+  public ResponseEntity<ErrorDTO> handle(IdNotFoundException ex) {
+    ErrorDTO response = new ErrorDTO(ex.getMessage());
+    return ResponseEntity.status(404).body(response);
+  }
 
 //  @ExceptionHandler({NotEnoughMaterialException.class, AlreadyProducedException.class,
 //          QualityDifferenceException.class})

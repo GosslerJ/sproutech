@@ -17,6 +17,6 @@ import java.util.Set;
     private String code;
     private Integer productVersionFrom;
     private Integer productVersionTo;
-    private String packageCf;
+    private Set<Package> packages;
 
   }

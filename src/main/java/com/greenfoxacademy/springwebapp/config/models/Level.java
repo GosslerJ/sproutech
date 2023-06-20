@@ -1,5 +1,6 @@
 package com.greenfoxacademy.springwebapp.config.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,7 +24,8 @@ public class Level {
   @ManyToMany(mappedBy = "levels")
   private Set<Cover> covers; //*
 
+  @JsonIgnore
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "level", fetch = FetchType.LAZY, orphanRemoval = true)
-  private Set<Ibject> ibjects; //*
+  private Set<Object> objects; //*
 
 }

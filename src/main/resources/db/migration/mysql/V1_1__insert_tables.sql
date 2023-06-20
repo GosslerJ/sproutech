@@ -64,7 +64,7 @@ VALUES ('U1', 'LIMIT_PER_CLAIM_AMOUNT', 1, 100, 0, 5000.00, 365, 1, 1, 1),
 ('U2', 'LIMIT_PER_TERM_AMOUNT', 10, 500, 0, 10000.00, 180, 1, 2, 2),
 ('U3', 'LIMIT_PER_CLAIM_AMOUNT', 100, 1000, 0, 20000.00, 90, 1, 3, 3);
 
-INSERT INTO ibjects (ibject_code, max_number_of_ibjects, is_mandatory, level_id)
+INSERT INTO objects (object_code, max_number_of_objects, is_mandatory, level_id)
 VALUES ('PERSON', 5, TRUE, 1),
 ('VEHICLE', 10, FALSE, 2),
 ('O3', 3, TRUE, 3);

@@ -56,10 +56,10 @@ CREATE TABLE limits (
   peril_id INTEGER REFERENCES perils(id)
 );
 
-CREATE TABLE ibjects (
+CREATE TABLE objects (
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  ibject_code VARCHAR(255),
-  max_number_of_ibjects INTEGER,
+  object_code VARCHAR(255),
+  max_number_of_objects INTEGER,
   is_mandatory BOOLEAN,
   level_id INTEGER REFERENCES levels(id)
 );

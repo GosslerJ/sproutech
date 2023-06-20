@@ -1,5 +1,6 @@
 package com.greenfoxacademy.springwebapp.config.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,6 +34,7 @@ public class Cover {
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "cover", fetch = FetchType.LAZY, orphanRemoval = true)
   private Set<Limit> limits;
 
+  @JsonIgnore
   @ManyToMany
   @JoinTable(
           name = "cover_level",

@@ -1,5 +1,6 @@
 package com.greenfoxacademy.springwebapp.config.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,6 +27,7 @@ public class Package {
   @Column(name = "package_type")
   private String packageType;
 
+  @JsonIgnore
   @ManyToOne(fetch = FetchType.EAGER)
   private Product product;
 

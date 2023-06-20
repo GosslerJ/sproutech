@@ -1,5 +1,6 @@
 package com.greenfoxacademy.springwebapp.config.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -42,10 +43,12 @@ public class Limit {
   @Column(name = "is_visible")
   private Boolean isVisible;
 
+  @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "cover_id")
   private Cover cover;
 
+  @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "peril_id")
   private Cover peril;

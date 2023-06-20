@@ -1,5 +1,6 @@
 package com.greenfoxacademy.springwebapp.config.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,6 +25,7 @@ public class Peril {
   @Column(name = "uuid")
   private String uuid;
 
+  @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "cover_id")
   private Cover cover;

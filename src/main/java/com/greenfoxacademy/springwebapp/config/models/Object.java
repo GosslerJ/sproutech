@@ -10,18 +10,18 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "ibjects")
-public class Ibject {
+@Table(name = "objects")
+public class Object {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @Column(name = "ibject_code")
-  private String ibjectCode;
+  @Column(name = "object_code")
+  private String objectCode;
 
-  @Column(name = "max_number_of_ibjects")
-  private Integer maxNumberOfIbjects;
+  @Column(name = "max_number_of_objects")
+  private Integer maxNumberOfObjects;
 
   @Column(name = "is_mandatory")
   private Boolean isMandatory;

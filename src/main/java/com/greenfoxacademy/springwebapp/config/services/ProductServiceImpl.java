@@ -1,5 +1,6 @@
 package com.greenfoxacademy.springwebapp.config.services;
 
+import com.greenfoxacademy.springwebapp.common.exceptions.IdNotFoundException;
 import com.greenfoxacademy.springwebapp.config.models.Package;
 import com.greenfoxacademy.springwebapp.config.models.Product;
 import com.greenfoxacademy.springwebapp.config.models.ProductDTO;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -30,8 +32,8 @@ public class ProductServiceImpl implements ProductService {
     return convert(findProductById(id));
   }
 
-  private Product findProductById(Integer id) throws NoSuchElementException {
-    return productRepository.findById(id).orElseThrow(NoSuchElementException::new);
+  private Product findProductById(Integer id) throws IdNotFoundException {
+    return productRepository.findById(id).orElseThrow(IdNotFoundException::new);
   }
 
   @Override
@@ -48,7 +50,6 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public ProductDTO updateProduct(Integer id, ProductDTO productDTO) throws NoSuchElementException {
     Product product = findProductById(id);
-    product.setId(id);
     product.setCode(productDTO.getCode());
     product.setProductVersionFrom(productDTO.getProductVersionFrom());
     product.setProductVersionTo(productDTO.getProductVersionTo());
@@ -86,8 +87,8 @@ public class ProductServiceImpl implements ProductService {
             .build();
 
     if (product.getPackages() != null && !product.getPackages().isEmpty()) {
-      Package packageCf = product.getPackages().get(0); // Csak az első csomagot másoljuk át (az igényeid szerint módosítható)
-      productDTO.setPackageCf(packageCf.getPackageCode());
+      Set<Package> packages = product.getPackages(); // Csak az első csomagot másoljuk át (az igényeid szerint módosítható)
+      productDTO.setPackages(packages);
     }
 
     return productDTO;

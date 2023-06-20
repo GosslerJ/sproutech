@@ -29,6 +29,6 @@ public class Product {
   private Integer productVersionTo;
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", orphanRemoval = true)
-  private List<Package> packages;
+  private Set<Package> packages;
 
 }
