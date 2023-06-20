@@ -66,18 +66,6 @@ public class ProductServiceImpl implements ProductService {
     }
   }
 
-//  private ProductDTO convert(Product product) {
-//    ProductDTO productDTO = ProductDTO.builder()
-//            .id(product.getId())
-//            .code(product.getCode())
-//            .productVersionFrom(product.getProductVersionFrom())
-//            .productVersionTo(product.getProductVersionTo())
-//            .packageCf(product.)
-//            .build();
-//    productDTO.setPackageCf(product.getId().);
-//    return productDTO;
-//  }
-
   private ProductDTO convert(Product product) {
     ProductDTO productDTO = ProductDTO.builder()
             .id(product.getId())
