@@ -10,7 +10,7 @@
 * Querying orders with close delivery deadlines.
 * Adding a new material, querying existing materials by material quality and size (diameter).
 * Transferring materials from an external warehouse to an internal warehouse.
-* Assigning materials to an ordered product, taking remaining material inventory.
+* Assigning materials to an ordered HProductCf, taking remaining material inventory.
 
 ## Entity-relationship diagram
 
@@ -57,7 +57,7 @@
 * Közeli szállítási határidejű megrendelések lekérdezése.
 * Új alapanyag (material) felvétele, meglévő alapanyagok lekérdezése anyagminőség és méret (átmérő) szerint.
 * Alapanyagok átkönyvelése külső raktárból (warehouse) belső raktárba.
-* Alapanyag megrendelt termékhez (product) való hozzárendelése, maradék alapanyag készletbe vétele.
+* Alapanyag megrendelt termékhez (HProductCf) való hozzárendelése, maradék alapanyag készletbe vétele.
 
 ## Entitás-kapcsolati diagram
 

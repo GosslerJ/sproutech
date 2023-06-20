@@ -1,17 +1,38 @@
 CREATE TABLE IF NOT EXISTS admins (
-    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(100) UNIQUE NOT NULL,
-    password VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL
+  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  username VARCHAR(100) UNIQUE NOT NULL,
+  password VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL
 );
 
 ALTER TABLE admins ADD CONSTRAINT id UNIQUE (id);
 
 CREATE TABLE products (
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  product_code VARCHAR(255),
+  product_code VARCHAR(255) NOT NULL,
+  insurance_company_code VARCHAR(255),
+  is_dynamic BOOLEAN,
+  standardized_code VARCHAR(255),
   product_version_from INTEGER,
-  product_version_to INTEGER
+  product_version_to INTEGER,
+  thousand_inputs_enabled BOOLEAN,
+  frame_offer_creation_enabled BOOLEAN,
+  frame_quote_creation_enabled BOOLEAN,
+  frame_policy_creation_enabled BOOLEAN,
+  offer_creation_enabled BOOLEAN,
+  quote_creation_enabled BOOLEAN,
+  policy_creation_enabled BOOLEAN,
+  is_frame_product BOOLEAN,
+  package_type VARCHAR(255),
+  max_discount_pct INTEGER,
+  is_strict_prod_version BOOLEAN,
+  is_claim_clearing_enabled BOOLEAN,
+  is_intervention_enabled BOOLEAN,
+  intervention_tolerance BOOLEAN,
+  use_wip BOOLEAN,
+  delete_empty_frame BOOLEAN,
+  invoicing_after_prem_wr BOOLEAN,
+  calc_saldo BOOLEAN
 );
 
 CREATE TABLE packages (
@@ -19,8 +40,8 @@ CREATE TABLE packages (
   uuid VARCHAR(255),
   package_code VARCHAR(255),
   package_type VARCHAR(255),
-  product_id INTEGER NOT NULL,
-  FOREIGN KEY (product_id) REFERENCES products(id)
+  hproduct_cf_id INTEGER NOT NULL,
+  FOREIGN KEY (hproduct_cf_id) REFERENCES products(id)
 );
 
 CREATE TABLE levels (
@@ -58,10 +79,15 @@ CREATE TABLE limits (
 
 CREATE TABLE objects (
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  object_code VARCHAR(255),
-  max_number_of_objects INTEGER,
+  insured_object_code VARCHAR(255),
+  number_of_insured_objects INTEGER,
+  max_number_of_insured_objects INTEGER,
   is_mandatory BOOLEAN,
-  level_id INTEGER REFERENCES levels(id)
+  sum_insured_min DOUBLE PRECISION,
+  sum_insured_max DOUBLE PRECISION,
+  sum_insured_scale VARCHAR(255),
+  level_id INTEGER,
+  FOREIGN KEY (level_id) REFERENCES levels (id)
 );
 
 CREATE TABLE package_level (

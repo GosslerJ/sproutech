@@ -11,12 +11,12 @@ import java.util.Set;
   @Builder
   @NoArgsConstructor
   @AllArgsConstructor
-  public class ProductDTO {
+  public class ProductCfDTO {
 
     private Integer id;
     private String code;
     private Integer productVersionFrom;
     private Integer productVersionTo;
-    private Set<Package> packages;
+    private Set<HPackageCf> HPackageCfs;
 
   }

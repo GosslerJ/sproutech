@@ -13,7 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "covers")
-public class Cover {
+public class HCoverCf {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +28,11 @@ public class Cover {
   @Column(name = "is_premium_free")
   private Boolean isPremiumFree;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "cover", fetch = FetchType.LAZY, orphanRemoval = true)
-  private Set<Peril> perils;
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "HCoverCf", fetch = FetchType.LAZY, orphanRemoval = true)
+  private Set<HPerilCf> HPerilCfs;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "cover", fetch = FetchType.LAZY, orphanRemoval = true)
-  private Set<Limit> limits;
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "HCoverCf", fetch = FetchType.LAZY, orphanRemoval = true)
+  private Set<HLimitCf> HLimitCfs;
 
   @JsonIgnore
   @ManyToMany
@@ -41,6 +41,6 @@ public class Cover {
           joinColumns = @JoinColumn(name = "cover_id"),
           inverseJoinColumns = @JoinColumn(name = "level_id")
   )
-  private Set<Level> levels;
+  private Set<HPackageLevelCf> HPackageLevelCfs;
 
 }

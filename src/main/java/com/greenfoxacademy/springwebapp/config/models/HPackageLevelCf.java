@@ -13,19 +13,19 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "levels")
-public class Level {
+public class HPackageLevelCf {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
   @Column(name = "level_code")
-  private String packageLevelCode;
+  private String packageLevel;
 
-  @ManyToMany(mappedBy = "levels")
-  private Set<Cover> covers; //*
+  @ManyToMany(mappedBy = "HPackageLevelCfs")
+  private Set<HCoverCf> HCoverCfs;
 
   @JsonIgnore
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "level", fetch = FetchType.LAZY, orphanRemoval = true)
-  private Set<Object> objects; //*
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "HPackageLevelCf", fetch = FetchType.LAZY, orphanRemoval = true)
+  private Set<HInsuredObjectCf> HInsuredObjectCfs;
 
 }

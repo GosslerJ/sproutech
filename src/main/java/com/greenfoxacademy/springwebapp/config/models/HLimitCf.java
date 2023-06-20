@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Entity
 @Table(name = "limits")
-public class Limit {
+public class HLimitCf {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,11 +46,11 @@ public class Limit {
   @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "cover_id")
-  private Cover cover;
+  private HCoverCf HCoverCf;
 
   @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "peril_id")
-  private Cover peril;
+  private HCoverCf peril;
 
 }

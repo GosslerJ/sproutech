@@ -13,7 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "perils")
-public class Peril {
+public class HPerilCf {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,9 +28,9 @@ public class Peril {
   @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "cover_id")
-  private Cover cover;
+  private HCoverCf HCoverCf;
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "peril", fetch = FetchType.LAZY, orphanRemoval = true)
-  private Set<Limit> limits;
+  private Set<HLimitCf> HLimitCfs;
 
 }

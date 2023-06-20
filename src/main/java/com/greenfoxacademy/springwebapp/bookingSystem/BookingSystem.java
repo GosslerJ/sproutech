@@ -39,7 +39,7 @@ public class BookingSystem {
   }
 
   public void cancelBooking(Booking booking) throws BookingException {
-    // cancels the specified booking associated with one of the Flight objects from the BookingSystem
+    // cancels the specified booking associated with one of the Flight HInsuredObjectCfs from the BookingSystem
     boolean bookingCanceled = false;
 
     for (Flight flight : flights) {

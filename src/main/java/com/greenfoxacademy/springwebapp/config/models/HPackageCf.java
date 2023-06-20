@@ -13,7 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "packages")
-public class Package {
+public class HPackageCf {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class Package {
 
   @JsonIgnore
   @ManyToOne(fetch = FetchType.EAGER)
-  private Product product;
+  private HProductCf HProductCf;
 
   @ManyToMany
   @JoinTable(
@@ -37,6 +37,6 @@ public class Package {
           joinColumns = @JoinColumn(name = "package_id"),
           inverseJoinColumns = @JoinColumn(name = "level_id")
   )
-  private Set<Level> levels;
+  private Set<HPackageLevelCf> HPackageLevelCfs;
 
 }
