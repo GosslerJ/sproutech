@@ -46,11 +46,11 @@ public class HLimit {
   @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "cf_cover_id")
-  private HCover HCover;
+  private HCover cover;
 
   @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "cf_peril_id")
-  private HCover peril;
+  private HPeril peril;
 
 }

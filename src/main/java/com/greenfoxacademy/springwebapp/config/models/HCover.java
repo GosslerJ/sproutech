@@ -28,11 +28,11 @@ public class HCover {
   @Column(name = "is_premium_free")
   private Boolean isPremiumFree;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "HCover", fetch = FetchType.LAZY, orphanRemoval = true)
-  private Set<HPeril> HPerils;
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "cover", fetch = FetchType.LAZY, orphanRemoval = true)
+  private Set<HPeril> perils;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "HCover", fetch = FetchType.LAZY, orphanRemoval = true)
-  private Set<HLimit> HLimits;
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "cover", fetch = FetchType.LAZY, orphanRemoval = true)
+  private Set<HLimit> limits;
 
   @JsonIgnore
   @ManyToMany
@@ -41,6 +41,6 @@ public class HCover {
           joinColumns = @JoinColumn(name = "cf_cover_id"),
           inverseJoinColumns = @JoinColumn(name = "cf_level_id")
   )
-  private Set<HPackageLevel> HPackageLevels;
+  private Set<HPackageLevel> packageLevels;
 
 }

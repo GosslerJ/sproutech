@@ -8,7 +8,7 @@ INSERT INTO cf_products (
 ('CASCO', 'Magyar Posta Biztosító Zrt.', 1, 1, 9999, 0, 0, 0, 0, 0, 1, 0, 0, NULL, 1, 1, 0, 0, 0, 1, 1),
 ('16090', 'Magyar Posta Biztosító Zrt.', 1, 1, 9999, 0, 0, 0, 0, 0, 1, 0, 0, 'MULTI', 1, 1, 0, 0, 0, 1, 1);
 
-INSERT INTO cf_packages (uuid, package_code, package_type, hproduct_id)
+INSERT INTO cf_packages (uuid, package_code, package_type, product_id)
 VALUES ('U1', 'VAROSLATOGATAS', 'UTAS', 3),
 ('U1', 'TENGERPART', 'UTAS', 3),
 ('U1', 'TURA', 'UTAS', 3),

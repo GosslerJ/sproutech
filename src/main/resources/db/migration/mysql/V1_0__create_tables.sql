@@ -40,8 +40,8 @@ CREATE TABLE cf_packages (
   uuid VARCHAR(255),
   package_code VARCHAR(255),
   package_type VARCHAR(255),
-  hproduct_id INTEGER NOT NULL,
-  FOREIGN KEY (hproduct_id) REFERENCES cf_products(id)
+  product_id INTEGER NOT NULL,
+  FOREIGN KEY (product_id) REFERENCES cf_products(id)
 );
 
 CREATE TABLE cf_levels (

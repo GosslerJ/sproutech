@@ -29,7 +29,7 @@ public class HPackage {
 
   @JsonIgnore
   @ManyToOne(fetch = FetchType.EAGER)
-  private HProduct HProduct;
+  private HProduct product;
 
   @ManyToMany
   @JoinTable(
@@ -37,6 +37,6 @@ public class HPackage {
           joinColumns = @JoinColumn(name = "cf_package_id"),
           inverseJoinColumns = @JoinColumn(name = "cf_level_id")
   )
-  private Set<HPackageLevel> HPackageLevels;
+  private Set<HPackageLevel> packageLevels;
 
 }

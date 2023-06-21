@@ -21,11 +21,11 @@ public class HPackageLevel {
   @Column(name = "level_code")
   private String packageLevel;
 
-  @ManyToMany(mappedBy = "HPackageLevels")
-  private Set<HCover> HCovers;
+  @ManyToMany(mappedBy = "packageLevels")
+  private Set<HCover> covers;
 
   @JsonIgnore
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "HPackageLevel", fetch = FetchType.LAZY, orphanRemoval = true)
-  private Set<HInsuredObject> HInsuredObjects;
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "packageLevel", fetch = FetchType.LAZY, orphanRemoval = true)
+  private Set<HInsuredObject> insuredObjects;
 
 }

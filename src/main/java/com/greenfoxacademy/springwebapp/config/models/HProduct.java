@@ -20,6 +20,7 @@ public class HProduct {
 
   @Column(name = "product_code")
   private String code;
+
   @Column(name = "insurance_company_code")
   private String insuranceCompanyCode;
 
@@ -34,7 +35,7 @@ public class HProduct {
   @Column(name = "product_version_to")
   private Integer productVersionTo;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "HProduct", orphanRemoval = true)
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", orphanRemoval = true)
   private Set<HPackage> HPackages;
 
   @Column(name = "thousand_inputs_enabled")

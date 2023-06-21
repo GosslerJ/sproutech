@@ -21,7 +21,7 @@ public class HInsuredObject {
   private String objectCode;
 
   @Column(name = "number_of_insured_objects")
-  private int numberOfInsuredObjects;
+  private Integer numberOfInsuredObjects;
   @Column(name = "max_number_of_insured_objects")
   private Integer maxNumberOfObjects;
 
@@ -29,16 +29,16 @@ public class HInsuredObject {
   private Boolean isMandatory;
 
   @Column(name = "sum_insured_min")
-  private double sumInsuredMin;
+  private Double sumInsuredMin;
 
   @Column(name = "sum_insured_max")
-  private double sumInsuredMax;
+  private Double sumInsuredMax;
 
   @Column(name = "sum_insured_scale")
   private String sumInsuredScale;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "cf_level_id")
-  private HPackageLevel HPackageLevel;
+  private HPackageLevel packageLevel;
 
 }

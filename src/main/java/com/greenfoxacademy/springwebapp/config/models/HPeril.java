@@ -28,9 +28,9 @@ public class HPeril {
   @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "cf_cover_id")
-  private HCover HCover;
+  private HCover cover;
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "peril", fetch = FetchType.LAZY, orphanRemoval = true)
-  private Set<HLimit> HLimits;
+  private Set<HLimit> limits;
 
 }
