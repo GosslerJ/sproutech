@@ -11,8 +11,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "products")
-public class HProductCf {
+@Table(name = "cf_products")
+public class HProduct {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,8 +34,8 @@ public class HProductCf {
   @Column(name = "product_version_to")
   private Integer productVersionTo;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "HProductCf", orphanRemoval = true)
-  private Set<HPackageCf> HPackageCfs;
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "HProduct", orphanRemoval = true)
+  private Set<HPackage> HPackages;
 
   @Column(name = "thousand_inputs_enabled")
   private Boolean thousandInputsEnabled;

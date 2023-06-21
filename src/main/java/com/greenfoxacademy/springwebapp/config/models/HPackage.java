@@ -12,8 +12,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "packages")
-public class HPackageCf {
+@Table(name = "cf_packages")
+public class HPackage {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,14 +29,14 @@ public class HPackageCf {
 
   @JsonIgnore
   @ManyToOne(fetch = FetchType.EAGER)
-  private HProductCf HProductCf;
+  private HProduct HProduct;
 
   @ManyToMany
   @JoinTable(
-          name = "package_level",
-          joinColumns = @JoinColumn(name = "package_id"),
-          inverseJoinColumns = @JoinColumn(name = "level_id")
+          name = "cf_package_level",
+          joinColumns = @JoinColumn(name = "cf_package_id"),
+          inverseJoinColumns = @JoinColumn(name = "cf_level_id")
   )
-  private Set<HPackageLevelCf> HPackageLevelCfs;
+  private Set<HPackageLevel> HPackageLevels;
 
 }

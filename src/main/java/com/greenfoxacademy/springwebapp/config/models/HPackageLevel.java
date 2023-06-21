@@ -12,8 +12,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "levels")
-public class HPackageLevelCf {
+@Table(name = "cf_levels")
+public class HPackageLevel {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
@@ -21,11 +21,11 @@ public class HPackageLevelCf {
   @Column(name = "level_code")
   private String packageLevel;
 
-  @ManyToMany(mappedBy = "HPackageLevelCfs")
-  private Set<HCoverCf> HCoverCfs;
+  @ManyToMany(mappedBy = "HPackageLevels")
+  private Set<HCover> HCovers;
 
   @JsonIgnore
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "HPackageLevelCf", fetch = FetchType.LAZY, orphanRemoval = true)
-  private Set<HInsuredObjectCf> HInsuredObjectCfs;
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "HPackageLevel", fetch = FetchType.LAZY, orphanRemoval = true)
+  private Set<HInsuredObject> HInsuredObjects;
 
 }

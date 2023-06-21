@@ -3,9 +3,9 @@ package com.greenfoxacademy.springwebapp.config.controllers;
 import com.greenfoxacademy.springwebapp.common.exceptions.IdNotFoundException;
 import com.greenfoxacademy.springwebapp.common.models.ErrorDTO;
 import com.greenfoxacademy.springwebapp.common.models.StatusResponseDTO;
-import com.greenfoxacademy.springwebapp.config.models.ProductCfDTO;
-import com.greenfoxacademy.springwebapp.config.models.ProductsCfDTO;
-import com.greenfoxacademy.springwebapp.config.services.ProductServiceCf;
+import com.greenfoxacademy.springwebapp.config.models.ProductDTO;
+import com.greenfoxacademy.springwebapp.config.models.ProductsDTO;
+import com.greenfoxacademy.springwebapp.config.services.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,58 +24,58 @@ import static org.springframework.http.HttpStatus.OK;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api")
-public class ProductControllerCf {
+public class ProductController {
 
-  private final ProductServiceCf productServiceCf;
+  private final ProductService productService;
 
   @Operation(summary = "Get all products")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "successful operation",
                   content = @Content(mediaType = "application/json",
-                          schema = @Schema(implementation = ProductsCfDTO.class))),
+                          schema = @Schema(implementation = ProductsDTO.class))),
   })
   @GetMapping("/products")
-  public ResponseEntity<ProductsCfDTO> findAllProducts() {
-    ProductsCfDTO productsCfDTO = productServiceCf.findAll();
-    return ResponseEntity.ok(productsCfDTO);
+  public ResponseEntity<ProductsDTO> findAllProducts() {
+    ProductsDTO productsDTO = productService.findAll();
+    return ResponseEntity.ok(productsDTO);
   }
 
   @Operation(summary = "Get products by id", description = "List packages by product by id")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "successful operation",
                   content = @Content(mediaType = "application/json",
-                          schema = @Schema(implementation = ProductCfDTO.class))),
+                          schema = @Schema(implementation = ProductDTO.class))),
           @ApiResponse(responseCode = "404", description = "id not found",
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = ErrorDTO.class))),
   })
   @GetMapping("/products/{id}")
-  public ResponseEntity<ProductCfDTO> findById(@PathVariable Integer id) {
-    ProductCfDTO productCfDTO = productServiceCf.findById(id);
-    return ResponseEntity.ok(productCfDTO);
+  public ResponseEntity<ProductDTO> findById(@PathVariable Integer id) {
+    ProductDTO productDTO = productService.findById(id);
+    return ResponseEntity.ok(productDTO);
   }
 
   @Operation(summary = "Post new product", description = "Save new product to the products table")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "201", description = "successful operation",
                   content = @Content(mediaType = "application/json",
-                          schema = @Schema(implementation = ProductCfDTO.class))),
+                          schema = @Schema(implementation = ProductDTO.class))),
   })
   @PostMapping("/products")
-  public ResponseEntity<ProductCfDTO> saveProduct(@Valid @RequestBody ProductCfDTO productCfDTO) {
-    ProductCfDTO savedProductCfDTO = productServiceCf.save(productCfDTO);
-    return ResponseEntity.status(201).body(savedProductCfDTO);
+  public ResponseEntity<ProductDTO> saveProduct(@Valid @RequestBody ProductDTO productDTO) {
+    ProductDTO savedProductDTO = productService.save(productDTO);
+    return ResponseEntity.status(201).body(savedProductDTO);
   }
 
   @Operation(summary = "Update product", description = "Update product by id")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "201", description = "successful operation",
                   content = @Content(mediaType = "application/json",
-                          schema = @Schema(implementation = ProductCfDTO.class))),
+                          schema = @Schema(implementation = ProductDTO.class))),
   })
   @PutMapping("/products/{id}")
-  public ResponseEntity<ProductCfDTO> updateProduct(@PathVariable Integer id, @Valid @RequestBody ProductCfDTO productCfDTO) {
-    return ResponseEntity.status(201).body(productServiceCf.updateProduct(id, productCfDTO));
+  public ResponseEntity<ProductDTO> updateProduct(@PathVariable Integer id, @Valid @RequestBody ProductDTO productDTO) {
+    return ResponseEntity.status(201).body(productService.updateProduct(id, productDTO));
   }
 
 
@@ -90,7 +90,7 @@ public class ProductControllerCf {
   })
   @DeleteMapping("/products/{id}")
   public ResponseEntity<?> deleteProduct(@PathVariable Integer id) throws IdNotFoundException {
-    productServiceCf.deleteProduct(id);
+    productService.deleteProduct(id);
     return ResponseEntity.status(OK).body(new StatusResponseDTO("ok", "Product deleted"));
   }
 

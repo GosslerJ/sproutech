@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS admins (
 
 ALTER TABLE admins ADD CONSTRAINT id UNIQUE (id);
 
-CREATE TABLE products (
+CREATE TABLE cf_products (
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   product_code VARCHAR(255) NOT NULL,
   insurance_company_code VARCHAR(255),
@@ -35,35 +35,35 @@ CREATE TABLE products (
   calc_saldo BOOLEAN
 );
 
-CREATE TABLE packages (
+CREATE TABLE cf_packages (
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   uuid VARCHAR(255),
   package_code VARCHAR(255),
   package_type VARCHAR(255),
-  hproduct_cf_id INTEGER NOT NULL,
-  FOREIGN KEY (hproduct_cf_id) REFERENCES products(id)
+  hproduct_id INTEGER NOT NULL,
+  FOREIGN KEY (hproduct_id) REFERENCES cf_products(id)
 );
 
-CREATE TABLE levels (
+CREATE TABLE cf_levels (
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   level_code VARCHAR(255)
 );
 
-CREATE TABLE covers (
+CREATE TABLE cf_covers (
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   cover_code VARCHAR(255),
   is_mandatory BOOLEAN,
   is_premium_free BOOLEAN
 );
 
-CREATE TABLE perils (
+CREATE TABLE cf_perils (
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   peril_code VARCHAR(255),
   uuid VARCHAR(255),
-  cover_id INTEGER REFERENCES covers(id)
+  cf_cover_id INTEGER REFERENCES cf_covers(id)
 );
 
-CREATE TABLE limits (
+CREATE TABLE cf_limits (
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   uuid VARCHAR(255),
   limit_type VARCHAR(255),
@@ -73,11 +73,11 @@ CREATE TABLE limits (
   limit_amount DECIMAL,
   limit_days BIGINT,
   is_visible BOOLEAN,
-  cover_id INTEGER REFERENCES covers(id),
-  peril_id INTEGER REFERENCES perils(id)
+  cf_cover_id INTEGER REFERENCES cf_covers(id),
+  cf_peril_id INTEGER REFERENCES cf_perils(id)
 );
 
-CREATE TABLE objects (
+CREATE TABLE cf_objects (
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   insured_object_code VARCHAR(255),
   number_of_insured_objects INTEGER,
@@ -86,20 +86,20 @@ CREATE TABLE objects (
   sum_insured_min DOUBLE PRECISION,
   sum_insured_max DOUBLE PRECISION,
   sum_insured_scale VARCHAR(255),
-  level_id INTEGER,
-  FOREIGN KEY (level_id) REFERENCES levels (id)
+  cf_level_id INTEGER,
+  FOREIGN KEY (cf_level_id) REFERENCES cf_levels (id)
 );
 
-CREATE TABLE package_level (
-  package_id INTEGER REFERENCES packages(id),
-  level_id INTEGER REFERENCES levels(id),
-  PRIMARY KEY (package_id, level_id)
+CREATE TABLE cf_package_level (
+  cf_package_id INTEGER REFERENCES cf_packages(id),
+  cf_level_id INTEGER REFERENCES cf_levels(id),
+  PRIMARY KEY (cf_package_id, cf_level_id)
 );
 
-CREATE TABLE cover_level (
-  cover_id INTEGER REFERENCES covers(id),
-  level_id INTEGER REFERENCES levels(id),
-  PRIMARY KEY (cover_id, level_id)
+CREATE TABLE cf_cover_level (
+  cf_cover_id INTEGER REFERENCES cf_covers(id),
+  cf_level_id INTEGER REFERENCES cf_levels(id),
+  PRIMARY KEY (cf_cover_id, cf_level_id)
 );
 
 

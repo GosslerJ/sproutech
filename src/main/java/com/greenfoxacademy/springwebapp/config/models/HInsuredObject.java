@@ -10,8 +10,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "objects")
-public class HInsuredObjectCf {
+@Table(name = "cf_objects")
+public class HInsuredObject {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +38,7 @@ public class HInsuredObjectCf {
   private String sumInsuredScale;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "level_id")
-  private HPackageLevelCf HPackageLevelCf;
+  @JoinColumn(name = "cf_level_id")
+  private HPackageLevel HPackageLevel;
 
 }

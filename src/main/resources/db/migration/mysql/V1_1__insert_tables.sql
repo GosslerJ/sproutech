@@ -1,4 +1,4 @@
-INSERT INTO products (
+INSERT INTO cf_products (
   product_code, insurance_company_code, is_dynamic, product_version_from, product_version_to,
   thousand_inputs_enabled, frame_offer_creation_enabled, frame_quote_creation_enabled, frame_policy_creation_enabled,
   offer_creation_enabled, quote_creation_enabled, policy_creation_enabled, is_frame_product, package_type,
@@ -8,7 +8,7 @@ INSERT INTO products (
 ('CASCO', 'Magyar Posta Biztosító Zrt.', 1, 1, 9999, 0, 0, 0, 0, 0, 1, 0, 0, NULL, 1, 1, 0, 0, 0, 1, 1),
 ('16090', 'Magyar Posta Biztosító Zrt.', 1, 1, 9999, 0, 0, 0, 0, 0, 1, 0, 0, 'MULTI', 1, 1, 0, 0, 0, 1, 1);
 
-INSERT INTO packages (uuid, package_code, package_type, hproduct_cf_id)
+INSERT INTO cf_packages (uuid, package_code, package_type, hproduct_id)
 VALUES ('U1', 'VAROSLATOGATAS', 'UTAS', 3),
 ('U1', 'TENGERPART', 'UTAS', 3),
 ('U1', 'TURA', 'UTAS', 3),
@@ -17,13 +17,13 @@ VALUES ('U1', 'VAROSLATOGATAS', 'UTAS', 3),
 ('U1', 'AUTO_ASSZISZTENCIA', 'UTAS', 3),
 ('U1', 'JARATKESES', 'UTAS', 3);
 
-INSERT INTO levels (level_code)
+INSERT INTO cf_levels (level_code)
 VALUES ('START'),
 ('OPTIMUM'),
 ('PREMIUM'),
 ('BASIC');
 
-INSERT INTO covers (cover_code, is_mandatory, is_premium_free)
+INSERT INTO cf_covers (cover_code, is_mandatory, is_premium_free)
 VALUES ('EGESSZEG_SEGITSEGNYUJTAS', 1, 0),
 ('EGYEB_SEGITSEGNYUJTAS', 1, 0),
 ('BALESETI_HALAL', 1, 0),
@@ -36,7 +36,7 @@ VALUES ('EGESSZEG_SEGITSEGNYUJTAS', 1, 0),
 ('AUTO_ASSZISZTENCIA', 1, 0),
 ('JARATKESES', 1, 0);
 
-INSERT INTO limits (uuid, limit_type, limit_min, limit_max, limit_range, is_visible, cover_id, peril_id)
+INSERT INTO cf_limits (uuid, limit_type, limit_min, limit_max, limit_range, is_visible, cf_cover_id, cf_peril_id)
 VALUES ('U1', 'LIMIT_PER_CLAIM_AMOUNT', 1600000, 1600000, 0, 1, 7, NULL),
 ('U1', 'LIMIT_PER_TERM_AMOUNT', 1600000, 1600000, 0, 1, 7, NULL),
 ('U1', 'LIMIT_PER_CLAIM_AMOUNT', 400000, 400000, 0, 1, 8, NULL),
@@ -56,7 +56,7 @@ VALUES ('U1', 'LIMIT_PER_CLAIM_AMOUNT', 1600000, 1600000, 0, 1, 7, NULL),
 ('U1', 'LIMIT_PER_CLAIM_AMOUNT', 1200000, 1200000, 0, 1, 9, NULL),
 ('U1', 'LIMIT_PER_TERM_AMOUNT', 1200000, 1200000, 0, 1, 9, NULL);
 
-INSERT INTO perils (peril_code, uuid, cover_id)
+INSERT INTO cf_perils (peril_code, uuid, cf_cover_id)
 VALUES ('DIRECT_MEDICAL_COSTS', 'U1', 1),
 ('URGENT_DENTAL_CARE', 'U1', 1),
 ('EYEGLASS_REPLACEMENT_PERSONAL_INJURY', 'U1', 1),
@@ -85,11 +85,11 @@ VALUES ('DIRECT_MEDICAL_COSTS', 'U1', 1),
 ('LEGAL_EXPENSES', 'U1', 8),
 ('GENERAL_LIABILITY', 'U1', 9);
 
-INSERT INTO objects (insured_object_code, max_number_of_insured_objects, is_mandatory, level_id)
+INSERT INTO cf_objects (insured_object_code, max_number_of_insured_objects, is_mandatory, cf_level_id)
 VALUES ('PERSON', 9999, 1, 1),
 ('VEHICLE', 9999, 0, 2);
 
-INSERT INTO package_level (package_id, level_id)
+INSERT INTO cf_package_level (cf_package_id, cf_level_id)
 VALUES
 (1, 1),
 (1, 2),
@@ -109,7 +109,7 @@ VALUES
 (6, 4),
 (7, 4);
 
-INSERT INTO cover_level (level_id, cover_id)
+INSERT INTO cf_cover_level (cf_level_id, cf_cover_id)
 VALUES
 (1, 1),
 (1, 2),

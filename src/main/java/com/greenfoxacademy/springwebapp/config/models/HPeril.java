@@ -12,8 +12,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "perils")
-public class HPerilCf {
+@Table(name = "cf_perils")
+public class HPeril {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,10 +27,10 @@ public class HPerilCf {
 
   @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "cover_id")
-  private HCoverCf HCoverCf;
+  @JoinColumn(name = "cf_cover_id")
+  private HCover HCover;
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "peril", fetch = FetchType.LAZY, orphanRemoval = true)
-  private Set<HLimitCf> HLimitCfs;
+  private Set<HLimit> HLimits;
 
 }

@@ -12,8 +12,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "covers")
-public class HCoverCf {
+@Table(name = "cf_covers")
+public class HCover {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,19 +28,19 @@ public class HCoverCf {
   @Column(name = "is_premium_free")
   private Boolean isPremiumFree;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "HCoverCf", fetch = FetchType.LAZY, orphanRemoval = true)
-  private Set<HPerilCf> HPerilCfs;
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "HCover", fetch = FetchType.LAZY, orphanRemoval = true)
+  private Set<HPeril> HPerils;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "HCoverCf", fetch = FetchType.LAZY, orphanRemoval = true)
-  private Set<HLimitCf> HLimitCfs;
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "HCover", fetch = FetchType.LAZY, orphanRemoval = true)
+  private Set<HLimit> HLimits;
 
   @JsonIgnore
   @ManyToMany
   @JoinTable(
-          name = "cover_level",
-          joinColumns = @JoinColumn(name = "cover_id"),
-          inverseJoinColumns = @JoinColumn(name = "level_id")
+          name = "cf_cover_level",
+          joinColumns = @JoinColumn(name = "cf_cover_id"),
+          inverseJoinColumns = @JoinColumn(name = "cf_level_id")
   )
-  private Set<HPackageLevelCf> HPackageLevelCfs;
+  private Set<HPackageLevel> HPackageLevels;
 
 }

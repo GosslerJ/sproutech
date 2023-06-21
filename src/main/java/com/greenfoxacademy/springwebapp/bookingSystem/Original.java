@@ -23,7 +23,7 @@
 //  }
 //
 //  public void cancelBooking(Booking booking) {
-//    // cancels the specified booking associated with one of the Flight HInsuredObjectCfs from the BookingSystem
+//    // cancels the specified booking associated with one of the Flight HInsuredObjects from the BookingSystem
 //
 //  }
 //
@@ -137,7 +137,7 @@
 //  }
 //
 //  @Override
-//  public boolean equals(HInsuredObjectCf o) {
+//  public boolean equals(HInsuredObject o) {
 //    if (this == o) return true;
 //
 //    if (o == null || getClass() != o.getClass()) return false;

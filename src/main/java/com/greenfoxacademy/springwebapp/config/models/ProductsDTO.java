@@ -8,11 +8,11 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class ProductsCfDTO {
+public class ProductsDTO {
 
-  private List<ProductCfDTO> products;
+  private List<ProductDTO> products;
 
-  public ProductsCfDTO() {
+  public ProductsDTO() {
     products = new ArrayList<>();
   }
 

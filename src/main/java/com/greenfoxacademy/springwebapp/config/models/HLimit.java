@@ -12,8 +12,8 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "limits")
-public class HLimitCf {
+@Table(name = "cf_limits")
+public class HLimit {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,12 +45,12 @@ public class HLimitCf {
 
   @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "cover_id")
-  private HCoverCf HCoverCf;
+  @JoinColumn(name = "cf_cover_id")
+  private HCover HCover;
 
   @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "peril_id")
-  private HCoverCf peril;
+  @JoinColumn(name = "cf_peril_id")
+  private HCover peril;
 
 }
