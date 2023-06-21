@@ -65,7 +65,7 @@ public class HProductCf {
   private String packageType;
 
   @Column(name = "max_discount_pct")
-  private int maxDiscountPct;
+  private Integer maxDiscountPct;
 
   @Column(name = "is_strict_prod_version")
   private Boolean isStrictProdVersion;
