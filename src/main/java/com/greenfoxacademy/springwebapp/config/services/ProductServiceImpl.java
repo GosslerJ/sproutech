@@ -74,7 +74,7 @@ public class ProductServiceImpl implements ProductService {
             .build();
 
     if (HProduct.getHPackages() != null && !HProduct.getHPackages().isEmpty()) {
-      Set<HPackage> HPackages = HProduct.getHPackages(); // Csak az első csomagot másoljuk át (az igényeid szerint módosítható)
+      Set<HPackage> HPackages = HProduct.getHPackages();
       productDTO.setHPackages(HPackages);
     }
 
